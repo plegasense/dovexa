@@ -56,8 +56,6 @@ class GcodeCard extends StatelessWidget {
     final z = t.layerZ.isEmpty
         ? 0.0
         : t.layerZ[hi.clamp(0, t.layerZ.length - 1)];
-    final prevZ = hi > 0 && hi - 1 < t.layerZ.length ? t.layerZ[hi - 1] : 0.0;
-    final lh = hi > 0 ? z - prevZ : z;
     final elapsed = s.elapsedAt(t, hi);
     final modes = [
       if (t.isFdm && t.featureCounts().where((c) => c > 0).length >= 2)
@@ -355,7 +353,7 @@ class GcodeLegend extends StatelessWidget {
         return _gradient(
           [_c(0x38BDF8), _c(0xF43F5E)],
           '0 mm³/s',
-          '${t.flowMax.toStringAsFixed(1)} mm³/s',
+          '${t.flowMax.toStringAsFixed(1).ldec} mm³/s',
         );
       case ToolpathColorMode.height:
         final bz = t.bounds;
@@ -455,7 +453,7 @@ class GcodeInfoPanel extends StatelessWidget {
             ),
           ],
           if (s.cost != null)
-            _row(tr('Coste de material'), s.cost!.toStringAsFixed(2)),
+            _row(tr('Coste de material'), s.cost!.toStringAsFixed(2).ldec),
           _row(
             tr('Tamaño'),
             Units.dimsPlain(size),
@@ -943,7 +941,7 @@ class CncInfoPanel extends StatelessWidget {
               InkWell(
                 onTap: () => _editDiameter(context, e.number),
                 child: _row(
-                  'T${e.number} · Ø ${Units.isImperial ? Units.fine(sim.diameterOf(e.number)) : '${sim.diameterOf(e.number).toStringAsFixed(sim.diameterOf(e.number) % 1 == 0 ? 0 : 2)} mm'}${sim.assumed.contains(e.number) ? ' ${tr('(supuesto)')}' : ''}',
+                  'T${e.number} · Ø ${Units.isImperial ? Units.fine(sim.diameterOf(e.number)) : '${sim.diameterOf(e.number).toStringAsFixed(sim.diameterOf(e.number) % 1 == 0 ? 0 : 2).ldec} mm'}${sim.assumed.contains(e.number) ? ' ${tr('(supuesto)')}' : ''}',
                   '${e.number < c.toolSeconds.length && c.toolSeconds[e.number] > 0 ? formatDuration(c.toolSeconds[e.number] * (s.secondsFromSlicer ? s.timeScale : 1)) : ''}'
                       '${e.number < c.toolCutMm.length && c.toolCutMm[e.number] > 0 ? ' · ${_len(c.toolCutMm[e.number])}' : ''}',
                 ),

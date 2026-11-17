@@ -85,6 +85,7 @@ String _headerText(Uint8List b) {
 }
 
 _Parsed _parse(Uint8List bytes) {
+  if (bytes.isEmpty) throw Exception(tr('El archivo está vacío.'));
   final binary = _isBinary(bytes);
   var colored = false;
   var skipped = 0;
@@ -99,6 +100,12 @@ _Parsed _parse(Uint8List bytes) {
     final r = _binary(bytes, header.contains('COLOR='));
     verts = r.$1;
     skipped = r.$2;
+    // Si casi todos los triángulos son absurdos, no es un STL: son bytes cualquiera.
+    if (skipped > 0 && skipped * 2 > r.$1.length ~/ 18 + skipped) {
+      throw Exception(
+        tr('El archivo STL no contiene triángulos (¿está vacío o dañado?).'),
+      );
+    }
     colored = r.$3;
     colors = r.$4;
     if (colored) {

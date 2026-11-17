@@ -390,7 +390,6 @@ GcodeData parseGcode(
   final nLabels = <int, int>{};
   var nLabelsBuilt = false;
   final fanucStack = <(int, int, int)>[];
-  var fanucCallLine = <int>[];
 
   void runCycle(int g, double? ax, double? ay) {
     final x0 = x, y0 = y, z0 = z;

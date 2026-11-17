@@ -14,9 +14,10 @@
 | 1.0.8 | 11 | — | 9-nov-2026 | Correcciones de traducción en 8 idiomas |
 | 1.0.9 | 12 | — | 9-nov-2026 | Política de privacidad bilingüe en el repositorio como URL pública |
 | 1.0.10 | 13 | Prueba cerrada – Alpha | 9-nov-2026 (publicada) | Pantalla de licencias traducida. |
-| **1.0.11** | **14** | Alpha y Producción (178 países) | Enviada a revisión de Google (10 nov 2026) | Auditoría de uso: «Atrás» cierra el panel de piezas en vez de la app; mensajes de error sin prefijo técnico; STL con coordenadas absurdas se descartan; barra de herramientas y pantalla de inicio con desplazamiento en horizontal; «Abrir con» y «Compartir» desde el gestor de archivos; protocolo STEP legible en la ficha; masas y medidas diminutas ya no salen como 0,00 |
+| 1.0.11 | 14 | Alpha y Producción (178 países) | Enviada a revisión de Google (10 nov 2026) | Auditoría de uso: «Atrás» cierra el panel de piezas en vez de la app; mensajes de error sin prefijo técnico; STL con coordenadas absurdas se descartan; barra de herramientas y pantalla de inicio con desplazamiento en horizontal; «Abrir con» y «Compartir» desde el gestor de archivos; protocolo STEP legible en la ficha; masas y medidas diminutas ya no salen como 0,00 |
+| **1.0.12** | **15** | Producción | Pendiente de subir a Play | Auditoría 2: «Atrás» en el visor vuelve al inicio; archivo inexistente, vacío o STL dañado dan un mensaje claro; decimales con coma en G-code, nube y medidas; los avisos y notas se abren al tocarlos; limpieza de avisos del analizador |
 
-Las versiones 1.0.5 a 1.0.9 fueron pasos intermedios del mismo día; en `releases/android/` solo se conserva el AAB de la 1.0.10.
+Las versiones 1.0.5 a 1.0.9 fueron pasos intermedios del mismo día; en `releases/android/` solo se conservan los AAB de la 1.0.11 y la 1.0.12.
 
 ## Acceso a producción
 Aprobado el 10-nov-2026. La 1.0.11 se envió a revisión como primera versión de producción, en los 178 países disponibles.

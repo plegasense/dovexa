@@ -79,7 +79,8 @@ class ToolButton extends StatelessWidget {
 
 /// Pequeña etiqueta de información (icono + texto).
 class InfoChip extends StatelessWidget {
-  const InfoChip(this.icon, this.label, {super.key, this.color});
+  const InfoChip(this.icon, this.label, {super.key, this.color, this.onTap});
+  final VoidCallback? onTap;
   final IconData icon;
   final String label;
   final Color? color;
@@ -87,7 +88,7 @@ class InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = color ?? DT.muted;
-    return Container(
+    final chip = Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
         color: const Color(0x14FFFFFF),
@@ -110,5 +111,8 @@ class InfoChip extends StatelessWidget {
         ],
       ),
     );
+    return onTap == null
+        ? chip
+        : GestureDetector(behavior: HitTestBehavior.opaque, onTap: onTap, child: chip);
   }
 }

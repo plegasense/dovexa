@@ -16,6 +16,7 @@ const Map<String, String> kEn_io_cam = {
   'Compresión ZIP no soportada ({m})': 'Unsupported ZIP compression ({m})',
   'Este 3MF no contiene G-code (no está laminado)': 'This 3MF contains no G-code (it has not been sliced)',
   'El archivo está vacío': 'The file is empty',
+  'No se encuentra el archivo. Puede que se haya movido o borrado.': 'The file cannot be found. It may have been moved or deleted.',
   'No se han encontrado movimientos de trabajo: ¿es realmente un G-code?': 'No cutting or printing moves found: is this really G-code?',
   'No se pudo descomprimir Draco: {m}': 'Could not decompress Draco: {m}',
   'error desconocido': 'unknown error',
