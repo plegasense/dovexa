@@ -18,7 +18,7 @@
 | **1.0.12** | **15** | Producción | Retirada de la revisión: faltaban traducciones; sustituida por la 1.0.13 | Auditoría 2: «Atrás» en el visor vuelve al inicio; archivo inexistente, vacío o STL dañado dan un mensaje claro; decimales con coma en G-code, nube y medidas; los avisos y notas se abren al tocarlos; limpieza de avisos del analizador |
 | **1.0.13** | **16** | Producción | Enviada a revisión de Google (17 nov 2026) | Traducción a los 19 idiomas de los textos nuevos («No se encuentra el archivo…», «Notas»); Recientes ya no duplica el mismo archivo (el selector lo copia a una ruta nueva cada vez) |
 
-Las versiones 1.0.5 a 1.0.9 fueron pasos intermedios del mismo día; en `releases/android/` solo se conservan los AAB de la 1.0.11, 1.0.12 y 1.0.13.
+Las versiones 1.0.5 a 1.0.9 fueron pasos intermedios del mismo día; en `releases/android/` solo se conservan los AAB de la 1.0.11 y la 1.0.13 (la 1.0.12 se retiró).
 
 ## Acceso a producción
 Aprobado el 10-nov-2026. La 1.0.11 se envió a revisión como primera versión de producción, en los 178 países disponibles.
