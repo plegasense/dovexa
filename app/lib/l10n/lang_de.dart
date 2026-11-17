@@ -1023,4 +1023,6 @@ const Map<String, String> kLang_de = {
   'Visor CAD gratuito, sin anuncios y sin conexión.': 'Kostenloser CAD-Viewer, ohne Werbung und offline.',
   'Dovexa se distribuye bajo la GNU General Public License v3.0.': 'Dovexa wird unter der GNU General Public License v3.0 vertrieben.',
   'LASzip (codificador aritmético)': 'LASzip (arithmetischer Kodierer)',
+  'No se encuentra el archivo. Puede que se haya movido o borrado.': 'Die Datei wurde nicht gefunden. Sie wurde möglicherweise verschoben oder gelöscht.',
+  'Notas': 'Hinweise',
 };

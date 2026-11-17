@@ -42,8 +42,13 @@ class RecentsStore {
   static Future<void> add(String path) async {
     try {
       final all = await load();
-      all.removeWhere((r) => r.path == path);
-      all.insert(0, RecentFile(path, path.split('/').last, DateTime.now()));
+      final name = path.split('/').last;
+      final size = File(path).lengthSync();
+      // El selector copia cada archivo a una ruta nueva: se compara por nombre y tamaño.
+      all.removeWhere(
+        (r) => r.path == path || (r.name == name && File(r.path).lengthSync() == size),
+      );
+      all.insert(0, RecentFile(path, name, DateTime.now()));
       final f = await _file();
       await f.writeAsString(
         jsonEncode([
