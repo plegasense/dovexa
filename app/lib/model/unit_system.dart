@@ -113,40 +113,40 @@ class Units {
   /// Medida de un diámetro/valor ya redondeado en mm con `toStringAsFixed`, sin separadores de miles.
   /// Equivale a '${mm.toStringAsFixed(d)} mm' en métrico.
   static String plain(double mm, {int d = 1}) {
-    if (!isImperial) return '${mm.toStringAsFixed(d)} mm';
+    if (!isImperial) return '${mm.toStringAsFixed(d).ldec} mm';
     final v = mm / kMmPerInch;
     return '${v.toStringAsFixed(inDigits(v.abs()))} in';
   }
 
   /// Sólo el número con `toStringAsFixed` (sin separadores de miles) en la unidad mostrada: cotas Z, límites…
   static String plainNum(double mm, {int d = 1}) {
-    if (!isImperial) return mm.toStringAsFixed(d);
+    if (!isImperial) return mm.toStringAsFixed(d).ldec;
     final v = mm / kMmPerInch;
-    return v.toStringAsFixed(inDigits(v.abs()));
+    return v.toStringAsFixed(inDigits(v.abs())).ldec;
   }
 
   /// Tres medidas con `toStringAsFixed(d)` y «mm» al final (resúmenes de G-code); en imperial, [dims].
   static String dimsPlain(List<double> mm, {int d = 1}) {
     if (isImperial) return dims(mm);
-    return '${mm[0].toStringAsFixed(d)} × ${mm[1].toStringAsFixed(d)} × ${mm[2].toStringAsFixed(d)} mm';
+    return '${mm[0].toStringAsFixed(d).ldec} × ${mm[1].toStringAsFixed(d).ldec} × ${mm[2].toStringAsFixed(d).ldec} mm';
   }
 
   /// Recorridos largos con `toStringAsFixed`: "12,34 m" / "850 mm" (con punto decimal, como el G-code).
   static String farPlain(double mm) {
-    if (!isImperial) return mm >= 10000 ? '${(mm / 1000).toStringAsFixed(2)} m' : '${mm.toStringAsFixed(0)} mm';
+    if (!isImperial) return mm >= 10000 ? '${(mm / 1000).toStringAsFixed(2).ldec} m' : '${mm.toStringAsFixed(0).ldec} mm';
     return far(mm);
   }
 
   /// Longitud de filamento: "1.25 m" (con `toStringAsFixed`) o pies.
   static String filament(double mm) {
-    if (!isImperial) return '${(mm / 1000).toStringAsFixed(2)} m';
-    return '${(mm / kMmPerInch / 12).toStringAsFixed(1)} ft';
+    if (!isImperial) return '${(mm / 1000).toStringAsFixed(2).ldec} m';
+    return '${(mm / kMmPerInch / 12).toStringAsFixed(1).ldec} ft';
   }
 
   /// Rango de avances en mm/min: "300 – 1200 mm/min" · "11.8 – 47.2 in/min".
   static String feedRange(double aMmMin, double bMmMin) {
     if (!isImperial) return '${aMmMin.round()} – ${bMmMin.round()} mm/min';
-    String n(double v) => (v / kMmPerInch).toStringAsFixed(1);
+    String n(double v) => (v / kMmPerInch).toStringAsFixed(1).ldec;
     return '${n(aMmMin)} – ${n(bMmMin)} in/min';
   }
 
@@ -222,26 +222,26 @@ class Units {
 
   /// Masa con `toStringAsFixed(d)` y la g pegada ("12 g"), como en los resúmenes de G-code.
   static String grams(double g, {int d = 1}) {
-    if (!isImperial) return '${g.toStringAsFixed(d)} g';
+    if (!isImperial) return '${g.toStringAsFixed(d).ldec} g';
     final oz = g / kGramsPerOunce;
-    if (g >= kGramsPerPound) return '${(g / kGramsPerPound).toStringAsFixed(2)} lb';
-    return '${oz.toStringAsFixed(oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4))} oz';
+    if (g >= kGramsPerPound) return '${(g / kGramsPerPound).toStringAsFixed(2).ldec} lb';
+    return '${oz.toStringAsFixed(oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4)).ldec} oz';
   }
 
   // ---- Velocidad
 
   /// Avance en mm/min → "1200 mm/min" · "47,2 in/min".
   static String feedMin(double mmPerMin, {int d = 0}) {
-    if (!isImperial) return '${mmPerMin.toStringAsFixed(d)} mm/min';
+    if (!isImperial) return '${mmPerMin.toStringAsFixed(d).ldec} mm/min';
     final v = mmPerMin / kMmPerInch;
-    return '${v.toStringAsFixed(v >= 100 ? 0 : 1)} in/min';
+    return '${v.toStringAsFixed(v >= 100 ? 0 : 1).ldec} in/min';
   }
 
   /// Avance en mm/s → "60 mm/s" · "2,36 in/s".
   static String feedSec(double mmPerSec, {int d = 0}) {
-    if (!isImperial) return '${mmPerSec.toStringAsFixed(d)} mm/s';
+    if (!isImperial) return '${mmPerSec.toStringAsFixed(d).ldec} mm/s';
     final v = mmPerSec / kMmPerInch;
-    return '${v.toStringAsFixed(v >= 10 ? 1 : 2)} in/s';
+    return '${v.toStringAsFixed(v >= 10 ? 1 : 2).ldec} in/s';
   }
 
   /// Densidad de puntos por m² → número por ft² (0,0929 m² = 1 ft²).

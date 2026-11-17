@@ -340,6 +340,26 @@ class _ViewerPageState extends State<ViewerPage> {
     if (mounted) setState(() => _repaint++);
   }
 
+  void _showNotes(String title, List<String> items) {
+    showDialog<void>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final t in items)
+                Padding(padding: const EdgeInsets.only(bottom: 8), child: Text('• $t')),
+            ],
+          ),
+        ),
+        actions: [TextButton(onPressed: () => Navigator.pop(c), child: Text(tr('Cerrar')))],
+      ),
+    );
+  }
+
   void _closeDoc() {
     _disposeCad();
     setState(() {
@@ -468,7 +488,7 @@ class _ViewerPageState extends State<ViewerPage> {
           cam.fit(d.lines.bounds);
           final s = d.lines.bounds.size;
           pendingDraw = DrawingController(d);
-          final dc = pendingDraw!;
+          final dc = pendingDraw;
           chips.add(
             InfoChip(
               Icons.straighten,
@@ -508,6 +528,9 @@ class _ViewerPageState extends State<ViewerPage> {
                             ? tr('1 aviso')
                             : tr('{n} avisos', {'n': dc.problems.length})),
                   color: ok ? DT.mint : DT.orangeSoft,
+                  onTap: ok
+                      ? null
+                      : () => _showNotes(tr('Avisos'), [for (final p in dc.problems) p.text]),
                 ),
               );
             } catch (_) {}
@@ -533,6 +556,7 @@ class _ViewerPageState extends State<ViewerPage> {
                       ? tr('1 nota')
                       : tr('{n} notas', {'n': vi.warnings.length}),
                   color: DT.orangeSoft,
+                  onTap: () => _showNotes(tr('Notas'), vi.warnings),
                 ),
               );
             }
@@ -651,6 +675,7 @@ class _ViewerPageState extends State<ViewerPage> {
                     ? tr('1 nota')
                     : tr('{n} notas', {'n': ci.warnings.length}),
                 color: DT.orangeSoft,
+                onTap: () => _showNotes(tr('Notas'), ci.warnings),
               ),
             );
           }
@@ -1291,7 +1316,15 @@ class _ViewerPageState extends State<ViewerPage> {
       }
       if (_kShot.isNotEmpty && !_kHomeShot) _maybeShot();
     } catch (e) {
-      setState(() => _error = '$e'.replaceFirst(RegExp(r'^\w*Exception: '), ''));
+      final raw = '$e';
+      final missing = e is PathNotFoundException ||
+          raw.contains('No such file or directory') ||
+          raw.contains('errno = 2');
+      setState(
+        () => _error = missing
+            ? tr('No se encuentra el archivo. Puede que se haya movido o borrado.')
+            : raw.replaceFirst(RegExp(r'^\w*Exception: '), ''),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -1299,13 +1332,13 @@ class _ViewerPageState extends State<ViewerPage> {
 
   static String _fmtCount(int n, [String unit = '']) {
     final u = unit.isEmpty ? '' : ' $unit';
-    if (n >= 1000000) return '${(n / 1000000).toStringAsFixed(2)} M$u';
-    if (n >= 1000) return '${(n / 1000).toStringAsFixed(1)} k$u';
+    if (n >= 1000000) return '${(n / 1000000).toStringAsFixed(2).ldec} M$u';
+    if (n >= 1000) return '${(n / 1000).toStringAsFixed(1).ldec} k$u';
     return '$n$u';
   }
 
   static String _fmtSize(double v) =>
-      v >= 100 ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
+      v >= 100 ? v.toStringAsFixed(0) : v.toStringAsFixed(1).ldec;
 
   void _autoSelect(Scene scene) {
     final q = _kAutoSelect.toLowerCase();
@@ -1625,9 +1658,14 @@ class _ViewerPageState extends State<ViewerPage> {
     final doc = _doc;
     final showHome = doc == null && !_kHomeShotSkip;
     return PopScope(
-      canPop: !_drawerOpen,
+      canPop: !_drawerOpen && doc == null,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) _scaffold.currentState?.closeEndDrawer();
+        if (didPop) return;
+        if (_drawerOpen) {
+          _scaffold.currentState?.closeEndDrawer();
+        } else {
+          _closeDoc();
+        }
       },
       child: Scaffold(
       key: _scaffold,

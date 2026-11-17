@@ -100,7 +100,7 @@ void main() {
     final f = await tmp('empty.stl', Uint8List(0));
     expect(
       () => loadStl(f.path),
-      throwsA(predicate((e) => e.toString().contains('STL'))),
+      throwsA(predicate((e) => e.toString().contains('vacío'))),
     );
   });
 }

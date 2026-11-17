@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 
 import '../l10n/l10n.dart';
-import '../model/brep.dart';
 import '../model/pmi.dart';
 import '../src/dovexa_ffi.dart';
 import 'mesh_builder.dart';

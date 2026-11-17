@@ -287,7 +287,7 @@ DxfData parseDxfBytes(Uint8List bytes, String fileName) {
       if (v == 'ENDSEC') {
         if (section == 'ENTITIES') flush(modelEntities);
         if (section == 'BLOCKS' && curBlock != null) {
-          flush(curBlock!.entities);
+          flush(curBlock.entities);
           curBlock = null;
         }
         section = null;
@@ -324,33 +324,33 @@ DxfData parseDxfBytes(Uint8List bytes, String fileName) {
       }
       if (section == 'BLOCKS') {
         if (v == 'BLOCK') {
-          if (curBlock != null) flush(curBlock!.entities);
+          if (curBlock != null) flush(curBlock.entities);
           final b = _Block('');
           i++;
           while (i < pairs.length && pairs[i].code != 0) {
             final q = pairs[i];
             if (q.code == 2 && b.name.isEmpty) {
               curBlock = _Block(q.value.trim());
-              curBlock!
+              curBlock
                 ..bx = 0
                 ..by = 0;
             }
-            if (q.code == 10 && curBlock != null) curBlock!.bx = q.d;
-            if (q.code == 20 && curBlock != null) curBlock!.by = q.d;
+            if (q.code == 10 && curBlock != null) curBlock.bx = q.d;
+            if (q.code == 20 && curBlock != null) curBlock.by = q.d;
             i++;
           }
-          if (curBlock != null) blocks[curBlock!.name] = curBlock!;
+          if (curBlock != null) blocks[curBlock.name] = curBlock;
           polyline = null;
           continue;
         }
         if (v == 'ENDBLK') {
-          if (curBlock != null) flush(curBlock!.entities);
+          if (curBlock != null) flush(curBlock.entities);
           curBlock = null;
           i++;
           continue;
         }
         if (curBlock != null) {
-          flush(curBlock!.entities);
+          flush(curBlock.entities);
           cur = _Entity(v);
         }
         i++;

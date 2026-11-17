@@ -53,10 +53,10 @@ void main() {
       expect(Units.fine(0.2), '0,20 mm');
       expect(Units.feedMin(1200), '1200 mm/min');
       expect(Units.feedSec(60), '60 mm/s');
-      expect(Units.farPlain(12345), '12.35 m');
+      expect(Units.farPlain(12345), '12,35 m');
       expect(Units.farPlain(850), '850 mm');
-      expect(Units.grams(12.34), '12.3 g');
-      expect(Units.dimsPlain([1, 2, 3]), '1.0 × 2.0 × 3.0 mm');
+      expect(Units.grams(12.34), '12,3 g');
+      expect(Units.dimsPlain([1, 2, 3]), '1,0 × 2,0 × 3,0 mm');
       expect(Units.tru('Cabe ({x} × {y} mm)', {'x': 1, 'y': 2}), 'Cabe (1 × 2 mm)');
       expect(Units.forFile(LengthUnit.mm), LengthUnit.mm);
       expect(Units.forFile(LengthUnit.inch), LengthUnit.inch);
@@ -94,19 +94,19 @@ void main() {
       expect(Units.mass(28.349523125), '1,00 oz');
       expect(Units.mass(453.59237), '1,00 lb');
       expect(Units.mass(1000), '2,20 lb');
-      expect(Units.grams(100), '3.53 oz');
+      expect(Units.grams(100), '3,53 oz');
     });
 
     test('avances', () {
-      expect(Units.feedMin(1270), '50.0 in/min');
-      expect(Units.feedSec(25.4), '1.00 in/s');
-      expect(Units.feedRange(254, 1270), '10.0 – 50.0 in/min');
+      expect(Units.feedMin(1270), '50,0 in/min');
+      expect(Units.feedSec(25.4), '1,00 in/s');
+      expect(Units.feedRange(254, 1270), '10,0 – 50,0 in/min');
     });
 
     test('recorridos largos y filamento', () {
       expect(Units.far(100), '3,94 in');
       expect(Units.far(12000), '39,4 ft');
-      expect(Units.filament(3048), '10.0 ft');
+      expect(Units.filament(3048), '10,0 ft');
     });
 
     test('textos: mm pasa a in, cm² y cm³ también', () {

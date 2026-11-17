@@ -216,7 +216,6 @@ class DovexaRenderer {
     final lightWorld = cam.lightDir();
     final host = ctx.createHostBuffer();
     final slot = _pipeline.vertexShader.getUniformSlot('FrameInfo');
-    final lineSlot = _linePipeline.vertexShader.getUniformSlot('FrameInfo');
     final hasSel = selected.isNotEmpty;
     final clip = opt.clip ?? vm.Vector4(0, 0, 0, 1);
     // Una pieza sin triángulos (p. ej. solo geometría auxiliar) no se puede subir a la GPU.
@@ -799,17 +798,6 @@ extension LineRendering on DovexaRenderer {
   }
 }
 
-/// Aclara los colores muy oscuros del archivo para que se lean sobre el fondo oscuro.
-Color _lifted(Color c) {
-  final lum = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
-  final k = ((0.55 - lum) / 0.55).clamp(0.0, 1.0) * 0.6;
-  return Color.from(
-    alpha: 1,
-    red: c.r + (1 - c.r) * k,
-    green: c.g + (1 - c.g) * k,
-    blue: c.b + (1 - c.b) * k,
-  );
-}
 
 /// Malla ya subida a la GPU.
 class GpuMesh {

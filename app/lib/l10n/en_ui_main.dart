@@ -42,6 +42,7 @@ const Map<String, String> kEn_ui_main = {
   '1 herramienta': '1 tool',
   '{n} herramientas': '{n} tools',
   'Avisos': 'Warnings',
+  'Notas': 'Notes',
   '{n} capas': '{n} layers',
   'Revisando la malla…': 'Checking the mesh…',
   'Sin revisar': 'Not checked',

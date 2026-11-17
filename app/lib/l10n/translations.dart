@@ -1,4 +1,3 @@
-import 'en.dart';
 import 'lang_cs.dart';
 import 'lang_nl.dart';
 import 'lang_tw.dart';
