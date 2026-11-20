@@ -369,20 +369,34 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
     // El temporal conserva el nombre del archivo para que el título del documento sea el suyo.
     final stem = name.replaceFirst(RegExp(r'\.(stpz|stp\.gz|step\.gz)$', caseSensitive: false), '');
     final tmpDir = '${Directory.systemTemp.path}/dovexa_stpz/${DateTime.now().microsecondsSinceEpoch}';
-    final data = await isoRun(() {
+    final data = await isoRun(() async {
       Directory(tmpDir).createSync(recursive: true);
       final tmp = File('$tmpDir/$stem.step');
-      List<int> raw;
       try {
-        raw = gzip.decode(File(path).readAsBytesSync());
-      } on FormatException {
-        throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
-      }
-      tmp.writeAsBytesSync(raw);
-      try {
+        // Se descomprime en streaming con tope (1,5 GB): un gzip malicioso no agota la memoria.
+        final sink = tmp.openWrite();
+        var n = 0;
+        var tooBig = false;
+        try {
+          await for (final chunk in gzip.decoder.bind(File(path).openRead())) {
+            n += chunk.length;
+            if (n > 1536 * 1024 * 1024) {
+              tooBig = true;
+              throw FormatException(tr('El ZIP descomprimido es demasiado grande (más de 1,5 GB)'));
+            }
+            sink.add(chunk);
+          }
+        } catch (_) {
+          if (tooBig) rethrow;
+          throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
+        } finally {
+          await sink.close();
+        }
         return parseCad(tmp.path);
       } finally {
-        Directory(tmpDir).deleteSync(recursive: true);
+        try {
+          Directory(tmpDir).deleteSync(recursive: true);
+        } catch (_) {}
       }
     });
     return ModelDocument(_sceneFrom(data));

@@ -49,21 +49,25 @@ class RecentsStore {
     final dir = Directory('${(await getApplicationSupportDirectory()).path}/recientes/$size');
     dir.createSync(recursive: true);
     final dst = '${dir.path}/$name';
-    File(path).copySync(dst);
+    await File(path).copy(dst);
     // Los archivos que el usuario añadió al modelo (texturas, .bin) siguen al archivo a su copia propia.
     try {
       final from = Directory(extraFilesDir(path));
       if (from.existsSync()) {
         final to = Directory(extraFilesDir(dst))..createSync(recursive: true);
         for (final f in from.listSync().whereType<File>()) {
-          f.copySync('${to.path}/${f.path.split('/').last}');
+          await f.copy('${to.path}/${f.path.split('/').last}');
         }
       }
     } catch (_) {}
     return dst;
   }
 
-  static Future<void> add(String path) async {
+  // Altas en cola: dos seguidas no se pisan al reescribir la lista.
+  static Future<void> _queue = Future.value();
+  static Future<void> add(String path) => _queue = _queue.then((_) => _add(path)).catchError((_) {});
+
+  static Future<void> _add(String path) async {
     try {
       final all = await load();
       final name = path.split('/').last;
