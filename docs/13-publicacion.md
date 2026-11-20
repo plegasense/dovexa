@@ -17,6 +17,7 @@
 | 1.0.11 | 14 | Alpha y Producción (178 países) | Enviada a revisión de Google (10 nov 2026) | Auditoría de uso: «Atrás» cierra el panel de piezas en vez de la app; mensajes de error sin prefijo técnico; STL con coordenadas absurdas se descartan; barra de herramientas y pantalla de inicio con desplazamiento en horizontal; «Abrir con» y «Compartir» desde el gestor de archivos; protocolo STEP legible en la ficha; masas y medidas diminutas ya no salen como 0,00 |
 | **1.0.12** | **15** | Producción | Retirada de la revisión: faltaban traducciones; sustituida por la 1.0.13 | Auditoría 2: «Atrás» en el visor vuelve al inicio; archivo inexistente, vacío o STL dañado dan un mensaje claro; decimales con coma en G-code, nube y medidas; los avisos y notas se abren al tocarlos; limpieza de avisos del analizador |
 | **1.0.13** | **16** | Producción | Enviada a revisión de Google (17 nov 2026) | Traducción a los 19 idiomas de los textos nuevos («No se encuentra el archivo…», «Notas»); Recientes ya no duplica el mismo archivo (el selector lo copia a una ruta nueva cada vez) |
+| **1.0.14** | **17** | Sin publicar | Código listo, sin AAB | Auditoría 3: «Abrir con» con la app abierta ya no da error; Recientes conserva copia del archivo; STL truncado avisado; unidades pulgada/pie respetan «Métrico»; formato detectado por contenido; avisos tocables; mensajes de error claros |
 
 Las versiones 1.0.5 a 1.0.9 fueron pasos intermedios del mismo día; en `releases/android/` solo se conservan los AAB de la 1.0.11 y la 1.0.13 (la 1.0.12 se retiró).
 

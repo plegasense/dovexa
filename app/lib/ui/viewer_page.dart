@@ -377,6 +377,11 @@ class _ViewerPageState extends State<ViewerPage> {
   }
 
   Future<void> _open(String path, {int? gcodePlate}) async {
+    // Una hoja o panel abierto sería del archivo anterior: se cierran al llegar otro.
+    if (mounted) {
+      _scaffold.currentState?.closeEndDrawer();
+      Navigator.of(context).popUntil((r) => r.isFirst);
+    }
     String? note;
     try {
       final mb = File(path).lengthSync() / 1e6;
@@ -396,7 +401,9 @@ class _ViewerPageState extends State<ViewerPage> {
               's': secs,
               'extra': cached
                   ? tr('\n(ya se abrió antes: más rápido)')
-                  : tr('\nLa próxima vez abrirá mucho antes'),
+                  : isCad
+                      ? tr('\nLa próxima vez abrirá mucho antes')
+                      : '',
             });
       }
     } catch (_) {}
@@ -476,7 +483,7 @@ class _ViewerPageState extends State<ViewerPage> {
               ..add(
                 InfoChip(
                   Icons.straighten,
-                  '${_fmtSize(s[0])} × ${_fmtSize(s[1])} × ${_fmtSize(s[2])}',
+                  '${_fmtSize(s[0])} × ${_fmtSize(s[1])} × ${_fmtSize(s[2])} u',
                 ),
               );
           }
@@ -609,6 +616,7 @@ class _ViewerPageState extends State<ViewerPage> {
                   Icons.warning_amber_rounded,
                   tr('Avisos'),
                   color: DT.orangeSoft,
+                  onTap: () => _scaffold.currentState?.openEndDrawer(),
                 ),
               );
             }
@@ -1320,11 +1328,12 @@ class _ViewerPageState extends State<ViewerPage> {
       final missing = e is PathNotFoundException ||
           raw.contains('No such file or directory') ||
           raw.contains('errno = 2');
-      setState(
-        () => _error = missing
-            ? tr('No se encuentra el archivo. Puede que se haya movido o borrado.')
-            : raw.replaceFirst(RegExp(r'^\w*Exception: '), ''),
-      );
+      final msg = missing
+          ? tr('No se encuentra el archivo. Puede que se haya movido o borrado.')
+          : raw.replaceFirst(RegExp(r'^\w*Exception: '), '');
+      // El documento anterior se cierra: así el aviso no queda sobre el título y las medidas de otro archivo.
+      _closeDoc();
+      setState(() => _error = '${path.split('/').last}\n$msg');
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -2162,6 +2171,16 @@ class _ViewerPageState extends State<ViewerPage> {
               ? tr('Estanca')
               : (bad == 1 ? tr('1 problema') : tr('{n} problemas', {'n': bad})),
           color: bad == 0 ? DT.mint : DT.orangeSoft,
+          onTap: bad == 0 ? null : () => _scaffold.currentState?.openEndDrawer(),
+        ),
+      );
+    }
+    if ((c.meta?.truncated ?? 0) > 0) {
+      chips.add(
+        InfoChip(
+          Icons.content_cut_rounded,
+          tr('Archivo incompleto: faltan {n} triángulos', {'n': c.meta!.truncated}),
+          color: DT.orangeSoft,
         ),
       );
     }
@@ -2172,6 +2191,7 @@ class _ViewerPageState extends State<ViewerPage> {
           Icons.help_outline_rounded,
           tr('Unidad dudosa'),
           color: DT.orangeSoft,
+          onTap: () => _scaffold.currentState?.openEndDrawer(),
         ),
       );
     }
@@ -2182,7 +2202,7 @@ class _ViewerPageState extends State<ViewerPage> {
       chips.add(
         InfoChip(
           Icons.scale_outlined,
-          '${Units.volume(c.volumeCm3 * 1000)} · ${Units.mass(c.solidGrams)} ${kPrintMaterials[c.material].$1}',
+          '${r.problemCount > 0 ? '≈ ' : ''}${Units.volume(c.volumeCm3 * 1000)} · ${Units.mass(c.solidGrams)} ${kPrintMaterials[c.material].$1}',
         ),
       );
     } else {

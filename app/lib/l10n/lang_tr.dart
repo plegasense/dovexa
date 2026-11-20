@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_tr = {
   'LASzip (codificador aritmético)': 'LASzip (aritmetik kodlayıcı)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'Dosya bulunamadı. Taşınmış veya silinmiş olabilir.',
   'Notas': 'Notlar',
+  'Archivo incompleto: faltan {n} triángulos': 'Eksik dosya: {n} üçgen eksik',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'Dosya hasarlı veya uzantısının belirttiği biçimde değil.',
+  'No se reconoce el formato de este archivo.': 'Bu dosya biçimi tanınmıyor.',
 };

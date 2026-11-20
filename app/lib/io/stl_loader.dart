@@ -29,6 +29,7 @@ Future<Mesh> loadStl(String path) async {
     bytes: data.bytes,
     colored: data.colored,
     skipped: data.skipped,
+    truncated: data.truncated,
     colors: data.colors?.materialize().asUint16List(),
     defaultColor: data.defaultColor,
   );
@@ -46,6 +47,7 @@ class _Parsed {
     required this.bytes,
     required this.colored,
     required this.skipped,
+    required this.truncated,
     this.colors,
     this.defaultColor,
   });
@@ -56,7 +58,7 @@ class _Parsed {
   final List<double> max;
   final bool binary, colored;
   final String header;
-  final int solids, bytes, skipped;
+  final int solids, bytes, skipped, truncated;
 }
 
 bool _isBinary(Uint8List b) {
@@ -89,6 +91,7 @@ _Parsed _parse(Uint8List bytes) {
   final binary = _isBinary(bytes);
   var colored = false;
   var skipped = 0;
+  var truncated = 0;
   var solids = 1;
   var header = '';
   Uint16List? colors;
@@ -100,6 +103,8 @@ _Parsed _parse(Uint8List bytes) {
     final r = _binary(bytes, header.contains('COLOR='));
     verts = r.$1;
     skipped = r.$2;
+    final declared = ByteData.sublistView(bytes).getUint32(80, Endian.little);
+    truncated = math.max(0, declared - (bytes.length - 84) ~/ 50);
     // Si casi todos los triángulos son absurdos, no es un STL: son bytes cualquiera.
     if (skipped > 0 && skipped * 2 > r.$1.length ~/ 18 + skipped) {
       throw Exception(
@@ -155,6 +160,7 @@ _Parsed _parse(Uint8List bytes) {
     bytes: bytes.length,
     colored: colored,
     skipped: skipped,
+    truncated: truncated,
     colors: colors == null ? null : TransferableTypedData.fromList([colors]),
     defaultColor: defaultColor,
   );

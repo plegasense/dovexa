@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_zh = {
   'LASzip (codificador aritmético)': 'LASzip（算术编码器）',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': '找不到文件。它可能已被移动或删除。',
   'Notas': '备注',
+  'Archivo incompleto: faltan {n} triángulos': '文件不完整：缺少 {n} 个三角形',
+  'El archivo está dañado o no es del formato que indica su extensión.': '文件已损坏，或不是扩展名所示的格式。',
+  'No se reconoce el formato de este archivo.': '无法识别此文件格式。',
 };

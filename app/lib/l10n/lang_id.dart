@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_id = {
   'LASzip (codificador aritmético)': 'LASzip (pengode aritmetika)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'File tidak ditemukan. Mungkin sudah dipindahkan atau dihapus.',
   'Notas': 'Catatan',
+  'Archivo incompleto: faltan {n} triángulos': 'File tidak lengkap: {n} segitiga hilang',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'File rusak atau bukan dalam format yang ditunjukkan ekstensinya.',
+  'No se reconoce el formato de este archivo.': 'Format file ini tidak dikenali.',
 };

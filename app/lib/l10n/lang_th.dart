@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_th = {
   'LASzip (codificador aritmético)': 'LASzip (ตัวเข้ารหัสเลขคณิต)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'ไม่พบไฟล์ อาจถูกย้ายหรือลบไปแล้ว',
   'Notas': 'หมายเหตุ',
+  'Archivo incompleto: faltan {n} triángulos': 'ไฟล์ไม่สมบูรณ์: ขาดสามเหลี่ยม {n} รูป',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'ไฟล์เสียหายหรือไม่ใช่รูปแบบตามนามสกุลไฟล์',
+  'No se reconoce el formato de este archivo.': 'ไม่รู้จักรูปแบบของไฟล์นี้',
 };

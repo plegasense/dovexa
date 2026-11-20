@@ -103,4 +103,7 @@ const Map<String, String> kEn_io_other = {
   '{n} puntos con coordenadas no válidas se han descartado.': '{n} points with invalid coordinates were discarded.',
   '{n} puntos marcados como no válidos por el escáner se han omitido.': '{n} points flagged as invalid by the scanner were skipped.',
   '{n} textos (Text) sin dibujar: el visor no traza tipos de letra de VRML.': '{n} texts (Text) not drawn: the viewer does not render VRML fonts.',
+  'Archivo incompleto: faltan {n} triángulos': 'Incomplete file: {n} triangles missing',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'The file is damaged or is not in the format its extension indicates.',
+  'No se reconoce el formato de este archivo.': 'This file format is not recognized.',
 };

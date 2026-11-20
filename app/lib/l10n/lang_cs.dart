@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_cs = {
   'LASzip (codificador aritmético)': 'LASzip (aritmetický kodér)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'Soubor nebyl nalezen. Možná byl přesunut nebo smazán.',
   'Notas': 'Poznámky',
+  'Archivo incompleto: faltan {n} triángulos': 'Neúplný soubor: chybí {n} trojúhelníků',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'Soubor je poškozený nebo není ve formátu, který udává jeho přípona.',
+  'No se reconoce el formato de este archivo.': 'Formát tohoto souboru nebyl rozpoznán.',
 };

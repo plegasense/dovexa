@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_ko = {
   'LASzip (codificador aritmético)': 'LASzip (산술 부호화기)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': '파일을 찾을 수 없습니다. 이동되었거나 삭제되었을 수 있습니다.',
   'Notas': '참고',
+  'Archivo incompleto: faltan {n} triángulos': '불완전한 파일: 삼각형 {n}개 누락',
+  'El archivo está dañado o no es del formato que indica su extensión.': '파일이 손상되었거나 확장자가 나타내는 형식이 아닙니다.',
+  'No se reconoce el formato de este archivo.': '이 파일 형식을 인식할 수 없습니다.',
 };

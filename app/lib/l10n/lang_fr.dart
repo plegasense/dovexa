@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_fr = {
   'LASzip (codificador aritmético)': 'LASzip (codeur arithmétique)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'Fichier introuvable. Il a peut-être été déplacé ou supprimé.',
   'Notas': 'Notes',
+  'Archivo incompleto: faltan {n} triángulos': 'Fichier incomplet : {n} triangles manquants',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'Le fichier est endommagé ou n’est pas au format indiqué par son extension.',
+  'No se reconoce el formato de este archivo.': 'Le format de ce fichier n’est pas reconnu.',
 };

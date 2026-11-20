@@ -36,7 +36,9 @@ class LengthUnit {
 
   /// Tres medidas con la unidad una sola vez: "599,1 × 300,0 × 600,0 mm".
   String dims(List<double> mm) {
-    String n(double v) => _num(fromMm(v), 1);
+    final big = mm.map((v) => fromMm(v).abs()).reduce((a, b) => a > b ? a : b);
+    final d = big >= 10 ? 1 : (big >= 1 ? 2 : (big >= 0.1 ? 3 : 4));
+    String n(double v) => _num(fromMm(v), d);
     return '${n(mm[0])} × ${n(mm[1])} × ${n(mm[2])} $symbol';
   }
 
