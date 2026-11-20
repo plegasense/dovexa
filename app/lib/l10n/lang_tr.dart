@@ -833,7 +833,7 @@ const Map<String, String> kLang_tr = {
   'color por vértice': 'köşe rengi',
   '{n} animación': '{n} animasyon',
   '{n} animaciones': '{n} animasyon',
-  'Faltan {n} archivo': '{n} dosya eksik',
+  'Falta {n} archivo': '{n} dosya eksik',
   'Faltan {n} archivos': '{n} dosya eksik',
   'Creado con': 'Oluşturan program',
   'Título': 'Başlık',

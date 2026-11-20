@@ -846,7 +846,7 @@ const Map<String, String> kLang_vi = {
   'color por vértice': 'màu theo đỉnh',
   '{n} animación': '{n} hoạt ảnh',
   '{n} animaciones': '{n} hoạt ảnh',
-  'Faltan {n} archivo': 'Thiếu {n} tệp',
+  'Falta {n} archivo': 'Thiếu {n} tệp',
   'Faltan {n} archivos': 'Thiếu {n} tệp',
   'Creado con': 'Tạo bằng',
   'Título': 'Tiêu đề',

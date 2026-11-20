@@ -846,7 +846,7 @@ const Map<String, String> kLang_nl = {
   'color por vértice': 'vertexkleur',
   '{n} animación': '{n} animatie',
   '{n} animaciones': '{n} animaties',
-  'Faltan {n} archivo': '{n} bestand ontbreekt',
+  'Falta {n} archivo': '{n} bestand ontbreekt',
   'Faltan {n} archivos': '{n} bestanden ontbreken',
   'Creado con': 'Gemaakt met',
   'Título': 'Titel',

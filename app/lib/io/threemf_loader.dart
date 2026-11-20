@@ -875,10 +875,10 @@ class _Config {
 
     project.printer = s('printer_model').isNotEmpty ? s('printer_model') : s('printer_settings_id');
     project.processName = s('print_settings_id');
-    project.nozzle = double.tryParse(s('nozzle_diameter')) ?? 0;
+    project.nozzle = _fd(s('nozzle_diameter')) ?? 0;
     final area = l('printable_area');
     _bed(area);
-    project.bedZ = double.tryParse(s('printable_height')) ?? 0;
+    project.bedZ = _fd(s('printable_height')) ?? 0;
     final cols = l('filament_colour');
     final types = l('filament_type');
     final prof = l('filament_settings_id');
@@ -894,10 +894,10 @@ class _Config {
           type: i < types.length ? types[i] : '',
           profile: i < prof.length ? prof[i] : '',
         )
-          ..density = i < dens.length ? double.tryParse(dens[i]) ?? 0 : 0
-          ..diameter = i < diam.length ? double.tryParse(diam[i]) ?? 1.75 : 1.75
+          ..density = i < dens.length ? _fd(dens[i]) ?? 0 : 0
+          ..diameter = i < diam.length ? _fd(diam[i]) ?? 1.75 : 1.75
           ..nozzleTemp = i < temp.length ? int.tryParse(temp[i]) ?? 0 : 0
-          ..cost = i < cost.length ? double.tryParse(cost[i]) ?? 0 : 0,
+          ..cost = i < cost.length ? _fd(cost[i]) ?? 0 : 0,
       );
     }
     for (final k in const [
@@ -930,8 +930,8 @@ class _Config {
     for (final p in area) {
       final xy = p.split('x');
       if (xy.length == 2) {
-        mx = math.max(mx, double.tryParse(xy[0]) ?? 0);
-        my = math.max(my, double.tryParse(xy[1]) ?? 0);
+        mx = math.max(mx, _fd(xy[0]) ?? 0);
+        my = math.max(my, _fd(xy[1]) ?? 0);
       }
     }
     if (mx > 0 && my > 0) {
@@ -950,16 +950,16 @@ class _Config {
       final idx = (int.tryParse(kv('index') ?? '') ?? 1) - 1;
       final plate = project.plates.where((p) => p.index == idx).firstOrNull;
       if (plate == null) continue;
-      final pred = double.tryParse(kv('prediction') ?? '');
+      final pred = _fd(kv('prediction') ?? '');
       if (pred == null || !pred.isFinite) continue;
       plate
         ..sliced = true
         ..seconds = pred
-        ..grams = double.tryParse(kv('weight') ?? '') ?? 0
+        ..grams = _fd(kv('weight') ?? '') ?? 0
         ..supportUsed = kv('support_used') == 'true'
         ..outside = kv('outside') == 'true'
         ..pauses = int.tryParse(kv('pause_count') ?? '') ?? 0
-        ..nozzle = double.tryParse(kv('nozzle_diameters') ?? '') ?? 0;
+        ..nozzle = _fd(kv('nozzle_diameters') ?? '') ?? 0;
       for (final fm in RegExp(r'<filament\b([^>]*)/?>').allMatches(b)) {
         final t = fm.group(1)!;
         plate.uses.add(
@@ -967,8 +967,8 @@ class _Config {
             int.tryParse(_a(t, 'id') ?? '') ?? 0,
             _a(t, 'type') ?? '',
             _hex(_a(t, 'color') ?? '') ?? 0xFFB7CACD,
-            double.tryParse(_a(t, 'used_g') ?? '') ?? 0,
-            double.tryParse(_a(t, 'used_m') ?? '') ?? 0,
+            _fd(_a(t, 'used_g') ?? '') ?? 0,
+            _fd(_a(t, 'used_m') ?? '') ?? 0,
           ),
         );
       }
@@ -1040,7 +1040,7 @@ class _Config {
         final t = m.group(1)!;
         if ((_a(t, 'type') == '0' || _a(t, 'type') == '4') && _a(t, 'print_z') != null) {
           // type 0 = cambio de color (M600), 4 = cambio de extrusor
-          final z = double.tryParse(_a(t, 'print_z')!);
+          final z = _fd(_a(t, 'print_z')!);
           if (z != null) project.colorChangeZ.add(z);
         }
       }
@@ -1061,9 +1061,9 @@ class _Config {
     String first(String k) => s(k).split(RegExp(r'[,;]')).first.trim();
     project.printer = s('printer_model').isNotEmpty ? s('printer_model') : s('printer_settings_id');
     project.processName = s('print_settings_id');
-    project.nozzle = double.tryParse(first('nozzle_diameter')) ?? 0;
+    project.nozzle = _fd(first('nozzle_diameter')) ?? 0;
     _bed(s('bed_shape').split(','));
-    project.bedZ = double.tryParse(s('max_print_height')) ?? 0;
+    project.bedZ = _fd(s('max_print_height')) ?? 0;
     final cols = s('filament_colour').split(';');
     final ecols = s('extruder_colour').split(';');
     final types = s('filament_type').split(';');
@@ -1076,8 +1076,8 @@ class _Config {
       if (c == null && i < ecols.length) c = _hex(ecols[i]);
       project.filaments.add(
         TmfFilament(i + 1, c ?? 0xFFB7CACD, type: i < types.length ? types[i].replaceAll('"', '') : '')
-          ..density = i < dens.length ? double.tryParse(dens[i]) ?? 0 : 0
-          ..diameter = i < diam.length ? double.tryParse(diam[i]) ?? 1.75 : 1.75
+          ..density = i < dens.length ? _fd(dens[i]) ?? 0 : 0
+          ..diameter = i < diam.length ? _fd(diam[i]) ?? 1.75 : 1.75
           ..nozzleTemp = i < temp.length ? int.tryParse(temp[i]) ?? 0 : 0,
       );
     }
@@ -1111,4 +1111,10 @@ class _Config {
     }
     return null;
   }
+}
+
+/// Número de un archivo: los valores no finitos o absurdos se tratan como ausentes.
+double? _fd(String? s, [double max = 1e7]) {
+  final d = s == null ? null : double.tryParse(s);
+  return d != null && d.isFinite && d.abs() <= max ? d : null;
 }

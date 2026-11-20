@@ -846,7 +846,7 @@ const Map<String, String> kLang_uk = {
   'color por vértice': 'колір вершин',
   '{n} animación': 'Анімацій: {n}',
   '{n} animaciones': 'Анімацій: {n}',
-  'Faltan {n} archivo': 'Бракує файлів: {n}',
+  'Falta {n} archivo': 'Бракує файлів: {n}',
   'Faltan {n} archivos': 'Бракує файлів: {n}',
   'Creado con': 'Створено в',
   'Título': 'Назва',

@@ -394,6 +394,14 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
 
   Future<void> _open(String path, {int? gcodePlate, bool keepSheets = false, bool keepView = false}) async {
     // Al retraducir se conservan la vista de cámara y la medida en curso.
+    final t0 = keepView ? _tmf : null, s0 = keepView ? _stl : null;
+    final tmfSnap = t0 == null
+        ? null
+        : (t0.plate, t0.showAux, t0.showBed, {...t0.hiddenSlots}, {...t0.hiddenObjects}, t0.isolated, t0.measuring,
+            List<vm.Vector3>.of(t0.points), t0.sectionAxis, t0.sectionT, t0.sectionFlip);
+    final stlSnap = s0 == null
+        ? null
+        : (s0.measuring, List<vm.Vector3>.of(s0.points), s0.sectionAxis, s0.sectionT, s0.sectionFlip);
     final snap = keepView
         ? (cam.target.clone(), cam.distance, cam.yaw, cam.pitch, cam.ortho, List<vm.Vector2>.of(_measure), _measuring)
         : null;
@@ -723,16 +731,35 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
           doc.scene.parts.length == 1 &&
           (path.toLowerCase().endsWith('.stl') || stlMetaOf[doc.scene.parts.first.mesh] != null)) {
         final mesh = doc.scene.parts.first.mesh;
-        _stl = StlController(mesh, stlMetaOf[mesh], doc.name)
+        final c = _stl = StlController(mesh, stlMetaOf[mesh], doc.name)
           ..addListener(_onStlChanged)
           ..run();
+        final s = stlSnap;
+        if (s != null) {
+          c.measuring = s.$1;
+          c.points.addAll(s.$2);
+          if (s.$3 >= 0) c.setSection(s.$3, t: s.$4, flip: s.$5);
+        }
       }
       if (doc is ModelDocument && _stl == null && _cad == null) {
         final pr = threeMfOf[doc.scene];
         if (pr != null) {
-          _tmf = ThreeMfController(doc.scene, pr, path)
-            ..addListener(_onTmfChanged);
-          cam.fit(_tmf!.viewBounds());
+          final c = _tmf = ThreeMfController(doc.scene, pr, path)..addListener(_onTmfChanged);
+          cam.fit(c.viewBounds());
+          final t = tmfSnap;
+          if (t != null) {
+            // Al retraducir se conserva lo que el usuario tenía hecho.
+            if (t.$1 < pr.plates.length) c.plate = t.$1;
+            c.showAux = t.$2;
+            c.showBed = t.$3;
+            c.hiddenSlots.addAll(t.$4);
+            c.hiddenObjects.addAll(t.$5);
+            c.isolated = t.$6;
+            c.measuring = t.$7;
+            c.points.addAll(t.$8);
+            c.apply(notify: false);
+            if (t.$9 >= 0) c.setSection(t.$9, t: t.$10, flip: t.$11);
+          }
         }
       }
       if (doc is ModelDocument && _stl == null && _cad == null && _tmf == null) {
@@ -1369,7 +1396,9 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
           raw.contains('errno = 2');
       final msg = missing
           ? tr('No se encuentra el archivo. Puede que se haya movido o borrado.')
-          : raw.replaceFirst(RegExp(r'^\w*Exception: '), '');
+          : e is Error // fallo interno (no una excepción de formato): aviso traducido en vez del texto técnico
+              ? tr('El archivo está dañado o no es del formato que indica su extensión.')
+              : raw.replaceFirst(RegExp(r'^\w*Exception: '), '');
       // El documento anterior se cierra: así el aviso no queda sobre el título y las medidas de otro archivo.
       _closeDoc();
       setState(() {

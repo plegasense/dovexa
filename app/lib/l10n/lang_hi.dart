@@ -846,7 +846,7 @@ const Map<String, String> kLang_hi = {
   'color por vértice': 'वर्टेक्स कलर',
   '{n} animación': '{n} एनिमेशन',
   '{n} animaciones': '{n} एनिमेशन',
-  'Faltan {n} archivo': '{n} फ़ाइल गायब',
+  'Falta {n} archivo': '{n} फ़ाइल गायब',
   'Faltan {n} archivos': '{n} फ़ाइलें गायब',
   'Creado con': 'इससे बनाया गया',
   'Título': 'शीर्षक',

@@ -833,7 +833,7 @@ const Map<String, String> kLang_ja = {
   'color por vértice': '頂点カラー',
   '{n} animación': 'アニメーション {n} 件',
   '{n} animaciones': 'アニメーション {n} 件',
-  'Faltan {n} archivo': 'ファイルが {n} 個不足しています',
+  'Falta {n} archivo': 'ファイルが {n} 個不足しています',
   'Faltan {n} archivos': 'ファイルが {n} 個不足しています',
   'Creado con': '作成ソフト',
   'Título': 'タイトル',

@@ -325,7 +325,7 @@ List<Widget> meshChips(MeshFileController c, Bounds b) {
       InfoChip(
         Icons.warning_amber_rounded,
         i.missing.length == 1
-            ? tr('Faltan {n} archivo', {'n': 1})
+            ? tr('Falta {n} archivo', {'n': 1})
             : tr('Faltan {n} archivos', {'n': i.missing.length}),
         color: DT.orangeSoft,
       ),

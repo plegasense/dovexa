@@ -846,7 +846,7 @@ const Map<String, String> kLang_th = {
   'color por vértice': 'สีตามจุดยอด',
   '{n} animación': 'แอนิเมชัน {n}',
   '{n} animaciones': 'แอนิเมชัน {n}',
-  'Faltan {n} archivo': 'ขาดไฟล์ {n} ไฟล์',
+  'Falta {n} archivo': 'ขาดไฟล์ {n} ไฟล์',
   'Faltan {n} archivos': 'ขาดไฟล์ {n} ไฟล์',
   'Creado con': 'สร้างด้วย',
   'Título': 'ชื่อเรื่อง',

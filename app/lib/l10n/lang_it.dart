@@ -833,7 +833,7 @@ const Map<String, String> kLang_it = {
   'color por vértice': 'colore per vertice',
   '{n} animación': '{n} animazione',
   '{n} animaciones': '{n} animazioni',
-  'Faltan {n} archivo': 'Manca {n} file',
+  'Falta {n} archivo': 'Manca {n} file',
   'Faltan {n} archivos': 'Mancano {n} file',
   'Creado con': 'Creato con',
   'Título': 'Titolo',
