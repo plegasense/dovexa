@@ -44,7 +44,7 @@ QUÉ NO ES
 Dovexa es un visor: no edita ni modela. No abre DWG ni los formatos propios de cada programa; exporta desde él a STEP, DXF o STL. Los ensamblajes muy grandes pueden tardar unos segundos en abrirse la primera vez.
 
 Las capturas usan archivos públicos de muestra (por ejemplo, Cesium Milk Truck, CC BY 4.0, de Cesium).
-Créditos: Cesium Milk Truck (Cesium, CC BY 4.0) · nube Autzen (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0) · mmount.ngc (LinuxCNC) · as1-oc-214 (Open CASCADE)."""
+Créditos: Cesium Milk Truck (Cesium, CC BY 4.0) · nube Autzen (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0)."""
 if __name__ == "__main__":
     print(len(TITULO), len(CORTA), len(LARGA))
     assert len(TITULO) <= 30 and len(CORTA) <= 80 and len(LARGA) <= 4000

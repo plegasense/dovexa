@@ -44,4 +44,4 @@ Dovexa is a viewer: it does not edit or model. It does not open DWG or the nativ
 
 Screenshots use public sample files (for example Cesium Milk Truck, CC BY 4.0, by Cesium).
 
-Credits: Cesium Milk Truck (Cesium, CC BY 4.0) · Autzen point cloud (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0) · mmount.ngc (LinuxCNC) · as1-oc-214 (Open CASCADE).
+Credits: Cesium Milk Truck (Cesium, CC BY 4.0) · Autzen point cloud (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0).
