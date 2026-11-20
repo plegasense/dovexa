@@ -695,7 +695,7 @@ class _ViewerPageState extends State<ViewerPage> {
         _cad = CadController(doc.scene)..addListener(_onCadChanged);
       } else if (doc is ModelDocument &&
           doc.scene.parts.length == 1 &&
-          path.toLowerCase().endsWith('.stl')) {
+          (path.toLowerCase().endsWith('.stl') || stlMetaOf[doc.scene.parts.first.mesh] != null)) {
         final mesh = doc.scene.parts.first.mesh;
         _stl = StlController(mesh, stlMetaOf[mesh], doc.name)
           ..addListener(_onStlChanged)
@@ -1341,9 +1341,10 @@ class _ViewerPageState extends State<ViewerPage> {
 
   static String _fmtCount(int n, [String unit = '']) {
     if (n == 1 && unit == tr('puntos')) unit = tr('punto');
+    if (n == 1 && unit == tr('triángulos')) unit = tr('triángulo');
     final u = unit.isEmpty ? '' : ' $unit';
-    if (n >= 1000000) return '${(n / 1000000).toStringAsFixed(2).ldec} M$u';
-    if (n >= 1000) return '${(n / 1000).toStringAsFixed(1).ldec} k$u';
+    if (n >= 1000000) return '${(n / 1000000).toStringAsFixed(2).ldec} ${tr('M')}$u';
+    if (n >= 1000) return '${(n / 1000).toStringAsFixed(1).ldec} ${tr('k')}$u';
     return '$n$u';
   }
 
@@ -2013,7 +2014,7 @@ class _ViewerPageState extends State<ViewerPage> {
                   children: [
                     ToolButton(
                       icon: Icons.arrow_back_ios_new_rounded,
-                      tooltip: tr('Inicio'),
+                      tooltip: tr('Cerrar'),
                       onTap: _closeDoc,
                     ),
                     const SizedBox(width: 4),
@@ -2210,7 +2211,7 @@ class _ViewerPageState extends State<ViewerPage> {
               ? tr('Estanca')
               : (bad == 1 ? tr('1 problema') : tr('{n} problemas', {'n': bad})),
           color: bad == 0 ? DT.mint : DT.orangeSoft,
-          onTap: bad == 0 ? null : () => _scaffold.currentState?.openEndDrawer(),
+          onTap: bad == 0 ? null : () => showMeshReviewSheet(context, c, onHole: _focusHole),
         ),
       );
     }
@@ -2218,19 +2219,28 @@ class _ViewerPageState extends State<ViewerPage> {
       chips.add(
         InfoChip(
           Icons.content_cut_rounded,
-          tr('Archivo incompleto: faltan {n} triángulos', {'n': c.meta!.truncated}),
+          tr('Archivo incompleto: faltan {n} triángulos', {'n': Units.fmt(c.meta!.truncated.toDouble(), d: 0)}),
           color: DT.orangeSoft,
         ),
       );
     }
     chips.add(InfoChip(Icons.straighten, Units.dims(s)));
+    if ((c.meta?.skipped ?? 0) > 0) {
+      chips.add(
+        InfoChip(
+          Icons.filter_alt_off_outlined,
+          tr('Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)', {'n': Units.fmt(c.meta!.skipped.toDouble(), d: 0)}),
+          color: DT.orangeSoft,
+        ),
+      );
+    }
     if (c.unitHint != null) {
       chips.add(
         InfoChip(
           Icons.help_outline_rounded,
           tr('Unidad dudosa'),
           color: DT.orangeSoft,
-          onTap: () => _scaffold.currentState?.openEndDrawer(),
+          onTap: () => showPrintSheet(context, c),
         ),
       );
     }

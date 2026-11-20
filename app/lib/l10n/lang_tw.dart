@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_tw = {
   '{h}h {m}m': '{h}小時 {m}分',
   '{m}m {s}s': '{m}分 {s}秒',
   '{s}s': '{s}秒',
+  'triángulo': '三角形',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '已捨棄 {n} 個三角形(座標超出範圍)',
+  'k': 'k',
+  'M': 'M',
+  's': '秒',
 };

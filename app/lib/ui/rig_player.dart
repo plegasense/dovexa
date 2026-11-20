@@ -284,14 +284,14 @@ class AnimationBar extends StatelessWidget {
                       Expanded(
                         child: Slider(
                           semanticFormatterCallback: (v) =>
-                              '${v.toStringAsFixed(1).ldec} s',
+                              '${v.toStringAsFixed(1).ldec} ${tr('s')}',
                           value: d <= 0 ? 0 : p.time.clamp(0, d).toDouble(),
                           max: d <= 0 ? 1 : d,
                           onChanged: d <= 0 ? null : p.seek,
                         ),
                       ),
                       Text(
-                        '${p.time.toStringAsFixed(2)} / ${d.toStringAsFixed(2)} s',
+                        '${p.time.toStringAsFixed(2).ldec} / ${d.toStringAsFixed(2).ldec} ${tr('s')}',
                         style: const TextStyle(
                           fontSize: 12,
                           color: DT.muted,

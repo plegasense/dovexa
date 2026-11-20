@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_nl = {
   '{h}h {m}m': '{h}u {m}m',
   '{m}m {s}s': '{m}m {s}s',
   '{s}s': '{s}s',
+  'triángulo': 'driehoek',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '{n} driehoeken verworpen (coördinaten buiten bereik)',
+  'k': 'k',
+  'M': 'M',
+  's': 's',
 };

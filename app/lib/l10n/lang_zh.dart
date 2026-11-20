@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_zh = {
   '{h}h {m}m': '{h}小时 {m}分',
   '{m}m {s}s': '{m}分 {s}秒',
   '{s}s': '{s}秒',
+  'triángulo': '三角形',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '已丢弃 {n} 个三角形(坐标超出范围)',
+  'k': 'k',
+  'M': 'M',
+  's': '秒',
 };

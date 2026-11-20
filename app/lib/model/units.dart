@@ -84,7 +84,7 @@ class LengthUnit {
     final intPart = parts[0];
     final buf = StringBuffer();
     for (var i = 0; i < intPart.length; i++) {
-      if (i > 0 && (intPart.length - i) % 3 == 0) buf.write(L.en ? ',' : ' ');
+      if (i > 0 && (intPart.length - i) % 3 == 0) buf.write(L.thousands);
       buf.write(intPart[i]);
     }
     final frac = parts.length > 1 ? '${L.decimal}${parts[1]}' : '';
