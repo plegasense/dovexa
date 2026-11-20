@@ -499,7 +499,7 @@ class _ViewerPageState extends State<ViewerPage> {
           chips.add(
             InfoChip(
               Icons.straighten,
-              '${dc.len(s[0], digits: 1).replaceAll(' ${dc.displayUnit.symbol}', '')} × ${dc.len(s[1], digits: 1)}',
+              '${dc.len(s[0], digits: s[0] < 10 ? 2 : 1).replaceAll(' ${dc.displayUnit.symbol}', '')} × ${dc.len(s[1], digits: s[1] < 10 ? 2 : 1)}',
             ),
           );
           if (!dc.unitDeclared) {
@@ -1694,10 +1694,19 @@ class _ViewerPageState extends State<ViewerPage> {
 
   // ------------------------------------------------------------------ interfaz
 
+  Orientation? _lastOrientation;
+
   @override
   Widget build(BuildContext context) {
     final doc = _doc;
     final showHome = doc == null && !_kHomeShotSkip;
+    final ori = MediaQuery.orientationOf(context);
+    if (_lastOrientation != null && _lastOrientation != ori && doc is DrawingDocument) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _doc == doc) cam.fit(doc.lines.bounds);
+      });
+    }
+    _lastOrientation = ori;
     return PopScope(
       canPop: !_drawerOpen && doc == null,
       onPopInvokedWithResult: (didPop, _) {

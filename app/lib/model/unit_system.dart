@@ -80,7 +80,7 @@ class Units {
   static int inDigits(double a) => a >= 100 ? 1 : (a >= 1 ? 2 : (a >= 0.1 ? 3 : 4));
 
   /// Decimales para áreas y volúmenes en pulgadas cuadradas/cúbicas.
-  static int inDigits2(double a) => a >= 1000 ? 1 : (a >= 1 ? 2 : (a >= 0.01 ? 4 : 5));
+  static int inDigits2(double a) => a == 0 ? 0 : a >= 1000 ? 1 : (a >= 1 ? 2 : (a >= 0.01 ? 4 : 5));
 
   // ---- Longitud
 
@@ -138,7 +138,7 @@ class Units {
   /// Tres medidas con `toStringAsFixed(d)` y «mm» al final (resúmenes de G-code); en imperial, [dims].
   static String dimsPlain(List<double> mm, {int d = 1}) {
     if (isImperial) return dims(mm);
-    return '${mm[0].toStringAsFixed(d).ldec} × ${mm[1].toStringAsFixed(d).ldec} × ${mm[2].toStringAsFixed(d).ldec} ${sym('mm')}';
+    return '${fmt(mm[0], d: d)} × ${fmt(mm[1], d: d)} × ${fmt(mm[2], d: d)} ${sym('mm')}';
   }
 
   /// Recorridos largos con `toStringAsFixed`: "12,34 m" / "850 mm" (con punto decimal, como el G-code).

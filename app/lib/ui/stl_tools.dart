@@ -790,9 +790,10 @@ class StlController extends ChangeNotifier {
 
 // ---------------------------------------------------------------- hojas
 
-Future<void> dovexaSheet(BuildContext context, Widget child) {
+Future<void> dovexaSheet(BuildContext context, Widget child, {bool seeThrough = false}) {
   return showModalBottomSheet<void>(
     context: context,
+    barrierColor: seeThrough ? Colors.transparent : null,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (ctx) => SafeArea(
@@ -802,7 +803,7 @@ Future<void> dovexaSheet(BuildContext context, Widget child) {
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: 640,
-              maxHeight: MediaQuery.of(ctx).size.height * 0.86,
+              maxHeight: MediaQuery.of(ctx).size.height * (seeThrough ? 0.4 : 0.86),
             ),
             child: Glass(
               radius: 26,
@@ -1604,6 +1605,7 @@ Future<void> showMeshSectionSheet(BuildContext context, StlController c) {
         ],
       ),
     ),
+    seeThrough: true,
   );
 }
 

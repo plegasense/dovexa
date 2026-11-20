@@ -31,6 +31,9 @@
 #include <BRepLib.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
+#include <TopAbs_ShapeEnum.hxx>
+#include <TopoDS_Shape.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
 #include <GProp_GProps.hxx>
@@ -711,6 +714,11 @@ DovexaScene* dovexa_cad_open(const char* path, double rel_deflection) {
     bool ok = fromCache;
     if (fromCache) {
       // sin lectura
+    } else if (ext == "brep") {
+      TopoDS_Shape shp;
+      BRep_Builder bb;
+      ok = BRepTools::Read(shp, path, bb) && !shp.IsNull();
+      if (ok) XCAFDoc_DocumentTool::ShapeTool(doc->Main())->AddShape(shp, shp.ShapeType() == TopAbs_COMPOUND);
     } else if (ext == "igs" || ext == "iges") {
       IGESCAFControl_Reader r;
       r.SetColorMode(true);
