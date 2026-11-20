@@ -795,7 +795,7 @@ const Map<String, String> kLang_uk = {
   'Mínimo': 'Мінімум',
   'Máximo': 'Максимум',
   'Densidad': 'Щільність',
-  '≈ {a} puntos/m² · separación ≈ {b} см': '≈ {a} точок/м² · відстань ≈ {b} см',
+  '≈ {a} puntos/m² · separación ≈ {b} cm': '≈ {a} точок/м² · відстань ≈ {b} см',
   'SISTEMA DE COORDENADAS': 'СИСТЕМА КООРДИНАТ',
   'Sistema': 'Система',
   'sin indicar': 'не вказано',

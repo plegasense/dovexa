@@ -56,7 +56,7 @@ class Units {
   /// Símbolo de unidad en el idioma (ruso y ucraniano usan letras cirílicas).
   static String sym(String sym) {
     if (L.lang != 'ru' && L.lang != 'uk') return sym;
-    const m = {'mm': 'мм', 'cm': 'см', 'm': 'м', 'in': 'дюйм', 'ft': 'фут', 'mi': 'миль', 'g': 'г', 'kg': 'кг', 'mm/min': 'мм/мин', 'in/min': 'дюйм/мин', 'mm/s': 'мм/с'};
+    const m = {'mm': 'мм', 'cm': 'см', 'm': 'м', 'in': 'дюйм', 'ft': 'фут', 'mi': 'миль', 'g': 'г', 'kg': 'кг', 'mm/min': 'мм/мин', 'in/min': 'дюйм/мин', 'in²': 'дюйм²', 'in³': 'дюйм³', 'oz': 'унц', 'lb': 'фнт', 'in/s': 'дюйм/с', 'mm/s': 'мм/с'};
     return m[sym] ?? sym;
   }
 
@@ -79,7 +79,7 @@ class Units {
   }
 
   /// Decimales para pulgadas: 0,0394 · 0,197 · 3,94 · 39,37 · 393,7.
-  static int inDigits(double a) => a >= 100 ? 1 : (a >= 1 ? 2 : (a >= 0.1 ? 3 : 4));
+  static int inDigits(double a) => a == 0 ? 0 : a >= 100 ? 1 : (a >= 1 ? 2 : (a >= 0.1 ? 3 : 4));
 
   /// Decimales para áreas y volúmenes en pulgadas cuadradas/cúbicas.
   static int inDigits2(double a) => a == 0 ? 0 : a >= 1000 ? 1 : (a >= 1 ? 2 : (a >= 0.01 ? 4 : 5));
@@ -185,20 +185,20 @@ class Units {
   static String area(double mm2) {
     if (!isImperial) return LengthUnit.mm.area(mm2);
     final v = mm2 / (kMmPerInch * kMmPerInch);
-    return '${LengthUnit.numText(v, inDigits2(v.abs()))} in²';
+    return '${LengthUnit.numText(v, inDigits2(v.abs()))} ${sym('in²')}';
   }
 
   static String volume(double mm3) {
     if (!isImperial) return LengthUnit.mm.volume(mm3);
     final v = mm3 / (kMmPerInch * kMmPerInch * kMmPerInch);
-    return '${LengthUnit.numText(v, inDigits2(v.abs()))} in³';
+    return '${LengthUnit.numText(v, inDigits2(v.abs()))} ${sym('in³')}';
   }
 
   /// Área en cm² (como la usan las hojas de impresión): "12,3 cm²" · "1,9 in²". [d] decimales en cm².
   static String areaCm2(double cm2, {int d = 1}) {
     if (!isImperial) return '${fmt(cm2, d: d)} cm²';
     final v = cm2 * 100 / (kMmPerInch * kMmPerInch);
-    return '${fmt(v, d: inDigits2(v.abs()))} in²';
+    return '${fmt(v, d: inDigits2(v.abs()))} ${sym('in²')}';
   }
 
   /// Sólo el número de un área dada en cm² (en in² si es imperial); para plantillas con «cm²» y [tru].
@@ -219,7 +219,7 @@ class Units {
   static String volumeCm3(double cm3, {int d = 1}) {
     if (!isImperial) return '${fmt(cm3, d: d)} cm³';
     final v = cm3 * 1000 / (kMmPerInch * kMmPerInch * kMmPerInch);
-    return '${fmt(v, d: inDigits2(v.abs()))} in³';
+    return '${fmt(v, d: inDigits2(v.abs()))} ${sym('in³')}';
   }
 
   // ---- Masa
@@ -227,17 +227,17 @@ class Units {
   /// Masa a partir de gramos: "12,3 g" · "1,25 kg" → "0,43 oz" · "2,76 lb".
   static String mass(double grams) {
     if (!isImperial) return LengthUnit.mass(grams);
-    if (grams >= kGramsPerPound) return '${LengthUnit.numText(grams / kGramsPerPound, 2)} lb';
+    if (grams >= kGramsPerPound) return '${LengthUnit.numText(grams / kGramsPerPound, 2)} ${sym('lb')}';
     final oz = grams / kGramsPerOunce;
-    return '${LengthUnit.numText(oz, oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4))} oz';
+    return '${LengthUnit.numText(oz, oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4))} ${sym('oz')}';
   }
 
   /// Masa con `toStringAsFixed(d)` y la g pegada ("12 g"), como en los resúmenes de G-code.
   static String grams(double g, {int d = 1}) {
     if (!isImperial) return '${g.toStringAsFixed(d).ldec} ${sym('g')}';
     final oz = g / kGramsPerOunce;
-    if (g >= kGramsPerPound) return '${(g / kGramsPerPound).toStringAsFixed(2).ldec} lb';
-    return '${oz.toStringAsFixed(oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4)).ldec} oz';
+    if (g >= kGramsPerPound) return '${(g / kGramsPerPound).toStringAsFixed(2).ldec} ${sym('lb')}';
+    return '${oz.toStringAsFixed(oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4)).ldec} ${sym('oz')}';
   }
 
   // ---- Velocidad
@@ -301,6 +301,12 @@ class Units {
   static String tru(String es, [Map<String, Object?>? args]) {
     final s = tr(es, args);
     if (!isImperial) return s;
+    if (L.lang == 'ru' || L.lang == 'uk') {
+      return s
+          .replaceAll(RegExp(r'(?<![а-яёіїєґ])мм(?![а-яёіїєґ/²³])'), sym('in'))
+          .replaceAll('см²', sym('in²'))
+          .replaceAll('см³', sym('in³'));
+    }
     return s.replaceAll(RegExp(r'\bmm\b(?![/²³])'), 'in').replaceAll('cm²', 'in²').replaceAll('cm³', 'in³');
   }
 

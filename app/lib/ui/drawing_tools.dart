@@ -312,9 +312,9 @@ Future<void> showCutSheet(BuildContext context, DrawingController c) {
               const SizedBox(height: 8),
               Text(
                 tr('CAPAS QUE SE CORTAN'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
-                  letterSpacing: 1.6,
+                  letterSpacing: kCapsSpacing,
                   color: DT.muted,
                   fontWeight: FontWeight.w600,
                 ),
@@ -343,9 +343,9 @@ Future<void> showCutSheet(BuildContext context, DrawingController c) {
               const SizedBox(height: 8),
               Text(
                 tr('LOS NÚMEROS DEL ARCHIVO ESTÁN EN'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
-                  letterSpacing: 1.6,
+                  letterSpacing: kCapsSpacing,
                   color: DT.muted,
                   fontWeight: FontWeight.w600,
                 ),

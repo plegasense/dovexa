@@ -732,7 +732,7 @@ DxfData _parseSvg(String path) {
   late final XmlDocument doc;
   try {
     doc = XmlDocument.parse(text);
-  } on XmlException catch (e) {
+  } on XmlException {
     throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
   }
   final root = doc.rootElement;

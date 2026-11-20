@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
+import '../io/loader.dart' show extraFilesDir;
+
 /// Archivos abiertos recientemente (se guardan en el propio dispositivo).
 class RecentFile {
   RecentFile(this.path, this.name, this.openedAt);
@@ -48,6 +50,16 @@ class RecentsStore {
     dir.createSync(recursive: true);
     final dst = '${dir.path}/$name';
     File(path).copySync(dst);
+    // Los archivos que el usuario añadió al modelo (texturas, .bin) siguen al archivo a su copia propia.
+    try {
+      final from = Directory(extraFilesDir(path));
+      if (from.existsSync()) {
+        final to = Directory(extraFilesDir(dst))..createSync(recursive: true);
+        for (final f in from.listSync().whereType<File>()) {
+          f.copySync('${to.path}/${f.path.split('/').last}');
+        }
+      }
+    } catch (_) {}
     return dst;
   }
 

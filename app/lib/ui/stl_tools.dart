@@ -878,9 +878,9 @@ Widget sheetLabel(String t) => Padding(
   padding: const EdgeInsets.only(top: 14, bottom: 6),
   child: Text(
     t,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 11.5,
-      letterSpacing: 1.6,
+      letterSpacing: kCapsSpacing,
       color: DT.muted,
       fontWeight: FontWeight.w600,
     ),

@@ -28,7 +28,7 @@ Future<void> main() async {
   } catch (_) {}
   try {
     cadCacheDir = '${(await getApplicationCacheDirectory()).path}/dovexa_cad';
-    extraBase = (await getApplicationCacheDirectory()).path;
+    extraBase = (await getApplicationSupportDirectory()).path; // no en la caché: Android la vacía
   } catch (_) {}
   EdlFx.load();
   registerNativeLicenses();
@@ -42,21 +42,33 @@ class DovexaApp extends StatefulWidget {
   State<DovexaApp> createState() => _DovexaAppState();
 }
 
-class _DovexaAppState extends State<DovexaApp> {
+class _DovexaAppState extends State<DovexaApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     L.choice.addListener(_rebuildAll);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     L.choice.removeListener(_rebuildAll);
     super.dispose();
   }
 
+  /// En «Automático», un cambio de idioma o región del sistema con la app abierta se aplica al momento.
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    if (L.choice.value != 'auto') return;
+    L.apply('auto');
+    L.countryCode = PlatformDispatcher.instance.locale.countryCode;
+    _rebuildAll();
+  }
+
   /// Los textos se traducen al construir, así que al cambiar de idioma se reconstruye todo el árbol.
   void _rebuildAll() {
+    if (mounted) setState(() {}); // MaterialApp: textos propios de Material en el idioma nuevo
     void visit(Element e) {
       e.markNeedsBuild();
       e.visitChildren(visit);

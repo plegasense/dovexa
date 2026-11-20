@@ -11,6 +11,7 @@ import 'package:flutter/services.dart' show MethodChannel;
 import 'package:vector_math/vector_math.dart' as vm;
 
 import '../io/cad_loader.dart' show cadCacheHit;
+import '../io/gltf_loader.dart' show MissingDataFile;
 import '../io/loader.dart';
 import '../model/document.dart';
 import '../model/mesh.dart' show Bounds;
@@ -72,7 +73,7 @@ class ViewerPage extends StatefulWidget {
   State<ViewerPage> createState() => _ViewerPageState();
 }
 
-class _ViewerPageState extends State<ViewerPage> {
+class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
   final OrbitCamera cam = OrbitCamera();
   final GlobalKey _boundary = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
@@ -80,6 +81,7 @@ class _ViewerPageState extends State<ViewerPage> {
   Document? _doc;
   final Set<SceneNode> _selected = {};
   String? _error;
+  String? _errorAddFor; // modelo al que faltan archivos externos (ofrece añadirlos)
   List<Widget> _chips = const [];
   final Set<int> _hidden = {};
   bool _loading = false;
@@ -169,6 +171,11 @@ class _ViewerPageState extends State<ViewerPage> {
     if (_playing) setState(() => _playing = false);
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed && _playing) _stopPlay();
+  }
+
   void _togglePlay() {
     final d = _doc;
     if (d is! ToolpathDocument) return;
@@ -242,6 +249,7 @@ class _ViewerPageState extends State<ViewerPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     cam.addListener(() => _overlayTick.value++);
     Units.notifier.addListener(_onUnitsChanged);
     L.choice.addListener(_onUnitsChanged);
@@ -414,6 +422,7 @@ class _ViewerPageState extends State<ViewerPage> {
       _loadingName = path.split('/').last;
       _loadingNote = note;
       _error = null;
+      _errorAddFor = null;
     });
     try {
       final loadWatch = Stopwatch()..start();
@@ -1337,7 +1346,10 @@ class _ViewerPageState extends State<ViewerPage> {
           : raw.replaceFirst(RegExp(r'^\w*Exception: '), '');
       // El documento anterior se cierra: así el aviso no queda sobre el título y las medidas de otro archivo.
       _closeDoc();
-      setState(() => _error = '${path.split('/').last}\n$msg');
+      setState(() {
+        _error = '${path.split('/').last}\n$msg';
+        _errorAddFor = e is MissingDataFile ? path : null;
+      });
     } finally {
       if (mounted && seq == _loadSeq) setState(() => _loading = false);
     }
@@ -2521,6 +2533,14 @@ class _ViewerPageState extends State<ViewerPage> {
                     style: const TextStyle(fontSize: 14, height: 1.35),
                   ),
                 ),
+                if (_errorAddFor != null)
+                  TextButton(
+                    onPressed: () async {
+                      final p = _errorAddFor!;
+                      if (await pickMissingFiles(p)) await _open(p);
+                    },
+                    child: Text(tr('Añadir los archivos que faltan')),
+                  ),
                 IconButton(
                   onPressed: () => setState(() => _error = null),
                   icon: const Icon(Icons.close_rounded, size: 20),

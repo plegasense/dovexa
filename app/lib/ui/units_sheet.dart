@@ -17,7 +17,10 @@ Future<void> showUnitsSheet(BuildContext context) {
         children: [
           sheetTitle(tr('Unidades'), sub: tr('Cómo se muestran las medidas; los archivos no cambian.')),
           for (final s in UnitSystem.values)
-            InkWell(
+            Semantics(
+              inMutuallyExclusiveGroup: true,
+              checked: s == current,
+              child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: () {
                 Units.set(s);
@@ -51,6 +54,7 @@ Future<void> showUnitsSheet(BuildContext context) {
                   ],
                 ),
               ),
+            ),
             ),
         ],
       ),

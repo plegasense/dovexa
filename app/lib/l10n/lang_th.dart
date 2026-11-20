@@ -184,7 +184,7 @@ const Map<String, String> kLang_th = {
   'transmisión aproximada con transparencia': 'transmission ประมาณด้วยความโปร่งใส',
   'metal/rugosidad': 'เมทัล/ความหยาบ',
   'normales': 'นอร์มอล',
-  'oclusión': 'occlusion',
+  'oclusión': 'การบดบัง',
   'emisión': 'การเรืองแสง',
   'Un canal de animación está dañado y se omite.': 'ช่องแอนิเมชันเสียหายและถูกข้ามไป',
   'El glTF no contiene mallas de triángulos': 'glTF ไม่มีเมชสามเหลี่ยม',
