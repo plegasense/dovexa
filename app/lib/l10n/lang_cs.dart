@@ -846,7 +846,7 @@ const Map<String, String> kLang_cs = {
   'color por vértice': 'barva vrcholů',
   '{n} animación': 'Animace: {n}',
   '{n} animaciones': 'Animace: {n}',
-  'Faltan {n} archivo': 'Chybějící soubory: {n}',
+  'Falta {n} archivo': 'Chybějící soubory: {n}',
   'Faltan {n} archivos': 'Chybějící soubory: {n}',
   'Creado con': 'Vytvořeno v',
   'Título': 'Název',

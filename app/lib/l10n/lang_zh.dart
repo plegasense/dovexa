@@ -833,7 +833,7 @@ const Map<String, String> kLang_zh = {
   'color por vértice': '顶点颜色',
   '{n} animación': '{n} 个动画',
   '{n} animaciones': '{n} 个动画',
-  'Faltan {n} archivo': '缺少 {n} 个文件',
+  'Falta {n} archivo': '缺少 {n} 个文件',
   'Faltan {n} archivos': '缺少 {n} 个文件',
   'Creado con': '创建软件',
   'Título': '标题',

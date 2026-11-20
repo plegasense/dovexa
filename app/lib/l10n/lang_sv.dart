@@ -846,7 +846,7 @@ const Map<String, String> kLang_sv = {
   'color por vértice': 'hörnfärg',
   '{n} animación': '{n} animation',
   '{n} animaciones': '{n} animationer',
-  'Faltan {n} archivo': '{n} fil saknas',
+  'Falta {n} archivo': '{n} fil saknas',
   'Faltan {n} archivos': '{n} filer saknas',
   'Creado con': 'Skapad med',
   'Título': 'Titel',

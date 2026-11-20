@@ -273,7 +273,8 @@ class PrintSummary {
   static double? _num(String? v) {
     if (v == null) return null;
     final m = RegExp(r'-?\d+(?:\.\d+)?').firstMatch(v);
-    return m == null ? null : double.parse(m.group(0)!);
+    final d = m == null ? null : double.parse(m.group(0)!);
+    return d != null && d.isFinite && d.abs() < 1e12 ? d : null;
   }
 
   static String? _first(Map<String, String> m, List<String> keys) {

@@ -833,7 +833,7 @@ const Map<String, String> kLang_ko = {
   'color por vértice': '정점 색상',
   '{n} animación': '애니메이션 {n}개',
   '{n} animaciones': '애니메이션 {n}개',
-  'Faltan {n} archivo': '파일 {n}개 없음',
+  'Falta {n} archivo': '파일 {n}개 없음',
   'Faltan {n} archivos': '파일 {n}개 없음',
   'Creado con': '제작 프로그램',
   'Título': '제목',

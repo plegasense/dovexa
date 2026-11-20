@@ -589,7 +589,8 @@ GcodeData parseGcode(
       case 'endwhile':
         return prevKind(label, li, {'while'}) ?? li + 1;
       case 'repeat':
-        final cnt = calc.valueAt(b, rest, end).$1.round();
+        final cv = calc.valueAt(b, rest, end).$1;
+        final cnt = cv.isFinite ? cv.clamp(-1e9, 1e9).round() : 0;
         if (cnt < 1) return (nextKind(label, li, {'endrepeat'}) ?? li) + 1;
         repeatLeft[label] = cnt - 1;
         return li + 1;
@@ -948,6 +949,7 @@ GcodeData parseGcode(
         }
         if (!any) continue;
         if (neg) v = -v;
+        if (!v.isFinite || v.abs() > 1e12) continue; // números absurdos: se ignora la palabra
         switch (up) {
           case 0x47:
             gs.add(v);

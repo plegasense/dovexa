@@ -846,7 +846,7 @@ const Map<String, String> kLang_id = {
   'color por vértice': 'warna per vertex',
   '{n} animación': '{n} animasi',
   '{n} animaciones': '{n} animasi',
-  'Faltan {n} archivo': '{n} file tidak ada',
+  'Falta {n} archivo': '{n} file tidak ada',
   'Faltan {n} archivos': '{n} file tidak ada',
   'Creado con': 'Dibuat dengan',
   'Título': 'Judul',

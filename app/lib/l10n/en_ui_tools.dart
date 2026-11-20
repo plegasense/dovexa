@@ -165,7 +165,7 @@ const Map<String, String> kEn_ui_tools = {
   'color por vértice': 'vertex color',
   '{n} animación': '{n} animation',
   '{n} animaciones': '{n} animations',
-  'Faltan {n} archivo': '{n} file missing',
+  'Falta {n} archivo': '{n} file missing',
   'Faltan {n} archivos': '{n} files missing',
   'Creado con': 'Created with',
   'Título': 'Title',
