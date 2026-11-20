@@ -58,6 +58,9 @@ class L {
   /// Elección del usuario: 'auto' (idioma del dispositivo) o un código de [names]. Al cambiar, la interfaz se reconstruye.
   static final ValueNotifier<String> choice = ValueNotifier('auto');
 
+  /// Sube cuando cambia el idioma del sistema estando en «Automático» (para retraducir lo ya construido).
+  static final ValueNotifier<int> systemTick = ValueNotifier(0);
+
   /// Aplica [c] ('auto' o un código de [names]) a [lang] y avisa a la interfaz.
   static void apply(String c) {
     if (c != 'auto' && !names.containsKey(c)) c = 'auto';

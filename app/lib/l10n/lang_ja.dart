@@ -41,6 +41,7 @@ const Map<String, String> kLang_ja = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': '{s} から STEP (.step) にエクスポートして、ここで開いてください。',
   'El archivo no contiene geometría': 'ファイルにジオメトリが含まれていません',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': '展開後の ZIP が大きすぎます (1.5 GB 超)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': '展開後のファイルが大きすぎます (1.5 GB 超)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'この ZIP には Dovexa で開けるモデルが含まれていません',
   'No se pudo abrir el archivo': 'ファイルを開けませんでした',
   'El archivo está vacío.': 'ファイルが空です。',

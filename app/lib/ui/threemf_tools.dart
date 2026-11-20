@@ -7,6 +7,7 @@ import '../io/zip_lite.dart';
 import '../l10n/l10n.dart';
 import '../model/mesh.dart';
 import '../model/scene.dart';
+import '../model/print_summary.dart' show formatDuration;
 import '../model/threemf.dart';
 import '../render/gpu_mesh.dart';
 import '../render/lod.dart';
@@ -404,15 +405,7 @@ class ThreeMfController extends ChangeNotifier {
 
 // ----------------------------------------------------------------- textos
 
-String tmfDuration(double seconds) {
-  final m = (seconds / 60).round();
-  if (m < 60) return '$m min';
-  final h = m ~/ 60;
-  final r = m % 60;
-  if (h < 48) return r == 0 ? '$h h' : '$h h $r min';
-  final d = h ~/ 24;
-  return '$d d ${h % 24} h';
-}
+String tmfDuration(double seconds) => formatDuration(seconds);
 
 String _val(String k, String v) {
   String yn(String x) => (x == '1' || x == 'true') ? tr('Sí') : tr('No');

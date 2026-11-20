@@ -54,6 +54,7 @@ const Map<String, String> kLang_uk = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': 'Експортуйте його у STEP (.step) з {s} і відкрийте тут.',
   'El archivo no contiene geometría': 'У файлі немає геометрії',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': 'Розпакований ZIP завеликий (понад 1,5 GB)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': 'Розпакований файл завеликий (понад 1,5 ГБ)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'У ZIP немає жодної моделі, яку Dovexa уміє відкрити',
   'No se pudo abrir el archivo': 'Не вдалося відкрити файл',
   'El archivo está vacío.': 'Файл порожній.',

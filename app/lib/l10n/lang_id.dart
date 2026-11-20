@@ -54,6 +54,7 @@ const Map<String, String> kLang_id = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': 'Ekspor ke STEP (.step) dari {s} lalu buka di sini.',
   'El archivo no contiene geometría': 'File tidak berisi geometri',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': 'ZIP hasil dekompresi terlalu besar (lebih dari 1,5 GB)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': 'File hasil ekstraksi terlalu besar (lebih dari 1,5 GB)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'ZIP tidak berisi model yang dapat dibuka Dovexa',
   'No se pudo abrir el archivo': 'File tidak dapat dibuka',
   'El archivo está vacío.': 'File kosong.',

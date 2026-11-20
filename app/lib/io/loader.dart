@@ -284,7 +284,7 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
 
   // ---- Archivos comprimidos con un modelo y sus texturas (Sketchfab, fotogrametría…)
   if (ext == 'zip') {
-    final main = await isoRun(() => extractModelZip(path, extraBase ?? Directory.systemTemp.path));
+    final main = await isoRun(() => extractModelZip(path, Directory.systemTemp.path));
     return loadDocument(main, gcodePlate: gcodePlate);
   }
 
@@ -382,7 +382,7 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
             n += chunk.length;
             if (n > 1536 * 1024 * 1024) {
               tooBig = true;
-              throw FormatException(tr('El ZIP descomprimido es demasiado grande (más de 1,5 GB)'));
+              throw FormatException(tr('El archivo descomprimido es demasiado grande (más de 1,5 GB)'));
             }
             sink.add(chunk);
           }

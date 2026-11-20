@@ -1,3 +1,4 @@
+import 'dart:io' show Directory;
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ Future<void> main() async {
   try {
     cadCacheDir = '${(await getApplicationCacheDirectory()).path}/dovexa_cad';
     extraBase = (await getApplicationSupportDirectory()).path; // no en la caché: Android la vacía
+    try {
+      Directory('$extraBase/dovexa_zip').deleteSync(recursive: true); // restos de versiones anteriores
+    } catch (_) {}
   } catch (_) {}
   EdlFx.load();
   registerNativeLicenses();
@@ -64,6 +68,7 @@ class _DovexaAppState extends State<DovexaApp> with WidgetsBindingObserver {
     L.apply('auto');
     L.countryCode = PlatformDispatcher.instance.locale.countryCode;
     _rebuildAll();
+    L.systemTick.value++;
   }
 
   /// Los textos se traducen al construir, así que al cambiar de idioma se reconstruye todo el árbol.

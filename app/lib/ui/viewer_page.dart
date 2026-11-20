@@ -81,6 +81,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
   Document? _doc;
   final Set<SceneNode> _selected = {};
   String? _error;
+  int? _errorPlate;
   String? _errorPath; // archivo que falló (se reintenta al cambiar de idioma para traducir el aviso)
   String? _errorAddFor; // modelo al que faltan archivos externos (ofrece añadirlos)
   List<Widget> _chips = const [];
@@ -254,6 +255,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     cam.addListener(() => _overlayTick.value++);
     Units.notifier.addListener(_onUnitsChanged);
     L.choice.addListener(_onUnitsChanged);
+    L.systemTick.addListener(_onUnitsChanged);
     // Archivos recibidos desde "Abrir con" o "Compartir" (Android).
     if (Platform.isAndroid) {
       _intents.setMethodCallHandler((c) async {
@@ -284,9 +286,9 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     if (!mounted) return;
     final p = _openedPath;
     if (_doc != null && p != null && !_loading) {
-      _open(p, gcodePlate: _openedPlate);
+      _open(p, gcodePlate: _openedPlate, keepSheets: true);
     } else if (_error != null && _errorPath != null && !_loading) {
-      _open(_errorPath!);
+      _open(_errorPath!, gcodePlate: _errorPlate, keepSheets: true);
     } else {
       setState(() {});
     }
@@ -388,9 +390,10 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> _open(String path, {int? gcodePlate}) async {
-    // Una hoja o panel abierto sería del archivo anterior: se cierran al llegar otro.
-    if (mounted) {
+  Future<void> _open(String path, {int? gcodePlate, bool keepSheets = false}) async {
+    // Una hoja o panel abierto sería del archivo anterior: se cierran al llegar otro
+    // (salvo al retraducir por un cambio de unidades/idioma: esa hoja se cierra sola).
+    if (mounted && !keepSheets) {
       _scaffold.currentState?.closeEndDrawer();
       Navigator.of(context).popUntil((r) => r.isFirst);
     }
@@ -427,6 +430,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
       _error = null;
       _errorAddFor = null;
       _errorPath = null;
+      _errorPlate = null;
     });
     try {
       final loadWatch = Stopwatch()..start();
@@ -1354,6 +1358,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
         _error = '${path.split('/').last}\n$msg';
         _errorAddFor = e is MissingDataFile ? path : null;
         _errorPath = path;
+        _errorPlate = gcodePlate;
       });
     } finally {
       if (mounted && seq == _loadSeq) setState(() => _loading = false);
@@ -1729,11 +1734,16 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     }
     _lastOrientation = ori;
     return PopScope(
-      canPop: !_drawerOpen && doc == null,
+      canPop: !_drawerOpen && doc == null && !_loading,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
         if (_drawerOpen) {
           _scaffold.currentState?.closeEndDrawer();
+        } else if (_loading) {
+          setState(() {
+            _loadSeq++; // descarta el resultado de la carga en curso
+            _loading = false;
+          });
         } else if (!_leaveTool()) {
           _closeDoc();
         }
