@@ -11,4 +11,4 @@ PRODUCT_NAME = dovexa
 PRODUCT_BUNDLE_IDENTIFIER = app.datum.datum
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 Plegasense. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Plegasense.

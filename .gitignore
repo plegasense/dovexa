@@ -49,3 +49,11 @@ releases/
 /sdk/
 key.properties
 *.enc
+
+# Privado/local: web de muestra, datos y herramientas de showcase (no van a GitHub)
+/contenido-web/
+/core/tools/make_showcase_step.cpp
+/testdata/demo/
+/testdata/step/reductor.step
+/tools/make_showcase_data.py
+/store/ct/cttext

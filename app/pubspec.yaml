@@ -1,5 +1,5 @@
 name: dovexa
-description: "A new Flutter project."
+description: "Dovexa: visor de archivos CAD, 3D, G-code y nubes de puntos."
 publish_to: 'none'
 version: 1.0.14+17
 
