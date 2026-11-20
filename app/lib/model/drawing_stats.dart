@@ -393,7 +393,7 @@ DrawingAnalysis analyzeDrawing(
 }
 
 String _fmt(double v) =>
-    v.abs() >= 100 ? v.toStringAsFixed(1) : v.toStringAsFixed(3);
+    (v.abs() >= 100 ? v.toStringAsFixed(1) : v.toStringAsFixed(3)).ldec;
 
 Float64List _reversed(Float64List p) {
   final n = p.length ~/ 2;

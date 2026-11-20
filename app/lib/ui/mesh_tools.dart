@@ -20,7 +20,8 @@ import '../model/rig.dart';
 import 'glass.dart';
 import 'threemf_tools.dart' show ThreeMfController;
 import 'rig_player.dart';
-import 'stl_tools.dart' show dovexaSheet, fmtNum, sheetLabel, sheetRow, sheetTitle;
+import 'stl_tools.dart'
+    show dovexaSheet, fmtNum, sheetLabel, sheetRow, sheetTitle;
 import 'theme.dart';
 import '../model/unit_system.dart';
 
@@ -58,7 +59,8 @@ class MeshFileController extends ChangeNotifier {
       if (e.key >= scene.parts.length) continue;
       final mi = e.value[v];
       if (mi == null || mi >= info.variantMaterials.length) continue;
-      scene.parts[e.key].material = info.variantMaterials[mi] as SurfaceMaterial;
+      scene.parts[e.key].material =
+          info.variantMaterials[mi] as SurfaceMaterial;
     }
     options.clip = options.clip;
     notifyListeners();
@@ -94,7 +96,9 @@ class MeshFileController extends ChangeNotifier {
       return;
     }
     final b = scene.bounds();
-    final pos = b.min[sectionAxis] + (b.max[sectionAxis] - b.min[sectionAxis]) * sectionT;
+    final pos =
+        b.min[sectionAxis] +
+        (b.max[sectionAxis] - b.min[sectionAxis]) * sectionT;
     final n = [0.0, 0.0, 0.0]..[sectionAxis] = sectionFlip ? -1 : 1;
     options.clip = vm.Vector4(n[0], n[1], n[2], sectionFlip ? -pos : pos);
   }
@@ -153,6 +157,7 @@ class MeshFileController extends ChangeNotifier {
     player?.dispose();
     super.dispose();
   }
+
   final Scene scene;
   final MeshFileInfo info;
   final String path;
@@ -165,7 +170,9 @@ class MeshFileController extends ChangeNotifier {
   final hidden = <SceneNode>{};
 
   bool get hasAppearance =>
-      scene.textures.isNotEmpty || info.hasColors || info.materials.any((m) => m.alpha != 'opaco');
+      scene.textures.isNotEmpty ||
+      info.hasColors ||
+      info.materials.any((m) => m.alpha != 'opaco');
 
   void setUp(String u) {
     up = u;
@@ -219,7 +226,15 @@ class MeshFileController extends ChangeNotifier {
     if (points.length < 2) return null;
     final d = points[1] - points[0];
     String f(double v) => Units.len(v);
-    return tr('Distancia {d}  ·  ΔX {x}  ·  ΔY {y}  ·  ΔZ {z}   (unidades del archivo)', {'d': f(d.length), 'x': f(d.x.abs()), 'y': f(d.y.abs()), 'z': f(d.z.abs())});
+    return tr(
+      'Distancia {d}  ·  ΔX {x}  ·  ΔY {y}  ·  ΔZ {z}   (unidades del archivo)',
+      {
+        'd': f(d.length),
+        'x': f(d.x.abs()),
+        'y': f(d.y.abs()),
+        'z': f(d.z.abs()),
+      },
+    );
   }
 
   void _lines() {
@@ -235,7 +250,8 @@ class MeshFileController extends ChangeNotifier {
       s.addAll([p.x, p.y - r, p.z, p.x, p.y + r, p.z]);
       s.addAll([p.x, p.y, p.z - r, p.x, p.y, p.z + r]);
     }
-    if (points.length == 2) s.addAll([...points[0].storage, ...points[1].storage]);
+    if (points.length == 2)
+      s.addAll([...points[0].storage, ...points[1].storage]);
     final v = Float32List(s.length ~/ 3 * 6);
     var o = 0;
     for (var i = 0; i + 2 < s.length; i += 3) {
@@ -264,33 +280,65 @@ class MeshFileController extends ChangeNotifier {
   }
 }
 
-String _mb(int bytes) => bytes >= 1 << 20 ? '${fmtNum(bytes / (1 << 20), d: 1)} MB' : '${fmtNum(bytes / 1024, d: 0)} kB';
+String _mb(int bytes) => bytes >= 1 << 20
+    ? '${fmtNum(bytes / (1 << 20), d: 1)} MB'
+    : '${fmtNum(bytes / 1024, d: 0)} kB';
 
 /// Chips de la cabecera de un archivo de malla.
 List<Widget> meshChips(MeshFileController c, Bounds b) {
   final i = c.info;
   final out = <Widget>[
     InfoChip(Icons.description_outlined, tr(i.format)),
-    InfoChip(Icons.change_history, _count(c.scene.triangleCount, tr('triángulos'))),
+    InfoChip(
+      Icons.change_history,
+      _count(c.scene.triangleCount, tr('triángulos')),
+    ),
   ];
   final e = [for (var k = 0; k < 3; k++) b.max[k] - b.min[k]];
-  out.add(InfoChip(Icons.straighten, '${_n(e[0])} × ${_n(e[1])} × ${_n(e[2])}'));
+  out.add(
+    InfoChip(Icons.straighten, '${_n(e[0])} × ${_n(e[1])} × ${_n(e[2])}'),
+  );
   if (c.scene.textures.isNotEmpty) {
-    out.add(InfoChip(Icons.image_outlined, c.scene.textures.length == 1 ? tr('{n} textura', {'n': 1}) : tr('{n} texturas', {'n': c.scene.textures.length})));
+    out.add(
+      InfoChip(
+        Icons.image_outlined,
+        c.scene.textures.length == 1
+            ? tr('{n} textura', {'n': 1})
+            : tr('{n} texturas', {'n': c.scene.textures.length}),
+      ),
+    );
   } else if (i.hasColors) {
     out.add(InfoChip(Icons.palette_outlined, tr('color por vértice')));
   }
   if (i.animations.isNotEmpty) {
-    out.add(InfoChip(Icons.play_circle_outline_rounded, i.animations.length == 1 ? tr('{n} animación', {'n': 1}) : tr('{n} animaciones', {'n': i.animations.length})));
+    out.add(
+      InfoChip(
+        Icons.play_circle_outline_rounded,
+        i.animations.length == 1
+            ? tr('{n} animación', {'n': 1})
+            : tr('{n} animaciones', {'n': i.animations.length}),
+      ),
+    );
   }
   if (i.missing.isNotEmpty) {
-    out.add(InfoChip(Icons.warning_amber_rounded, i.missing.length == 1 ? tr('Faltan {n} archivo', {'n': 1}) : tr('Faltan {n} archivos', {'n': i.missing.length}), color: DT.orangeSoft));
+    out.add(
+      InfoChip(
+        Icons.warning_amber_rounded,
+        i.missing.length == 1
+            ? tr('Faltan {n} archivo', {'n': 1})
+            : tr('Faltan {n} archivos', {'n': i.missing.length}),
+        color: DT.orangeSoft,
+      ),
+    );
   }
   return out;
 }
 
-String _n(double v) => fmtNum(v, d: v.abs() >= 100 ? 0 : (v.abs() >= 1 ? 1 : 3));
-String _count(int n, String w) => n >= 1000000 ? '${fmtNum(n / 1e6, d: 2)} M $w' : (n >= 1000 ? '${fmtNum(n / 1000, d: 1)} k $w' : '$n $w');
+String _n(double v) =>
+    fmtNum(v, d: v.abs() >= 100 ? 0 : (v.abs() >= 1 ? 1 : 3));
+String _count(int n, String w) => n >= 1000000
+    ? '${fmtNum(n / 1e6, d: 2)} M $w'
+    : (n >= 1000 ? '${fmtNum(n / 1000, d: 1)} k $w' : '$n $w');
 
 /// Hoja con todo lo que trae el archivo: origen, geometría, materiales, texturas, extensiones, avisos.
 Future<void> showMeshInfoSheet(
@@ -312,19 +360,37 @@ Future<void> showMeshInfoSheet(
   kids.add(sheetLabel(tr('GEOMETRÍA')));
   row(tr('Triángulos'), '${c.scene.triangleCount}');
   if (i.vertices > 0) row(tr('Vértices'), '${i.vertices}');
-  if (i.polygonsNonTri > 0) row(tr('Polígonos con más de 3 lados'), tr('{n} (triangulados)', {'n': i.polygonsNonTri}));
+  if (i.polygonsNonTri > 0)
+    row(
+      tr('Polígonos con más de 3 lados'),
+      tr('{n} (triangulados)', {'n': i.polygonsNonTri}),
+    );
   row(tr('Piezas'), '${c.scene.parts.length}');
-  row(tr('Normales'), i.hasNormals ? tr('del archivo') : (i.normalsComputed ? tr('calculadas (el archivo no las trae)') : '—'));
+  row(
+    tr('Normales'),
+    i.hasNormals
+        ? tr('del archivo')
+        : (i.normalsComputed ? tr('calculadas (el archivo no las trae)') : '—'),
+  );
   row(tr('Coordenadas de textura'), i.hasUv ? tr('sí') : tr('no'));
   row(tr('Color por vértice'), i.hasColors ? tr('sí') : tr('no'));
   if (i.skins > 0) row(tr('Esqueletos'), '${i.skins}');
   if (i.morphTargets > 0) row(tr('Formas de morfo'), '${i.morphTargets}');
-  row(tr('Eje vertical'), i.upGuessed ? tr('{u} (supuesto por la forma)', {'u': c.up.toUpperCase()}) : tr('{u} (según el formato)', {'u': c.up.toUpperCase()}));
+  row(
+    tr('Eje vertical'),
+    i.upGuessed
+        ? tr('{u} (supuesto por la forma)', {'u': c.up.toUpperCase()})
+        : tr('{u} (según el formato)', {'u': c.up.toUpperCase()}),
+  );
   if (i.scalarName.isNotEmpty) {
     row(
       tr('Campo escalar'),
       i.scalarMax > i.scalarMin
-          ? tr('«{n}» {a} – {b} (pintado como color)', {'n': i.scalarName, 'a': fmtNum(i.scalarMin, d: 3), 'b': fmtNum(i.scalarMax, d: 3)})
+          ? tr('«{n}» {a} – {b} (pintado como color)', {
+              'n': i.scalarName,
+              'a': fmtNum(i.scalarMin, d: 3),
+              'b': fmtNum(i.scalarMax, d: 3),
+            })
           : '«${i.scalarName}»',
     );
   }
@@ -372,7 +438,12 @@ Future<void> showMeshInfoSheet(
       );
     }
     if (i.materials.length > 40) {
-      kids.add(Text(tr('… y {n} más', {'n': i.materials.length - 40}), style: const TextStyle(color: DT.muted)));
+      kids.add(
+        Text(
+          tr('… y {n} más', {'n': i.materials.length - 40}),
+          style: const TextStyle(color: DT.muted),
+        ),
+      );
     }
   }
   if (i.textures.isNotEmpty) {
@@ -389,7 +460,11 @@ Future<void> showMeshInfoSheet(
       kids.add(
         sheetRow(
           t.name,
-          t.missing ? tr('falta') : (st != null && st.width > 0 ? '${st.width} × ${st.height} · ${_mb(t.bytes)}' : _mb(t.bytes)),
+          t.missing
+              ? tr('falta')
+              : (st != null && st.width > 0
+                    ? '${st.width} × ${st.height} · ${_mb(t.bytes)}'
+                    : _mb(t.bytes)),
           color: t.missing ? DT.orangeSoft : null,
         ),
       );
@@ -399,14 +474,28 @@ Future<void> showMeshInfoSheet(
   if (i.animations.isNotEmpty) {
     kids.add(sheetLabel(tr('ANIMACIONES')));
     for (final a in i.animations) {
-      kids.add(sheetRow(a.name, tr('{s} s · {n} canales', {'s': fmtNum(a.seconds, d: 2), 'n': a.channels})));
+      kids.add(
+        sheetRow(
+          a.name,
+          tr('{s} s · {n} canales', {
+            's': fmtNum(a.seconds, d: 2),
+            'n': a.channels,
+          }),
+        ),
+      );
     }
   }
   if (i.extensionsUsed.isNotEmpty || i.extensionsRequired.isNotEmpty) {
     kids.add(sheetLabel(tr('EXTENSIONES')));
     kids.add(
       Text(
-        i.extensionsUsed.map((e) => i.extensionsRequired.contains(e) ? tr('{e} (obligatoria)', {'e': e}) : e).join(' · '),
+        i.extensionsUsed
+            .map(
+              (e) => i.extensionsRequired.contains(e)
+                  ? tr('{e} (obligatoria)', {'e': e})
+                  : e,
+            )
+            .join(' · '),
         style: const TextStyle(color: DT.muted, fontSize: 13),
       ),
     );
@@ -433,7 +522,9 @@ Future<void> showMeshInfoSheet(
       Padding(
         padding: const EdgeInsets.only(top: 4),
         child: Text(
-          tr('El modelo cita texturas o materiales que no están junto al archivo. Elígelos en la carpeta donde los tengas.'),
+          tr(
+            'El modelo cita texturas o materiales que no están junto al archivo. Elígelos en la carpeta donde los tengas.',
+          ),
           style: const TextStyle(color: DT.muted, fontSize: 12),
         ),
       ),
@@ -442,10 +533,26 @@ Future<void> showMeshInfoSheet(
   if (i.warnings.isNotEmpty) {
     kids.add(sheetLabel(tr('AVISOS')));
     for (final w in i.warnings) {
-      kids.add(Padding(padding: const EdgeInsets.symmetric(vertical: 2), child: Text(w, style: const TextStyle(color: DT.orangeSoft, fontSize: 13))));
+      kids.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Text(
+            w,
+            style: const TextStyle(color: DT.orangeSoft, fontSize: 13),
+          ),
+        ),
+      );
     }
   }
-  return dovexaSheet(context, SingleChildScrollView(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: kids)));
+  return dovexaSheet(
+    context,
+    SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: kids,
+      ),
+    ),
+  );
 }
 
 /// Resultado de la revisión de la malla (se calcula al pedirlo).
@@ -467,26 +574,62 @@ class _ReviewBlock extends StatelessWidget {
                 FilledButton.tonalIcon(
                   onPressed: c.reviewing ? null : c.review,
                   icon: c.reviewing
-                      ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
                       : const Icon(Icons.fact_check_outlined),
-                  label: Text(c.reviewing ? tr('Revisando…') : tr('Revisar la malla')),
+                  label: Text(
+                    c.reviewing ? tr('Revisando…') : tr('Revisar la malla'),
+                  ),
                 ),
               ],
             ),
           );
         }
-        final closed = r.holes.isEmpty && r.nonManifoldEdges == 0 && r.boundaryEdges == 0;
+        final closed =
+            r.holes.isEmpty && r.nonManifoldEdges == 0 && r.boundaryEdges == 0;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            sheetRow(tr('Estanca'), closed ? tr('sí') : tr('no'), color: closed ? DT.mint : DT.orangeSoft),
-            if (r.holes.isNotEmpty) sheetRow(tr('Agujeros'), '${r.holes.length}', color: DT.orangeSoft),
-            if (r.nonManifoldEdges > 0) sheetRow(tr('Aristas no-manifold'), '${r.nonManifoldEdges}', color: DT.orangeSoft),
-            if (r.inconsistentEdges > 0) sheetRow(tr('Aristas con normales opuestas'), '${r.inconsistentEdges}', color: DT.orangeSoft),
-            if (r.degenerate > 0) sheetRow(tr('Triángulos sin área'), '${r.degenerate}'),
+            sheetRow(
+              tr('Estanca'),
+              closed ? tr('sí') : tr('no'),
+              color: closed ? DT.mint : DT.orangeSoft,
+            ),
+            if (r.holes.isNotEmpty)
+              sheetRow(
+                tr('Agujeros'),
+                '${r.holes.length}',
+                color: DT.orangeSoft,
+              ),
+            if (r.nonManifoldEdges > 0)
+              sheetRow(
+                tr('Aristas no-manifold'),
+                '${r.nonManifoldEdges}',
+                color: DT.orangeSoft,
+              ),
+            if (r.inconsistentEdges > 0)
+              sheetRow(
+                tr('Aristas con normales opuestas'),
+                '${r.inconsistentEdges}',
+                color: DT.orangeSoft,
+              ),
+            if (r.degenerate > 0)
+              sheetRow(tr('Triángulos sin área'), '${r.degenerate}'),
             sheetRow(tr('Cascos sueltos'), '${r.shells.length}'),
-            sheetRow(tr('Superficie'), tr('{n} (unidades² del archivo)', {'n': fmtNum(r.area, d: 3)})),
-            if (closed) sheetRow(tr('Volumen'), tr('{n} (unidades³ del archivo)', {'n': fmtNum(r.volume.abs(), d: 3)})),
+            sheetRow(
+              tr('Superficie'),
+              tr('{n} (unidades² del archivo)', {'n': fmtNum(r.area, d: 3)}),
+            ),
+            if (closed)
+              sheetRow(
+                tr('Volumen'),
+                tr('{n} (unidades³ del archivo)', {
+                  'n': fmtNum(r.volume.abs(), d: 3),
+                }),
+              ),
             sheetRow(tr('Revisado en'), '${r.milliseconds} ms'),
           ],
         );
@@ -496,7 +639,11 @@ class _ReviewBlock extends StatelessWidget {
 }
 
 /// Hoja con las piezas del modelo: mostrar u ocultar cada una.
-Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {required void Function(Bounds) onFocus}) {
+Future<void> showMeshPartsSheet(
+  BuildContext context,
+  MeshFileController c, {
+  required void Function(Bounds) onFocus,
+}) {
   return dovexaSheet(
     context,
     ListenableBuilder(
@@ -504,7 +651,10 @@ Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {req
       builder: (ctx, _) {
         final nodes = c.partNodes;
         final kids = <Widget>[
-          sheetTitle(tr('Piezas'), sub: tr('{n} con geometría', {'n': nodes.length})),
+          sheetTitle(
+            tr('Piezas'),
+            sub: tr('{n} con geometría', {'n': nodes.length}),
+          ),
           Row(
             children: [
               Text(tr('Eje vertical'), style: const TextStyle(color: DT.muted)),
@@ -523,7 +673,11 @@ Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {req
                 },
               ),
               const Spacer(),
-              if (c.hidden.isNotEmpty) TextButton(onPressed: c.showAll, child: Text(tr('Mostrar todo'))),
+              if (c.hidden.isNotEmpty)
+                TextButton(
+                  onPressed: c.showAll,
+                  child: Text(tr('Mostrar todo')),
+                ),
             ],
           ),
           const SizedBox(height: 6),
@@ -538,13 +692,30 @@ Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {req
                 for (final i in c.scene.instances(onlyVisible: false)) {
                   if (i.node == n) {
                     final b = m.bounds;
-                    final mn = vm.Vector3(b.min[0], b.min[1], b.min[2]), mx = vm.Vector3(b.max[0], b.max[1], b.max[2]);
+                    final mn = vm.Vector3(b.min[0], b.min[1], b.min[2]),
+                        mx = vm.Vector3(b.max[0], b.max[1], b.max[2]);
                     final pts = [
                       for (var k = 0; k < 8; k++)
-                        i.world.transformed3(vm.Vector3((k & 1) == 0 ? mn.x : mx.x, (k & 2) == 0 ? mn.y : mx.y, (k & 4) == 0 ? mn.z : mx.z)),
+                        i.world.transformed3(
+                          vm.Vector3(
+                            (k & 1) == 0 ? mn.x : mx.x,
+                            (k & 2) == 0 ? mn.y : mx.y,
+                            (k & 4) == 0 ? mn.z : mx.z,
+                          ),
+                        ),
                     ];
-                    final lo = [for (var a = 0; a < 3; a++) pts.map((p) => p.storage[a]).reduce((x, y) => x < y ? x : y)];
-                    final hi = [for (var a = 0; a < 3; a++) pts.map((p) => p.storage[a]).reduce((x, y) => x > y ? x : y)];
+                    final lo = [
+                      for (var a = 0; a < 3; a++)
+                        pts
+                            .map((p) => p.storage[a])
+                            .reduce((x, y) => x < y ? x : y),
+                    ];
+                    final hi = [
+                      for (var a = 0; a < 3; a++)
+                        pts
+                            .map((p) => p.storage[a])
+                            .reduce((x, y) => x > y ? x : y),
+                    ];
                     onFocus(Bounds(lo, hi));
                     Navigator.of(ctx).pop();
                     return;
@@ -563,17 +734,34 @@ Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {req
                           height: 12,
                           margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
-                            color: Color(n.part!.material!.baseColor | 0xFF000000),
+                            color: Color(
+                              n.part!.material!.baseColor | 0xFF000000,
+                            ),
                             shape: BoxShape.circle,
                             border: Border.all(color: const Color(0x55FFFFFF)),
                           ),
                         ),
-                      Expanded(child: Text(n.name, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                      Text(_count(m.triangleCount, tr('tri')), style: const TextStyle(color: DT.muted, fontSize: 12)),
+                      Expanded(
+                        child: Text(
+                          n.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        _count(m.triangleCount, tr('tri')),
+                        style: const TextStyle(color: DT.muted, fontSize: 12),
+                      ),
                       IconButton(
                         visualDensity: VisualDensity.compact,
                         onPressed: () => c.toggleNode(n),
-                        icon: Icon(hid ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20, color: DT.muted),
+                        icon: Icon(
+                          hid
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          size: 20,
+                          color: DT.muted,
+                        ),
                       ),
                     ],
                   ),
@@ -583,9 +771,19 @@ Future<void> showMeshPartsSheet(BuildContext context, MeshFileController c, {req
           );
         }
         if (nodes.length > 400) {
-          kids.add(Text(tr('… y {n} más', {'n': nodes.length - 400}), style: const TextStyle(color: DT.muted)));
+          kids.add(
+            Text(
+              tr('… y {n} más', {'n': nodes.length - 400}),
+              style: const TextStyle(color: DT.muted),
+            ),
+          );
         }
-        return SingleChildScrollView(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: kids));
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: kids,
+          ),
+        );
       },
     ),
   );
@@ -611,7 +809,10 @@ Future<bool> pickMissingFiles(String modelPath) async {
 }
 
 /// Hoja de sección: un plano que corta la malla para ver el interior.
-Future<void> showMeshFileSectionSheet(BuildContext context, MeshFileController c) {
+Future<void> showMeshFileSectionSheet(
+  BuildContext context,
+  MeshFileController c,
+) {
   return dovexaSheet(
     context,
     ListenableBuilder(
@@ -620,7 +821,10 @@ Future<void> showMeshFileSectionSheet(BuildContext context, MeshFileController c
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          sheetTitle(tr('Sección'), sub: tr('Corta el modelo con un plano para ver el interior')),
+          sheetTitle(
+            tr('Sección'),
+            sub: tr('Corta el modelo con un plano para ver el interior'),
+          ),
           Wrap(
             spacing: 6,
             children: [
@@ -638,12 +842,19 @@ Future<void> showMeshFileSectionSheet(BuildContext context, MeshFileController c
             ],
           ),
           if (c.sectionAxis >= 0) ...[
-            Slider(value: c.sectionT, onChanged: (v) => c.setSection(c.sectionAxis, t: v)),
+            Slider(
+              semanticFormatterCallback: (v) =>
+                  '${tr('Sección')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+              value: c.sectionT,
+              onChanged: (v) => c.setSection(c.sectionAxis, t: v),
+            ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(tr('Tapar el corte')),
               subtitle: Text(
-                tr('Solo para mallas cerradas (sólidos); en superficies abiertas deja manchas'),
+                tr(
+                  'Solo para mallas cerradas (sólidos); en superficies abiertas deja manchas',
+                ),
                 style: const TextStyle(color: DT.muted, fontSize: 12),
               ),
               value: c.options.capClip,
@@ -652,7 +863,8 @@ Future<void> showMeshFileSectionSheet(BuildContext context, MeshFileController c
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () => c.setSection(c.sectionAxis, flip: !c.sectionFlip),
+                onPressed: () =>
+                    c.setSection(c.sectionAxis, flip: !c.sectionFlip),
                 child: Text(tr('Invertir lado')),
               ),
             ),
@@ -662,7 +874,6 @@ Future<void> showMeshFileSectionSheet(BuildContext context, MeshFileController c
     ),
   );
 }
-
 
 /// Sección de un proyecto 3MF (mismo plano y tapa que en las demás mallas).
 Future<void> showTmfSectionSheet(BuildContext context, ThreeMfController c) {
@@ -674,27 +885,52 @@ Future<void> showTmfSectionSheet(BuildContext context, ThreeMfController c) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          sheetTitle(tr('Sección'), sub: tr('Corta las piezas con un plano para ver el interior')),
+          sheetTitle(
+            tr('Sección'),
+            sub: tr('Corta las piezas con un plano para ver el interior'),
+          ),
           Wrap(
             spacing: 6,
             children: [
               for (final (i, n) in const ['X', 'Y', 'Z'].indexed)
-                ChoiceChip(label: Text(tr('Plano {n}', {'n': n})), selected: c.sectionAxis == i, onSelected: (_) => c.setSection(i)),
-              ChoiceChip(label: Text(tr('Sin sección')), selected: c.sectionAxis < 0, onSelected: (_) => c.clearSection()),
+                ChoiceChip(
+                  label: Text(tr('Plano {n}', {'n': n})),
+                  selected: c.sectionAxis == i,
+                  onSelected: (_) => c.setSection(i),
+                ),
+              ChoiceChip(
+                label: Text(tr('Sin sección')),
+                selected: c.sectionAxis < 0,
+                onSelected: (_) => c.clearSection(),
+              ),
             ],
           ),
           if (c.sectionAxis >= 0) ...[
-            Slider(value: c.sectionT, onChanged: (v) => c.setSection(c.sectionAxis, t: v)),
+            Slider(
+              semanticFormatterCallback: (v) =>
+                  '${tr('Sección')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+              value: c.sectionT,
+              onChanged: (v) => c.setSection(c.sectionAxis, t: v),
+            ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(tr('Tapar el corte')),
-              subtitle: Text(tr('Solo para mallas cerradas; en superficies abiertas deja manchas'), style: const TextStyle(color: DT.muted, fontSize: 12)),
+              subtitle: Text(
+                tr(
+                  'Solo para mallas cerradas; en superficies abiertas deja manchas',
+                ),
+                style: const TextStyle(color: DT.muted, fontSize: 12),
+              ),
               value: c.options.capClip,
               onChanged: (_) => c.toggleCap(),
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(onPressed: () => c.setSection(c.sectionAxis, flip: !c.sectionFlip), child: Text(tr('Invertir lado'))),
+              child: TextButton(
+                onPressed: () =>
+                    c.setSection(c.sectionAxis, flip: !c.sectionFlip),
+                child: Text(tr('Invertir lado')),
+              ),
             ),
           ],
         ],
@@ -707,8 +943,13 @@ Future<void> showTmfSectionSheet(BuildContext context, ThreeMfController c) {
 /// se elige el punto de la dirección de la vista más cercano al centro de la escena.
 void applyFileView(OrbitCamera cam, MeshFileController c, ViewInfo v) {
   final up = upMatrix(c.up);
-  final eye = up.transform3(vm.Vector3(v.position[0], v.position[1], v.position[2]));
-  final dir = (up.getRotation() * vm.Vector3(v.direction[0], v.direction[1], v.direction[2]))..normalize();
+  final eye = up.transform3(
+    vm.Vector3(v.position[0], v.position[1], v.position[2]),
+  );
+  final dir =
+      (up.getRotation() *
+            vm.Vector3(v.direction[0], v.direction[1], v.direction[2]))
+        ..normalize();
   final b = c.scene.bounds();
   final center = vm.Vector3(b.center[0], b.center[1], b.center[2]);
   var d = (center - eye).dot(dir);
@@ -718,18 +959,32 @@ void applyFileView(OrbitCamera cam, MeshFileController c, ViewInfo v) {
   cam.distance = d;
   final back = -dir;
   cam.yaw = math.atan2(back.y, back.x);
-  cam.pitch = math.asin(back.z.clamp(-1.0, 1.0)).clamp(-math.pi / 2 + 0.01, math.pi / 2 - 0.01).toDouble();
+  cam.pitch = math
+      .asin(back.z.clamp(-1.0, 1.0))
+      .clamp(-math.pi / 2 + 0.01, math.pi / 2 - 0.01)
+      .toDouble();
   cam.touch();
 }
 
 /// Lista de vistas del archivo (cámaras de glTF o `Viewpoint` de VRML).
-Future<void> showMeshViewsSheet(BuildContext context, MeshFileController c, OrbitCamera cam) {
+Future<void> showMeshViewsSheet(
+  BuildContext context,
+  MeshFileController c,
+  OrbitCamera cam,
+) {
   return dovexaSheet(
     context,
     ListView(
       shrinkWrap: true,
       children: [
-        sheetTitle(tr('Vistas del archivo'), sub: c.info.views.length == 1 ? tr('{n} vista guardada por quien lo creó', {'n': 1}) : tr('{n} vistas guardadas por quien lo creó', {'n': c.info.views.length})),
+        sheetTitle(
+          tr('Vistas del archivo'),
+          sub: c.info.views.length == 1
+              ? tr('{n} vista guardada por quien lo creó', {'n': 1})
+              : tr('{n} vistas guardadas por quien lo creó', {
+                  'n': c.info.views.length,
+                }),
+        ),
         for (final v in c.info.views)
           ListTile(
             contentPadding: EdgeInsets.zero,
@@ -754,7 +1009,6 @@ Future<void> showMeshViewsSheet(BuildContext context, MeshFileController c, Orbi
   );
 }
 
-
 /// Variantes de material del archivo (colores de un zapato, tapicerías…).
 Future<void> showMeshVariantsSheet(BuildContext context, MeshFileController c) {
   return dovexaSheet(
@@ -764,13 +1018,22 @@ Future<void> showMeshVariantsSheet(BuildContext context, MeshFileController c) {
       builder: (ctx, _) => ListView(
         shrinkWrap: true,
         children: [
-          sheetTitle(tr('Variantes de material'), sub: tr('El archivo trae {n} formas de vestir el mismo modelo', {'n': c.info.variants.length})),
+          sheetTitle(
+            tr('Variantes de material'),
+            sub: tr('El archivo trae {n} formas de vestir el mismo modelo', {
+              'n': c.info.variants.length,
+            }),
+          ),
           Wrap(
             spacing: 8,
             runSpacing: 4,
             children: [
               for (final (i, n) in c.info.variants.indexed)
-                ChoiceChip(label: Text(n), selected: c.variant == i, onSelected: (_) => c.selectVariant(i)),
+                ChoiceChip(
+                  label: Text(n),
+                  selected: c.variant == i,
+                  onSelected: (_) => c.selectVariant(i),
+                ),
             ],
           ),
         ],

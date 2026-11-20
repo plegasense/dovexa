@@ -1842,7 +1842,7 @@ class _ViewerPageState extends State<ViewerPage> {
             if (_cad?.selectedPmi != null && _cad?.measuring != true)
               Positioned(
                 left: 12,
-                right: 12,
+                right: MediaQuery.orientationOf(context) == Orientation.landscape ? 84 : 12,
                 bottom: 0,
                 child: SafeArea(
                   top: false,
@@ -1855,7 +1855,7 @@ class _ViewerPageState extends State<ViewerPage> {
             if (_cad?.measuring == true)
               Positioned(
                 left: 12,
-                right: 12,
+                right: MediaQuery.orientationOf(context) == Orientation.landscape ? 84 : 12,
                 bottom: 0,
                 child: SafeArea(
                   top: false,
@@ -2113,8 +2113,8 @@ class _ViewerPageState extends State<ViewerPage> {
                     padding: const EdgeInsets.only(left: 8, top: 8),
                     child: Text(
                       tr('Punto  ·  X {x}  ·  Y {y}  ·  toca otro para medir la distancia', {
-                        'x': _measure[0].x.toStringAsFixed(2),
-                        'y': _measure[0].y.toStringAsFixed(2),
+                        'x': _measure[0].x.toStringAsFixed(2).ldec,
+                        'y': _measure[0].y.toStringAsFixed(2).ldec,
                       }),
                       style: const TextStyle(
                         color: DT.mint,
@@ -2377,7 +2377,7 @@ class _ViewerPageState extends State<ViewerPage> {
       ShapeKind.arc =>
         tr('Arco  ·  R {r}  ·  {a}°  ·  longitud {l}', {
           'r': f(sh.radius),
-          'a': (sh.sweep * 180 / math.pi).toStringAsFixed(1),
+          'a': (sh.sweep * 180 / math.pi).toStringAsFixed(1).ldec,
           'l': f(sh.length),
         }),
       ShapeKind.line =>
@@ -2385,7 +2385,7 @@ class _ViewerPageState extends State<ViewerPage> {
           'l': f(sh.length),
           'dx': f(w),
           'dy': f(h),
-          'a': (math.atan2(sh.pts[3] - sh.pts[1], sh.pts[2] - sh.pts[0]) * 180 / math.pi).toStringAsFixed(1),
+          'a': (math.atan2(sh.pts[3] - sh.pts[1], sh.pts[2] - sh.pts[0]) * 180 / math.pi).toStringAsFixed(1).ldec,
         }),
       ShapeKind.rectangle =>
         tr('Rectángulo  ·  {w} × {h}  ·  área {a}', {'w': f(w), 'h': f(h), 'a': ar(sh.area)}),
@@ -2420,7 +2420,7 @@ class _ViewerPageState extends State<ViewerPage> {
         'd': f(dist),
         'dx': f(dx),
         'dy': f(dy),
-        'a': ang.toStringAsFixed(1),
+        'a': ang.toStringAsFixed(1).ldec,
       }),
       style: const TextStyle(
         color: DT.mint,

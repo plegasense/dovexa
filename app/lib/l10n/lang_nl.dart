@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_nl = {
   'Archivo incompleto: faltan {n} triángulos': 'Onvolledig bestand: {n} driehoeken ontbreken',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Het bestand is beschadigd of heeft niet de indeling die de extensie aangeeft.',
   'No se reconoce el formato de este archivo.': 'De bestandsindeling wordt niet herkend.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'De STL is te groot ({mb} MB): de limiet is {max} MB om geheugentekort te voorkomen.',
+  'Versión': 'Versie',
 };

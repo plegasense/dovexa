@@ -261,10 +261,8 @@ class GcodeLegend extends StatelessWidget {
                               const SizedBox(width: 6),
                               Text(
                                 tr(kFeatureNames[i]) +
-                                    (s.timeReliable &&
-                                            total > 0 &&
-                                            secs[i] / total >= 0.005
-                                        ? ' ${(secs[i] * 100 / total).round()}%'
+                                    (s.timeReliable && total > 0 && secs[i] > 0
+                                        ? ' ${_pct(secs[i], total)}'
                                         : ''),
                                 style: const TextStyle(fontSize: 12.5),
                               ),
@@ -559,9 +557,9 @@ class GcodeInfoPanel extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       Expanded(child: Text(tr(kFeatureNames[i]))),
-                      if (s.timeReliable && total > 0)
+                      if (s.timeReliable && total > 0 && secs[i] > 0)
                         Text(
-                          '${math.max(1, (secs[i] * 100 / total).round())}%',
+                          _pct(secs[i], total),
                           style: const TextStyle(
                             color: DT.muted,
                             fontSize: 12.5,
@@ -1095,4 +1093,10 @@ class _ThumbViewState extends State<ThumbView> {
       child: child,
     );
   }
+}
+
+/// Porcentaje del tiempo; «<1 %» si es poco pero no cero (así ambas listas coinciden).
+String _pct(num part, num total) {
+  final p = (part * 100 / total).round();
+  return p < 1 ? '<1%' : '$p%';
 }

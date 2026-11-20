@@ -3,8 +3,9 @@ import 'unit_system.dart';
 
 /// Unidad de longitud para mostrar medidas. La geometría interna siempre está en milímetros.
 class LengthUnit {
-  const LengthUnit(this.symbol, this._name, this.mmPerUnit);
-  final String symbol;
+  const LengthUnit(this._symbol, this._name, this.mmPerUnit);
+  final String _symbol;
+  String get symbol => Units.sym(_symbol);
   final String _name;
 
   /// Nombre largo de la unidad, en el idioma de la interfaz.
@@ -44,14 +45,15 @@ class LengthUnit {
 
   /// Masa en g o kg con coma decimal.
   static String mass(double grams) {
-    if (grams >= 1000) return '${_num(grams / 1000, 2)} kg';
+    if (grams >= 1000) return '${_num(grams / 1000, 2)} ${Units.sym('kg')}';
     if (grams > 0 && grams < 1) return '${_num(grams * 1000, grams < 0.01 ? 2 : 1)} mg';
-    return '${_num(grams, 1)} g';
+    return '${_num(grams, 1)} ${Units.sym('g')}';
   }
 
   /// Longitud con la cantidad justa de decimales: "8,00 mm", "1 234,5 mm".
   String length(double mmValue, {int? digits}) {
     final v = fromMm(mmValue);
+    if (v.abs() < 1e-9) return '0 $symbol';
     final d = digits != null ? (_fineInch ? digits + 2 : digits) : _digits(v.abs());
     return '${_num(v, d)} $symbol';
   }

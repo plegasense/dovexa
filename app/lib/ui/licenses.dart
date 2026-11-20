@@ -6,6 +6,8 @@ import '../l10n/l10n.dart';
 
 
 /// Dirección pública del código fuente de Dovexa (obligatoria por la GPL-3.0).
+/// Debe coincidir con `version:` de pubspec.yaml.
+const String kAppVersion = '1.0.14 (17)';
 const String kSourceUrl = 'https://github.com/plegasense/dovexa';
 
 /// Registra las licencias de los componentes nativos, que Flutter no detecta

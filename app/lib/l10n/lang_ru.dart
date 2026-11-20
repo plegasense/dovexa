@@ -1002,8 +1002,8 @@ const Map<String, String> kLang_ru = {
   'QUÉ NO SE PUEDE DAR POR BUENO': 'ЧТО НЕЛЬЗЯ СЧИТАТЬ ДОСТОВЕРНЫМ',
   'Unidades': 'Единицы измерения',
   'Unidades: {u}': 'Единицы измерения: {u}',
-  'Métrico (mm)': 'Метрическая (mm)',
-  'Imperial (in)': 'Имперская (in)',
+  'Métrico (mm)': 'Метрическая (мм)',
+  'Imperial (in)': 'Имперская (дюйм)',
   'Cómo se muestran las medidas; los archivos no cambian.': 'Как отображаются размеры; файлы не меняются.',
   'Según el país del dispositivo': 'По региону устройства',
   'Milímetros, gramos y metros': 'Миллиметры, граммы и метры',
@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_ru = {
   'Archivo incompleto: faltan {n} triángulos': 'Неполный файл: не хватает {n} треугольников',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Файл повреждён или не соответствует формату, указанному в расширении.',
   'No se reconoce el formato de este archivo.': 'Формат этого файла не распознан.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL слишком большой ({mb} МБ): предел — {max} МБ, чтобы не исчерпать память.',
+  'Versión': 'Версия',
 };

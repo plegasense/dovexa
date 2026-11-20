@@ -11,7 +11,7 @@ const Map<String, String> kEnCore = {
   'Imperial (in)': 'Imperial (in)',
   'Cómo se muestran las medidas; los archivos no cambian.': 'How measurements are shown; files are not changed.',
   'Según el país del dispositivo': 'Based on the device region',
-  'Milímetros, gramos y metros': 'Millimetres, grams and metres',
+  'Milímetros, gramos y metros': 'Millimeters, grams and meters',
   'Pulgadas, onzas y libras': 'Inches, ounces and pounds',
   '{m} · {l} ft de filamento 1,75 mm': '{m} · {l} ft of 1.75 mm filament',
   'Estimación con paredes de {w}; el laminador dará la cifra exacta.': 'Estimate with {w} walls; the slicer will give the exact figure.',

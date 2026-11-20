@@ -53,6 +53,13 @@ class Units {
   static String get symbol => isImperial ? 'in' : 'mm';
 
   /// Nombre del sistema para la interfaz.
+  /// Símbolo de unidad en el idioma (ruso y ucraniano usan letras cirílicas).
+  static String sym(String sym) {
+    if (L.lang != 'ru' && L.lang != 'uk') return sym;
+    const m = {'mm': 'мм', 'cm': 'см', 'm': 'м', 'in': 'дюйм', 'ft': 'фут', 'mi': 'миль', 'g': 'г', 'kg': 'кг', 'mm/min': 'мм/мин', 'in/min': 'дюйм/мин', 'mm/s': 'мм/с'};
+    return m[sym] ?? sym;
+  }
+
   static String label(UnitSystem s) => switch (s) {
     UnitSystem.auto => tr('Automático'),
     UnitSystem.metric => tr('Métrico (mm)'),
@@ -89,14 +96,14 @@ class Units {
     final m = mm.map((v) => v.abs()).reduce((a, b) => a > b ? a : b) / kMmPerInch;
     final d = inDigits(m);
     String n(double v) => LengthUnit.numText(v / kMmPerInch, d);
-    return '${n(mm[0])} × ${n(mm[1])} × ${n(mm[2])} in';
+    return '${n(mm[0])} × ${n(mm[1])} × ${n(mm[2])} ${sym('in')}';
   }
 
   /// Longitud en el estilo de `fmtNum` con la unidad: "12,5 mm" · "0,492 in". [d] son los decimales en mm.
   static String mm(double mm, {int d = 1}) {
-    if (!isImperial) return '${fmt(mm, d: d)} mm';
+    if (!isImperial) return '${fmt(mm, d: d)} ${sym('mm')}';
     final v = mm / kMmPerInch;
-    return '${fmt(v, d: inDigits(v.abs()))} in';
+    return '${fmt(v, d: inDigits(v.abs()))} ${sym('in')}';
   }
 
   /// Sólo el número (sin unidad) en la unidad mostrada, con el estilo de `fmtNum`.
@@ -108,17 +115,17 @@ class Units {
 
   /// Espesores, alturas de capa y tolerancias: un decimal más en imperial (0,0079 in).
   static String fine(double mm, {int d = 2}) {
-    if (!isImperial) return '${fmt(mm, d: d)} mm';
+    if (!isImperial) return '${fmt(mm, d: d)} ${sym('mm')}';
     final v = mm / kMmPerInch;
-    return '${fmt(v, d: v.abs() >= 1 ? 3 : 4)} in';
+    return '${fmt(v, d: v.abs() >= 1 ? 3 : 4)} ${sym('in')}';
   }
 
   /// Medida de un diámetro/valor ya redondeado en mm con `toStringAsFixed`, sin separadores de miles.
-  /// Equivale a '${mm.toStringAsFixed(d)} mm' en métrico.
+  /// Equivale a '${mm.toStringAsFixed(d)} ${sym('mm')}' en métrico.
   static String plain(double mm, {int d = 1}) {
-    if (!isImperial) return '${mm.toStringAsFixed(d).ldec} mm';
+    if (!isImperial) return '${mm.toStringAsFixed(d).ldec} ${sym('mm')}';
     final v = mm / kMmPerInch;
-    return '${v.toStringAsFixed(inDigits(v.abs()))} in';
+    return '${v.toStringAsFixed(inDigits(v.abs()))} ${sym('in')}';
   }
 
   /// Sólo el número con `toStringAsFixed` (sin separadores de miles) en la unidad mostrada: cotas Z, límites…
@@ -131,44 +138,44 @@ class Units {
   /// Tres medidas con `toStringAsFixed(d)` y «mm» al final (resúmenes de G-code); en imperial, [dims].
   static String dimsPlain(List<double> mm, {int d = 1}) {
     if (isImperial) return dims(mm);
-    return '${mm[0].toStringAsFixed(d).ldec} × ${mm[1].toStringAsFixed(d).ldec} × ${mm[2].toStringAsFixed(d).ldec} mm';
+    return '${mm[0].toStringAsFixed(d).ldec} × ${mm[1].toStringAsFixed(d).ldec} × ${mm[2].toStringAsFixed(d).ldec} ${sym('mm')}';
   }
 
   /// Recorridos largos con `toStringAsFixed`: "12,34 m" / "850 mm" (con punto decimal, como el G-code).
   static String farPlain(double mm) {
-    if (!isImperial) return mm >= 10000 ? '${(mm / 1000).toStringAsFixed(2).ldec} m' : '${mm.toStringAsFixed(0).ldec} mm';
+    if (!isImperial) return mm >= 10000 ? '${(mm / 1000).toStringAsFixed(2).ldec} ${sym('m')}' : '${mm.toStringAsFixed(0).ldec} ${sym('mm')}';
     return far(mm);
   }
 
   /// Longitud de filamento: "1.25 m" (con `toStringAsFixed`) o pies.
   static String filament(double mm) {
-    if (!isImperial) return '${(mm / 1000).toStringAsFixed(2).ldec} m';
-    return '${(mm / kMmPerInch / 12).toStringAsFixed(1).ldec} ft';
+    if (!isImperial) return '${(mm / 1000).toStringAsFixed(2).ldec} ${sym('m')}';
+    return '${(mm / kMmPerInch / 12).toStringAsFixed(1).ldec} ${sym('ft')}';
   }
 
   /// Rango de avances en mm/min: "300 – 1200 mm/min" · "11.8 – 47.2 in/min".
   static String feedRange(double aMmMin, double bMmMin) {
-    if (!isImperial) return '${aMmMin.round()} – ${bMmMin.round()} mm/min';
+    if (!isImperial) return '${aMmMin.round()} – ${bMmMin.round()} ${sym('mm/min')}';
     String n(double v) => (v / kMmPerInch).toStringAsFixed(1).ldec;
-    return '${n(aMmMin)} – ${n(bMmMin)} in/min';
+    return '${n(aMmMin)} – ${n(bMmMin)} ${sym('in/min')}';
   }
 
   /// Distancias grandes (recorridos, nubes de puntos): mm hasta 10 m → m; en imperial pulgadas, pies o millas.
   static String far(double mm, {int d = 2}) {
     if (!isImperial) {
-      return mm >= 10000 ? '${fmt(mm / 1000, d: d)} m' : '${fmt(mm, d: mm >= 100 ? 0 : 1)} mm';
+      return mm >= 10000 ? '${fmt(mm / 1000, d: d)} ${sym('m')}' : '${fmt(mm, d: mm >= 100 ? 0 : 1)} ${sym('mm')}';
     }
     final inch = mm / kMmPerInch;
-    if (inch >= 12 * 5280) return '${fmt(inch / (12 * 5280), d: 2)} mi';
-    if (inch >= 12 * 30) return '${fmt(inch / 12, d: inch >= 12 * 1000 ? 0 : 1)} ft';
-    return '${fmt(inch, d: inDigits(inch.abs()))} in';
+    if (inch >= 12 * 5280) return '${fmt(inch / (12 * 5280), d: 2)} ${sym('mi')}';
+    if (inch >= 12 * 30) return '${fmt(inch / 12, d: inch >= 12 * 1000 ? 0 : 1)} ${sym('ft')}';
+    return '${fmt(inch, d: inDigits(inch.abs()))} ${sym('in')}';
   }
 
   /// Longitud en metros de la escena (nubes de puntos) → m o ft.
   static String meters(double m, {int d = 1}) {
-    if (!isImperial) return '${fmt(m, d: d)} m';
+    if (!isImperial) return '${fmt(m, d: d)} ${sym('m')}';
     final ft = m * 1000 / kMmPerInch / 12;
-    return '${fmt(ft, d: d)} ft';
+    return '${fmt(ft, d: d)} ${sym('ft')}';
   }
 
   // ---- Área y volumen
@@ -225,7 +232,7 @@ class Units {
 
   /// Masa con `toStringAsFixed(d)` y la g pegada ("12 g"), como en los resúmenes de G-code.
   static String grams(double g, {int d = 1}) {
-    if (!isImperial) return '${g.toStringAsFixed(d).ldec} g';
+    if (!isImperial) return '${g.toStringAsFixed(d).ldec} ${sym('g')}';
     final oz = g / kGramsPerOunce;
     if (g >= kGramsPerPound) return '${(g / kGramsPerPound).toStringAsFixed(2).ldec} lb';
     return '${oz.toStringAsFixed(oz >= 10 ? 1 : (oz >= 0.01 || oz == 0 ? 2 : 4)).ldec} oz';
@@ -235,14 +242,14 @@ class Units {
 
   /// Avance en mm/min → "1200 mm/min" · "47,2 in/min".
   static String feedMin(double mmPerMin, {int d = 0}) {
-    if (!isImperial) return '${mmPerMin.toStringAsFixed(d).ldec} mm/min';
+    if (!isImperial) return '${mmPerMin.toStringAsFixed(d).ldec} ${sym('mm/min')}';
     final v = mmPerMin / kMmPerInch;
-    return '${v.toStringAsFixed(v >= 100 ? 0 : 1).ldec} in/min';
+    return '${v.toStringAsFixed(v >= 100 ? 0 : 1).ldec} ${sym('in/min')}';
   }
 
   /// Avance en mm/s → "60 mm/s" · "2,36 in/s".
   static String feedSec(double mmPerSec, {int d = 0}) {
-    if (!isImperial) return '${mmPerSec.toStringAsFixed(d).ldec} mm/s';
+    if (!isImperial) return '${mmPerSec.toStringAsFixed(d).ldec} ${sym('mm/s')}';
     final v = mmPerSec / kMmPerInch;
     return '${v.toStringAsFixed(v >= 10 ? 1 : 2).ldec} in/s';
   }
@@ -265,7 +272,7 @@ class Units {
   static String cloudLabel(CloudInfo i) {
     if (i.geographic) return '°';
     if (i.unit.isEmpty) return '';
-    return cloudFactor(i) == 1 ? ' ${i.unit}' : ' ft';
+    return cloudFactor(i) == 1 ? ' ${i.unit}' : ' ${sym('ft')}';
   }
 
   /// Densidad (puntos por m²) en la unidad mostrada: por ft² en imperial.

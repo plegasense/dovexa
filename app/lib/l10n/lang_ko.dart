@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_ko = {
   'Archivo incompleto: faltan {n} triángulos': '불완전한 파일: 삼각형 {n}개 누락',
   'El archivo está dañado o no es del formato que indica su extensión.': '파일이 손상되었거나 확장자가 나타내는 형식이 아닙니다.',
   'No se reconoce el formato de este archivo.': '이 파일 형식을 인식할 수 없습니다.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL이 너무 큽니다({mb}MB). 메모리 부족을 막기 위해 한도는 {max}MB입니다.',
+  'Versión': '버전',
 };
