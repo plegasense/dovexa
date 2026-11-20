@@ -1129,7 +1129,7 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                     LengthUnit.m,
                   ])
                     ChoiceChip(
-                      label: Text(tr('Archivo en {u}', {'u': u.symbol})),
+                      label: Text('${tr('Archivo')}: ${u.symbol}'),
                       selected: c.unit == u,
                       onSelected: (_) {
                         c.setUnit(u);

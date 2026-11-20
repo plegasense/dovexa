@@ -1,4 +1,6 @@
+import 'dart:convert' show latin1;
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:vector_math/vector_math.dart' as vm;
 
@@ -99,7 +101,9 @@ class UnsupportedFormat implements Exception {
   final String extension;
   final String? software;
   @override
-  String toString() => extension == 'dwg'
+  String toString() => extension.isEmpty
+      ? tr('No se reconoce el formato de este archivo.')
+      : extension == 'dwg'
       ? '${tr('Los archivos .dwg son formato nativo de AutoCAD y todavía no se pueden abrir.')} '
             '${tr('Guárdalo como DXF (Guardar como → DXF) y ábrelo aquí.')}'
       : software == null
@@ -210,8 +214,62 @@ Scene _sceneFrom(SceneData d) {
   return scene;
 }
 
+/// Formato real de un archivo por su contenido (para cuando la extensión falta o miente).
+/// Devuelve la extensión canónica y las que se consideran equivalentes, o null si no está claro.
+(String, Set<String>)? _sniff(String path) {
+  final Uint8List b;
+  try {
+    final f = File(path).openSync();
+    try {
+      b = f.readSync(4096);
+    } finally {
+      f.closeSync();
+    }
+  } catch (_) {
+    return null;
+  }
+  if (b.length < 8) return null;
+  final head = latin1.decode(b).replaceAll('\r', '');
+  final low = head.toLowerCase();
+  if (head.startsWith('glTF')) return ('glb', {'glb', 'gltf'});
+  if (head.startsWith('LASF')) return ('las', {'las'});
+  if (head.startsWith('GCDE')) return ('bgcode', {'bgcode'});
+  if (head.contains('ASTM-E57')) return ('e57', {'e57'});
+  if (low.trimLeft().startsWith('ply\n')) return ('ply', {'ply'});
+  if (head.contains('ISO-10303-21')) return ('step', {'step', 'stp', 'stpz'});
+  if (head.startsWith('#VRML') || head.startsWith('#X3D')) return ('wrl', {'wrl', 'x3d', 'x3dv', 'wrz'});
+  if (low.contains('<svg')) return ('svg', {'svg'});
+  if (RegExp(r'^\s*0\s*\n\s*SECTION\s*\n').hasMatch(head)) return ('dxf', {'dxf'});
+  if (low.trimLeft().startsWith('solid') && low.contains('facet')) return ('stl', {'stl'});
+  return null;
+}
+
+/// Enlace con el nombre del archivo y la extensión corregida, para que los lectores lo reconozcan.
+String _alias(String path, String ext) {
+  var h = 5381;
+  for (final c in path.codeUnits) {
+    h = ((h << 5) + h + c) & 0x7FFFFFFF;
+  }
+  final base = path.split('/').last;
+  final stem = base.contains('.') ? base.substring(0, base.lastIndexOf('.')) : base;
+  final dir = Directory('${extraBase ?? Directory.systemTemp.path}/dovexa_alias/$h')
+    ..createSync(recursive: true);
+  final link = Link('${dir.path}/$stem.$ext');
+  if (link.existsSync()) link.deleteSync();
+  link.createSync(path);
+  return link.path;
+}
+
 /// Abre cualquier archivo soportado y devuelve el documento adecuado.
 Future<Document> loadDocument(String path, {int? gcodePlate}) async {
+  final name0 = path.split('/').last;
+  final ext0 = name0.contains('.') ? name0.split('.').last.toLowerCase() : '';
+  if (ext0 != 'zip' && !name0.toLowerCase().endsWith('.gcode.3mf')) {
+    final s = _sniff(path);
+    if (s != null && !s.$2.contains(ext0)) {
+      return loadDocument(_alias(path, s.$1), gcodePlate: gcodePlate);
+    }
+  }
   final name = path.split('/').last;
   final lower = name.toLowerCase();
   final ext = name.contains('.') ? lower.split('.').last : '';
@@ -290,15 +348,17 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
   if (ext == 'stpz' ||
       lower.endsWith('.stp.gz') ||
       lower.endsWith('.step.gz')) {
+    // El temporal conserva el nombre del archivo para que el título del documento sea el suyo.
+    final stem = name.replaceFirst(RegExp(r'\.(stpz|stp\.gz|step\.gz)$', caseSensitive: false), '');
+    final tmpDir = '${Directory.systemTemp.path}/dovexa_stpz/${DateTime.now().microsecondsSinceEpoch}';
     final data = await isoRun(() {
-      final tmp = File(
-        '${Directory.systemTemp.path}/dovexa_${DateTime.now().microsecondsSinceEpoch}.step',
-      );
+      Directory(tmpDir).createSync(recursive: true);
+      final tmp = File('$tmpDir/$stem.step');
       tmp.writeAsBytesSync(gzip.decode(File(path).readAsBytesSync()));
       try {
         return parseCad(tmp.path);
       } finally {
-        tmp.deleteSync();
+        Directory(tmpDir).deleteSync(recursive: true);
       }
     });
     return ModelDocument(_sceneFrom(data));

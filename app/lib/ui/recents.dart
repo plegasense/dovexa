@@ -39,20 +39,44 @@ class RecentsStore {
     }
   }
 
+  /// Los archivos del selector o de «Abrir con» viven en la caché y Android la vacía:
+  /// para que Recientes siga funcionando se guarda una copia propia (hasta 50 MB).
+  static Future<String> _keep(String path, String name, int size) async {
+    final cache = (await getTemporaryDirectory()).path;
+    if (!path.startsWith(cache) || size > 50 * 1024 * 1024) return path;
+    final dir = Directory('${(await getApplicationSupportDirectory()).path}/recientes/$size');
+    dir.createSync(recursive: true);
+    final dst = '${dir.path}/$name';
+    File(path).copySync(dst);
+    return dst;
+  }
+
   static Future<void> add(String path) async {
     try {
       final all = await load();
       final name = path.split('/').last;
       final size = File(path).lengthSync();
+      final kept = await _keep(path, name, size);
       // El selector copia cada archivo a una ruta nueva: se compara por nombre y tamaño.
-      all.removeWhere(
-        (r) => r.path == path || (r.name == name && File(r.path).lengthSync() == size),
-      );
-      all.insert(0, RecentFile(path, name, DateTime.now()));
+      final gone = all.where(
+        (r) => r.path == kept || (r.name == name && File(r.path).lengthSync() == size),
+      ).toList();
+      all.removeWhere(gone.contains);
+      all.insert(0, RecentFile(kept, name, DateTime.now()));
+      final shown = all.take(12).toList();
+      // Se borran las copias propias que ya no figuran en la lista.
+      final base = '${(await getApplicationSupportDirectory()).path}/recientes/';
+      for (final r in [...gone, ...all.skip(12)]) {
+        if (r.path.startsWith(base) && !shown.any((s) => s.path == r.path)) {
+          try {
+            File(r.path).deleteSync();
+          } catch (_) {}
+        }
+      }
       final f = await _file();
       await f.writeAsString(
         jsonEncode([
-          for (final r in all.take(12))
+          for (final r in shown)
             {
               'path': r.path,
               'name': r.name,

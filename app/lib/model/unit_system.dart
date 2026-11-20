@@ -39,7 +39,10 @@ class Units {
   /// Unidad con la que mostrar un archivo que declara [file]: en imperial, las métricas pasan a pulgadas; las
   /// demás (pulgadas, pies, píxeles…) se respetan; en métrico no cambia nada.
   static LengthUnit forFile(LengthUnit file) {
-    if (!isImperial) return file;
+    if (!isImperial) {
+      // Con «Métrico» elegido expresamente, las pulgadas y los pies también se muestran en mm.
+      return system == UnitSystem.metric && (identical(file, LengthUnit.inch) || identical(file, LengthUnit.foot)) ? LengthUnit.mm : file;
+    }
     if (identical(file, LengthUnit.mm) || identical(file, LengthUnit.cm) || identical(file, LengthUnit.m) || identical(file, LengthUnit.um)) {
       return LengthUnit.inch;
     }

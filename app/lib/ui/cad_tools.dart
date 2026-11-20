@@ -936,7 +936,7 @@ Future<void> showInfoSheet(
               ],
             ),
             const Divider(height: 24, color: DT.border),
-            row(tr('Unidad del archivo'), u.name),
+            row(tr('Unidad del archivo'), LengthUnit.fromFile(cad.unit).name),
             if (cad.origin.isNotEmpty) row(tr('Creado con'), cad.origin),
             if (cad.schema.isNotEmpty)
               row(tr('Formato'), stepProtocol(cad.schema)),

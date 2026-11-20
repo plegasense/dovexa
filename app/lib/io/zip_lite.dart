@@ -23,7 +23,7 @@ class ZipLite {
     final raf = File(path).openSync();
     try {
       final len = raf.lengthSync();
-      if (len < 22) throw FormatException(tr('El archivo no es un ZIP'));
+      if (len < 22) throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
       final tailLen = len < 70000 ? len : 70000;
       raf.setPositionSync(len - tailLen);
       final tail = raf.readSync(tailLen);
@@ -37,7 +37,7 @@ class ZipLite {
           break;
         }
       }
-      if (e < 0) throw FormatException(tr('El archivo no es un ZIP'));
+      if (e < 0) throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
       final bd = ByteData.sublistView(tail);
       var count = bd.getUint16(e + 10, Endian.little);
       var cdSize = bd.getUint32(e + 12, Endian.little);

@@ -36,7 +36,7 @@ List<(String, IconData, String)> get _formatGroups => [
   (
     tr('Piezas y ensamblajes'),
     Icons.view_in_ar_outlined,
-    'STEP · STP · STPZ · IGES · BREP · STL · 3MF · OBJ · PLY · glTF · GLB · VRML',
+    'STEP · STP · STPZ · IGES · BREP · STL · 3MF · OBJ · PLY · glTF · GLB · VRML · X3D',
   ),
   (tr('Planos y dibujos'), Icons.architecture, 'DXF · SVG · HPGL · PLT'),
   (
@@ -44,7 +44,7 @@ List<(String, IconData, String)> get _formatGroups => [
     Icons.route_outlined,
     tr('G-code · BGCODE · NC · NGC · TAP · 3MF de impresora'),
   ),
-  (tr('Nubes de puntos'), Icons.grain, 'XYZ · PTS · PCD · PLY'),
+  (tr('Nubes de puntos'), Icons.grain, 'XYZ · PTS · PCD · PLY · LAS · LAZ · E57'),
 ];
 
 /// Pantalla de inicio: logo animado, abrir archivo y recientes.

@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_hi = {
   'LASzip (codificador aritmético)': 'LASzip (अंकगणितीय कोडर)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'फ़ाइल नहीं मिली। हो सकता है उसे हटा दिया गया हो या दूसरी जगह ले जाया गया हो।',
   'Notas': 'टिप्पणियाँ',
+  'Archivo incompleto: faltan {n} triángulos': 'अधूरी फ़ाइल: {n} त्रिभुज गायब हैं',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'फ़ाइल क्षतिग्रस्त है या उसके एक्सटेंशन के अनुसार फ़ॉर्मैट की नहीं है।',
+  'No se reconoce el formato de este archivo.': 'इस फ़ाइल का फ़ॉर्मैट पहचाना नहीं गया।',
 };

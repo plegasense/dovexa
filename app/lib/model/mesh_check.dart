@@ -12,6 +12,7 @@ class StlMeta {
     required this.bytes,
     required this.colored,
     this.skipped = 0,
+    this.truncated = 0,
     this.colors,
     this.defaultColor,
   });
@@ -27,6 +28,9 @@ class StlMeta {
 
   /// Triángulos descartados por tener coordenadas no finitas (NaN o infinito).
   final int skipped;
+
+  /// Triángulos que la cabecera anuncia y el archivo no trae (archivo cortado).
+  final int truncated;
 }
 
 /// Un casco (conjunto de triángulos conectados).

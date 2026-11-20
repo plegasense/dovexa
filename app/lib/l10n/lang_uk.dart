@@ -1025,4 +1025,7 @@ const Map<String, String> kLang_uk = {
   'LASzip (codificador aritmético)': 'LASzip (арифметичний кодер)',
   'No se encuentra el archivo. Puede que se haya movido o borrado.': 'Файл не знайдено. Можливо, його переміщено або видалено.',
   'Notas': 'Примітки',
+  'Archivo incompleto: faltan {n} triángulos': 'Неповний файл: бракує {n} трикутників',
+  'El archivo está dañado o no es del formato que indica su extensión.': 'Файл пошкоджено або він не відповідає формату, указаному в розширенні.',
+  'No se reconoce el formato de este archivo.': 'Формат цього файлу не розпізнано.',
 };
