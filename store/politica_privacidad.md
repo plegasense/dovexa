@@ -1,6 +1,6 @@
 # Política de privacidad de Dovexa
 
-Última actualización: 9 de noviembre de 2026
+Última actualización: 20 de noviembre de 2026
 
 ## 1. Quién es el responsable
 Plegasense, desarrolladora de Dovexa.
@@ -12,7 +12,7 @@ Dovexa **no tiene cuentas de usuario, no se conecta a ningún servidor y no reco
 Los archivos que abres (modelos 3D, dibujos, G-code, nubes de puntos…) se leen y se procesan **solo en tu dispositivo**. No los recibimos, no los subimos y no podemos verlos.
 
 ## 3. Qué guarda la app en tu dispositivo
-- La lista de archivos abiertos recientemente (nombre y ubicación), para que puedas volver a abrirlos.
+- La lista de archivos abiertos recientemente: nombre, ubicación y **una copia local de los últimos archivos abiertos** (hasta 12 archivos de 50 MB como máximo, con sus texturas o archivos asociados), para que puedas volver a abrirlos aunque el original ya no esté. Esa copia queda en el almacenamiento privado de la app y no sale del dispositivo.
 - Tus preferencias (idioma y sistema de unidades).
 - Una caché local de conversión de archivos CAD grandes, para abrirlos más rápido la próxima vez.
 - Los archivos que guardas tú mismo desde la app (por ejemplo, un DXF exportado), en la ubicación que elijas.
@@ -35,7 +35,7 @@ Si Dovexa cambiase de modo que se tratasen datos (por ejemplo, si se añadiera u
 
 # Dovexa Privacy Policy (English)
 
-Last updated: November 9, 2026
+Last updated: November 20, 2026
 
 ## 1. Who is responsible
 Plegasense, developer of Dovexa.
@@ -47,7 +47,7 @@ Dovexa **has no user accounts, does not connect to any server and does not colle
 The files you open (3D models, drawings, G-code, point clouds…) are read and processed **only on your device**. We do not receive them, upload them or see them.
 
 ## 3. What the app stores on your device
-- The list of recently opened files (name and location), so you can open them again.
+- The list of recently opened files: name, location and **a local copy of the most recently opened files** (up to 12 files of 50 MB each, with their textures or companion files), so you can reopen them even if the original is gone. The copy stays in the app's private storage and never leaves your device.
 - Your preferences (language and unit system).
 - A local conversion cache for large CAD files, to open them faster next time.
 - Files you save yourself from the app (for example an exported DXF), in the location you choose.
