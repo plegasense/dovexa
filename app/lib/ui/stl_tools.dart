@@ -1263,17 +1263,17 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                       min: 0,
                       max: 1,
                       divisions: 20,
-                      label: '${(c.infill * 100).round()} %',
                       onChanged: (v) {
                         c.infill = v;
                         c.refresh();
                       },
                     ),
                   ),
-                  SizedBox(
-                    width: 44,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 44),
                     child: Text(
                       '${(c.infill * 100).round()} %',
+                      softWrap: false,
                       textAlign: TextAlign.right,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
@@ -1393,14 +1393,14 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                       min: 20,
                       max: 70,
                       divisions: 10,
-                      label: '${c.overhangDeg.round()}°',
                       onChanged: c.setOverhangAngle,
                     ),
                   ),
-                  SizedBox(
-                    width: 44,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 44),
                     child: Text(
                       '${c.overhangDeg.round()}°',
+                      softWrap: false,
                       textAlign: TextAlign.right,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
@@ -1446,7 +1446,6 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                       min: 0.2,
                       max: 3,
                       divisions: 28,
-                      label: Units.mm(c.thicknessMm),
                       onChanged: c.setThicknessMm,
                     ),
                   ),

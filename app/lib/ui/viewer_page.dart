@@ -81,6 +81,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
   Document? _doc;
   final Set<SceneNode> _selected = {};
   String? _error;
+  String? _errorPath; // archivo que falló (se reintenta al cambiar de idioma para traducir el aviso)
   String? _errorAddFor; // modelo al que faltan archivos externos (ofrece añadirlos)
   List<Widget> _chips = const [];
   final Set<int> _hidden = {};
@@ -284,6 +285,8 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     final p = _openedPath;
     if (_doc != null && p != null && !_loading) {
       _open(p, gcodePlate: _openedPlate);
+    } else if (_error != null && _errorPath != null && !_loading) {
+      _open(_errorPath!);
     } else {
       setState(() {});
     }
@@ -423,6 +426,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
       _loadingNote = note;
       _error = null;
       _errorAddFor = null;
+      _errorPath = null;
     });
     try {
       final loadWatch = Stopwatch()..start();
@@ -1349,6 +1353,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
       setState(() {
         _error = '${path.split('/').last}\n$msg';
         _errorAddFor = e is MissingDataFile ? path : null;
+        _errorPath = path;
       });
     } finally {
       if (mounted && seq == _loadSeq) setState(() => _loading = false);

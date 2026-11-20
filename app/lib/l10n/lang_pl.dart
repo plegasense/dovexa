@@ -748,7 +748,7 @@ const Map<String, String> kLang_pl = {
   '{n} caras': 'Ściany: {n}',
   'Pieza;Cantidad;Largo ({u});Ancho ({u});Alto ({u});Volumen ({u}³)': 'Część;Ilość;Długość ({u});Szerokość ({u});Wysokość ({u});Objętość ({u}³)',
   'Lista de materiales copiada (pégala en Excel)': 'Skopiowano listę części (wklej ją do Excela)',
-  'FRONT': 'FRONT',
+  'FRENTE': 'FRONT',
   'POST': 'TYŁ',
   'DER': 'PRAWO',
   'IZQ': 'LEWO',

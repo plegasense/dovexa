@@ -312,6 +312,10 @@ class Units {
 
   // ---- Persistencia
 
+  // Leer-modificar-escribir en cola: dos guardados seguidos no se pisan.
+  static Future<void> _queue = Future.value();
+  static Future<void> _serial(Future<void> Function() f) => _queue = _queue.then((_) => f()).catchError((_) {});
+
   static Future<File> _prefsFile() async {
     final dir = await getApplicationSupportDirectory();
     return File('${dir.path}/prefs.json');
@@ -345,10 +349,12 @@ class Units {
   static Future<void> set(UnitSystem s) async {
     system = s;
     try {
-      final m = await _readPrefs();
-      m['units'] = s.name;
-      final f = await _prefsFile();
-      await f.writeAsString(jsonEncode(m));
+      await _serial(() async {
+        final m = await _readPrefs();
+        m['units'] = s.name;
+        final f = await _prefsFile();
+        await f.writeAsString(jsonEncode(m));
+      });
     } catch (_) {}
   }
 
@@ -356,10 +362,12 @@ class Units {
   static Future<void> setLang(String c) async {
     L.apply(c);
     try {
-      final m = await _readPrefs();
-      m['lang'] = L.choice.value;
-      final f = await _prefsFile();
-      await f.writeAsString(jsonEncode(m));
+      await _serial(() async {
+        final m = await _readPrefs();
+        m['lang'] = L.choice.value;
+        final f = await _prefsFile();
+        await f.writeAsString(jsonEncode(m));
+      });
     } catch (_) {}
   }
 }

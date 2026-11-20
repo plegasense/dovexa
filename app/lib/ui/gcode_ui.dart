@@ -503,7 +503,7 @@ class GcodeInfoPanel extends StatelessWidget {
             if (s.infill != null) _row(tr('Relleno'), s.infill!),
             if (s.supports != null) _row(tr('Soportes'), s.supports! ? tr('Sí') : tr('No')),
             if (s.fanPercent != null)
-              _row(tr('Ventilador máx.'), '${s.fanPercent}%'),
+              _row(tr('Ventilador máx.'), '${s.fanPercent} %'),
             for (final (k, v) in s.extras) _row(k, v),
           ],
           ...() {
@@ -1103,5 +1103,5 @@ class _ThumbViewState extends State<ThumbView> {
 /// Porcentaje del tiempo; «<1 %» si es poco pero no cero (así ambas listas coinciden).
 String _pct(num part, num total) {
   final p = (part * 100 / total).round();
-  return p < 1 ? '<1%' : '$p%';
+  return p < 1 ? '<1 %' : '$p %';
 }

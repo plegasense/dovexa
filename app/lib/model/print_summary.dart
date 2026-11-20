@@ -172,6 +172,14 @@ String formatDuration(double sec) {
   if (sec > 0 && sec < 1) return tr('< 1 s');
   final s = sec.round();
   final d = s ~/ 86400, h = (s % 86400) ~/ 3600, m = (s % 3600) ~/ 60;
+  if (L.lang == 'es') {
+    // «m» se confunde con metros: en español minutos y segundos van con su abreviatura.
+    final ss = (s % 60).toString().padLeft(2, '0');
+    if (d > 0) return '$d d $h h $m min';
+    if (h > 0) return '$h h ${m.toString().padLeft(2, '0')} min';
+    if (m > 0) return '$m min $ss s';
+    return '$s s';
+  }
   if (d > 0) return tr('{d}d {h}h {m}m', {'d': d, 'h': h, 'm': m});
   if (h > 0) return tr('{h}h {m}m', {'h': h, 'm': m.toString().padLeft(2, '0')});
   if (m > 0) return tr('{m}m {s}s', {'m': m, 's': (s % 60).toString().padLeft(2, '0')});
