@@ -54,6 +54,7 @@ const Map<String, String> kLang_tw = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': '請在 {s} 中匯出為 STEP (.step)，再於此開啟。',
   'El archivo no contiene geometría': '檔案不含幾何資料',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': '解壓縮後的 ZIP 過大（超過 1.5 GB）',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': '解壓縮後的檔案過大 (超過 1.5 GB)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': '此 ZIP 內沒有 Dovexa 能開啟的模型',
   'No se pudo abrir el archivo': '無法開啟檔案',
   'El archivo está vacío.': '檔案是空的。',

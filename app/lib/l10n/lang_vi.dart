@@ -54,6 +54,7 @@ const Map<String, String> kLang_vi = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': 'Hãy xuất sang STEP (.step) từ {s} rồi mở tại đây.',
   'El archivo no contiene geometría': 'Tệp không chứa hình học',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': 'ZIP sau khi giải nén quá lớn (hơn 1,5 GB)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': 'Tệp giải nén quá lớn (hơn 1,5 GB)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'ZIP không chứa mô hình nào mà Dovexa có thể mở',
   'No se pudo abrir el archivo': 'Không thể mở tệp',
   'El archivo está vacío.': 'Tệp trống.',

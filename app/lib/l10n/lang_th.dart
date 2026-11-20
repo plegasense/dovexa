@@ -54,6 +54,7 @@ const Map<String, String> kLang_th = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': 'ส่งออกเป็น STEP (.step) จาก {s} แล้วเปิดที่นี่',
   'El archivo no contiene geometría': 'ไฟล์ไม่มีรูปทรงเรขาคณิต',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': 'ZIP ที่แตกไฟล์แล้วมีขนาดใหญ่เกินไป (เกิน 1.5 GB)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': 'ไฟล์ที่แตกแล้วใหญ่เกินไป (เกิน 1.5 GB)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'ZIP ไม่มีโมเดลที่ Dovexa เปิดได้',
   'No se pudo abrir el archivo': 'เปิดไฟล์ไม่ได้',
   'El archivo está vacío.': 'ไฟล์ว่างเปล่า',

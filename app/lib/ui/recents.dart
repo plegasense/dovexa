@@ -86,6 +86,8 @@ class RecentsStore {
         if (r.path.startsWith(base) && !shown.any((s) => s.path == r.path)) {
           try {
             File(r.path).deleteSync();
+            final ex = Directory(extraFilesDir(r.path));
+            if (ex.existsSync()) ex.deleteSync(recursive: true);
           } catch (_) {}
         }
       }

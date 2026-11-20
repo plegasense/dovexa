@@ -37,6 +37,7 @@ const Map<String, String> kEn_io_cam = {
   'Expórtalo a STEP (.step) desde {s} y ábrelo aquí.': 'Export it to STEP (.step) from {s} and open it here.',
   'El archivo no contiene geometría': 'The file contains no geometry',
   'El ZIP descomprimido es demasiado grande (más de 1,5 GB)': 'The decompressed ZIP is too large (over 1.5 GB)',
+  'El archivo descomprimido es demasiado grande (más de 1,5 GB)': 'The decompressed file is too large (over 1.5 GB)',
   'El ZIP no contiene ningún modelo que Dovexa sepa abrir': 'The ZIP contains no model that Dovexa can open',
   'No se pudo abrir el archivo': 'Could not open the file',
   'El archivo está vacío.': 'The file is empty.',
