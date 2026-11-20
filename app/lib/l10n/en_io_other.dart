@@ -109,4 +109,8 @@ const Map<String, String> kEn_io_other = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'The STL is too large ({mb} MB): the limit is {max} MB to avoid running out of memory.',
   'Versión': 'Version',
   'punto': 'point',
+  '{d}d {h}h {m}m': '{d}d {h}h {m}m',
+  '{h}h {m}m': '{h}h {m}m',
+  '{m}m {s}s': '{m}m {s}s',
+  '{s}s': '{s}s',
 };

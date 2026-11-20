@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_ko = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL이 너무 큽니다({mb}MB). 메모리 부족을 막기 위해 한도는 {max}MB입니다.',
   'Versión': '버전',
   'punto': '점',
+  '{d}d {h}h {m}m': '{d}일 {h}시간 {m}분',
+  '{h}h {m}m': '{h}시간 {m}분',
+  '{m}m {s}s': '{m}분 {s}초',
+  '{s}s': '{s}초',
 };

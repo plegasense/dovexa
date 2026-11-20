@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_th = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'ไฟล์ STL ใหญ่เกินไป ({mb} MB): จำกัดที่ {max} MB เพื่อไม่ให้หน่วยความจำหมด',
   'Versión': 'เวอร์ชัน',
   'punto': 'จุด',
+  '{d}d {h}h {m}m': '{d}วัน {h}ชม. {m}นาที',
+  '{h}h {m}m': '{h}ชม. {m}นาที',
+  '{m}m {s}s': '{m}นาที {s}วิ',
+  '{s}s': '{s}วิ',
 };
