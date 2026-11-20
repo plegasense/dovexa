@@ -621,7 +621,7 @@ class _ViewerPageState extends State<ViewerPage> {
               );
             }
           } else {
-            chips.add(InfoChip(Icons.layers_outlined, tr('{n} capas', {'n': t.layerCount})));
+            chips.add(InfoChip(Icons.layers_outlined, (t.layerCount == 1 ? tr('{n} capa', {'n': 1}) : tr('{n} capas', {'n': Units.fmt(t.layerCount.toDouble(), d: 0)}))));
             if (sum.seconds != null) {
               chips.add(
                 InfoChip(

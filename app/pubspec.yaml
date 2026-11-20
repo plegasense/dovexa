@@ -13,6 +13,8 @@ dependencies:
   file_picker: ^13.1.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_gpu:
     sdk: flutter
   flutter_gpu_shaders: ^0.5.2

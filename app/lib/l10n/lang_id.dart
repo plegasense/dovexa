@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_id = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Koordinat di luar rentang (lebih dari satu triliun satuan)',
+  'datos incoherentes': 'data tidak konsisten',
+  'El archivo BREP está incompleto o dañado': 'File BREP tidak lengkap atau rusak',
+  '{n} capa': '{n} lapisan',
+  'Cubo de vistas': 'Kubus tampilan',
+  '< 1 s': '< 1 dtk',
 };

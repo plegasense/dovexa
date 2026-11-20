@@ -248,7 +248,7 @@ SceneData parseGltf(String path, {List<String> extraDirs = const []}) {
   } on Exception {
     rethrow;
   } on Error catch (e) {
-    throw FormatException(tr('El glTF está dañado ({e})', {'e': e}));
+    throw FormatException(tr('El glTF está dañado ({e})', {'e': tr('datos incoherentes')}));
   }
 }
 

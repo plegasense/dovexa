@@ -1,6 +1,7 @@
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -71,6 +72,18 @@ class _DovexaAppState extends State<DovexaApp> {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: DT.theme(),
+      // Textos de Material (accesibilidad, diálogos) en el idioma de la app.
+      locale: L.lang == 'tw'
+          ? const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
+          : Locale(L.lang),
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('es'),
+        for (final c in L.supported) if (c != 'zh') Locale(c),
+        const Locale('zh'),
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+      ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       home: const ViewerPage(),
     );
   }

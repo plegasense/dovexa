@@ -70,6 +70,8 @@ class Units {
 
   /// Igual que `fmtNum` (separador de miles y decimal del idioma).
   static String fmt(double v, {int d = 1}) {
+    if (!v.isFinite) return '—';
+    if (v.abs() >= 1e15) return v.toStringAsExponential(2).ldec;
     final s = v.toStringAsFixed(d);
     final parts = s.split('.');
     final ip = parts[0].replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => kThousands);
@@ -125,7 +127,7 @@ class Units {
   static String plain(double mm, {int d = 1}) {
     if (!isImperial) return '${mm.toStringAsFixed(d).ldec} ${sym('mm')}';
     final v = mm / kMmPerInch;
-    return '${v.toStringAsFixed(inDigits(v.abs()))} ${sym('in')}';
+    return '${v.toStringAsFixed(inDigits(v.abs())).ldec} ${sym('in')}';
   }
 
   /// Sólo el número con `toStringAsFixed` (sin separadores de miles) en la unidad mostrada: cotas Z, límites…

@@ -31,6 +31,11 @@
 #include <BRepLib.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepTools.hxx>
+#include <sstream>
+#include <cctype>
+#include <memory>
+#include <condition_variable>
+#include <mutex>
 #include <BRep_Builder.hxx>
 #include <TopAbs_ShapeEnum.hxx>
 #include <TopoDS_Shape.hxx>
@@ -715,10 +720,60 @@ DovexaScene* dovexa_cad_open(const char* path, double rel_deflection) {
     if (fromCache) {
       // sin lectura
     } else if (ext == "brep") {
-      TopoDS_Shape shp;
-      BRep_Builder bb;
-      ok = BRepTools::Read(shp, path, bb) && !shp.IsNull();
-      if (ok) XCAFDoc_DocumentTool::ShapeTool(doc->Main())->AddShape(shp, shp.ShapeType() == TopAbs_COMPOUND);
+      // Un .brep cortado hace que OCCT no termine nunca: se exige que acabe con la referencia a la forma
+      // raíz («+N M ») y, aun así, la lectura va en un hilo con límite de tiempo.
+      struct BrepJob {
+        TopoDS_Shape shp;
+        bool ok = false, done = false;
+        std::mutex m;
+        std::condition_variable cv;
+      };
+      bool tailOk = false;
+      {
+        std::ifstream f(path, std::ios::binary | std::ios::ate);
+        const std::streamoff len = f.tellg();
+        const std::streamoff n = len < 64 ? len : 64;
+        std::string tail(static_cast<size_t>(n), '\0');
+        f.seekg(len - n);
+        f.read(&tail[0], n);
+        while (!tail.empty() && (tail.back() == ' ' || tail.back() == '\n' || tail.back() == '\r')) tail.pop_back();
+        const auto nl = tail.find_last_of('\n');
+        const std::string last = nl == std::string::npos ? tail : tail.substr(nl + 1);
+        std::istringstream ls(last);
+        char sign = 0;
+        long a = -1, b = -1;
+        std::string rest;
+        tailOk = (ls >> sign >> a >> b) && (sign == '+' || sign == '-') && !(ls >> rest);
+      }
+      if (!tailOk) {
+        g_error = "El archivo BREP está incompleto o dañado";
+        return nullptr;
+      }
+      auto job = std::make_shared<BrepJob>();
+      const std::string pathCopy = path;
+      std::thread([job, pathCopy]() {
+        BRep_Builder bb;
+        TopoDS_Shape sh;
+        bool good = false;
+        try {
+          good = BRepTools::Read(sh, pathCopy.c_str(), bb) && !sh.IsNull();
+        } catch (...) {
+        }
+        std::lock_guard<std::mutex> lk(job->m);
+        job->shp = sh;
+        job->ok = good;
+        job->done = true;
+        job->cv.notify_all();
+      }).detach();
+      {
+        std::unique_lock<std::mutex> lk(job->m);
+        if (!job->cv.wait_for(lk, std::chrono::seconds(60), [&] { return job->done; })) {
+          g_error = "El archivo BREP está incompleto o dañado";
+          return nullptr;
+        }
+      }
+      ok = job->ok;
+      if (ok) XCAFDoc_DocumentTool::ShapeTool(doc->Main())->AddShape(job->shp, job->shp.ShapeType() == TopAbs_COMPOUND);
     } else if (ext == "igs" || ext == "iges") {
       IGESCAFControl_Reader r;
       r.SetColorMode(true);

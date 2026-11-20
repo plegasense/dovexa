@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_nl = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Coördinaten buiten bereik (meer dan een biljoen eenheden)',
+  'datos incoherentes': 'inconsistente gegevens',
+  'El archivo BREP está incompleto o dañado': 'Het BREP-bestand is onvolledig of beschadigd',
+  '{n} capa': '{n} laag',
+  'Cubo de vistas': 'Weergavekubus',
+  '< 1 s': '< 1 s',
 };

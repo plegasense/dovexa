@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_pl = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Współrzędne poza zakresem (ponad bilion jednostek)',
+  'datos incoherentes': 'niespójne dane',
+  'El archivo BREP está incompleto o dañado': 'Plik BREP jest niekompletny lub uszkodzony',
+  '{n} capa': '{n} warstwa',
+  'Cubo de vistas': 'Kostka widoków',
+  '< 1 s': '< 1 s',
 };

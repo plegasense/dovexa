@@ -457,8 +457,8 @@ class GcodeInfoPanel extends StatelessWidget {
             tr('Tamaño'),
             Units.dimsPlain(size),
           ),
-          _row(tr('Capas'), '${t.layerCount}'),
-          if (s.retractions > 0) _row(tr('Retracciones'), '${s.retractions}'),
+          _row(tr('Capas'), Units.fmt(t.layerCount.toDouble(), d: 0)),
+          if (s.retractions > 0) _row(tr('Retracciones'), Units.fmt(s.retractions.toDouble(), d: 0)),
           if (s.filaments.isNotEmpty) ...[
             _section(multi ? tr('MATERIALES') : tr('MATERIAL')),
             for (final f in s.filaments)

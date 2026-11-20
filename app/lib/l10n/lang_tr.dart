@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_tr = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Koordinatlar aralık dışında (bir trilyon birimden fazla)',
+  'datos incoherentes': 'tutarsız veri',
+  'El archivo BREP está incompleto o dañado': 'BREP dosyası eksik veya hasarlı',
+  '{n} capa': '{n} katman',
+  'Cubo de vistas': 'Görünüm küpü',
+  '< 1 s': '< 1 sn',
 };

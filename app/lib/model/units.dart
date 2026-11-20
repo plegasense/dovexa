@@ -77,6 +77,8 @@ class LengthUnit {
   static String numText(double v, int digits) => _num(v, digits);
 
   static String _num(double v, int digits) {
+    if (!v.isFinite) return '—';
+    if (v.abs() >= 1e15) return v.toStringAsExponential(2).ldec;
     var s = v.toStringAsFixed(digits);
     final neg = s.startsWith('-');
     if (neg) s = s.substring(1);
