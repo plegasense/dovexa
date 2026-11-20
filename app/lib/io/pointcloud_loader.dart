@@ -28,7 +28,13 @@ PointData _parseXyz(String path) {
   for (final raw in const LineSplitter().convert(text)) {
     final line = raw.trim();
     if (line.isEmpty || line.startsWith('#') || line.startsWith('//')) continue;
-    final p = line.split(RegExp(r'[\s,;]+'));
+    // Coma decimal: con «;» como separador, o con espacios y comas dentro de los números.
+    final ws = line.split(RegExp(r'\s+'));
+    final p = line.contains(';')
+        ? line.split(RegExp(r'\s*;\s*')).map((s) => s.trim().replaceAll(',', '.')).toList()
+        : (ws.length >= 3 && ws.every((s) => RegExp(r'^[-+]?\d*,\d+([eE][-+]?\d+)?$|^[-+]?\d+([eE][-+]?\d+)?$').hasMatch(s)) && ws.any((s) => s.contains(',')))
+            ? ws.map((s) => s.replaceAll(',', '.')).toList()
+            : line.split(RegExp(r'[\s,;]+'));
     if (first) {
       first = false;
       // PTS: la primera línea suele ser el número de puntos.

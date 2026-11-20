@@ -26,7 +26,10 @@ Future<void> showLanguageSheet(BuildContext context) {
                   for (final c in ['auto', ...L.names.keys])
                     InkWell(
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () => Units.setLang(c),
+                      onTap: () {
+                        Units.setLang(c);
+                        Navigator.of(ctx).pop();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(

@@ -19,7 +19,10 @@ Future<void> showUnitsSheet(BuildContext context) {
           for (final s in UnitSystem.values)
             InkWell(
               borderRadius: BorderRadius.circular(12),
-              onTap: () => Units.set(s),
+              onTap: () {
+                Units.set(s);
+                Navigator.of(ctx).pop();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(

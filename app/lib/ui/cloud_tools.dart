@@ -423,7 +423,7 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
           ..add(
             RangeSlider(
               semanticFormatterCallback: (v) =>
-                  '${tr('Posición')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                  Units.mm(v),
               values: RangeValues(lo, hi),
               min: aMin,
               max: aMax > aMin ? aMax : aMin + 1,

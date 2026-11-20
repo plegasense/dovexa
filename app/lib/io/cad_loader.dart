@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 
 import '../l10n/l10n.dart';
+import '../model/mesh.dart' show Bounds;
 import '../model/pmi.dart';
 import '../src/dovexa_ffi.dart';
 import 'mesh_builder.dart';
@@ -102,7 +103,7 @@ SceneData parseCad(String path, {String? cacheDir}) {
       final verts = Float32List.fromList(
         src,
       ); // copia: la memoria nativa se libera al final
-      final b = boundsOf(verts);
+      var b = boundsOf(verts);
       final c = dovexaPartColor(scene, i);
       final tris = n ~/ 3;
       final faceCount = dovexaPartFaceCount(scene, i);
@@ -134,6 +135,20 @@ SceneData parseCad(String path, {String? cacheDir}) {
           materialDensity: matDens,
         ),
       );
+      // Sin triángulos (IGES/STEP solo de aristas): el encuadre sale de las aristas.
+      if (n == 0 && segN > 0) {
+        final e = dovexaPartEdgeSegments(scene, i).asTypedList(segN * 6);
+        final mn = [double.infinity, double.infinity, double.infinity];
+        final mx = [-double.infinity, -double.infinity, -double.infinity];
+        for (var j = 0; j + 2 < e.length; j += 3) {
+          for (var k = 0; k < 3; k++) {
+            final v = e[j + k];
+            if (v < mn[k]) mn[k] = v;
+            if (v > mx[k]) mx[k] = v;
+          }
+        }
+        if (!mn[0].isInfinite) b = Bounds(mn, mx);
+      }
       meshes.add(
         MeshData(
           _cleanName(dovexaPartName(scene, i).toDartString()),

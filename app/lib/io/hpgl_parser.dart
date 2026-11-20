@@ -246,6 +246,13 @@ class _Plotter {
         t,
       ),
     );
+    // Como en el plóter, la pluma queda al final del rótulo.
+    final n = math.sqrt(dirRun * dirRun + dirRise * dirRise);
+    if (n > 0 && _mmPerPlu > 0) {
+      final w = t.length * charHmm * 0.75 / _mmPerPlu;
+      x += dirRun / n * w;
+      y += dirRise / n * w;
+    }
   }
 
   void endPolygon() {

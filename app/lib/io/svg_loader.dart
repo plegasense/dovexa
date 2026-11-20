@@ -1207,15 +1207,22 @@ DxfData _pack(String name, Map<String, List<double>> perLayer, List<DrawingText>
       if (l[k + 1] > mx[1]) mx[1] = l[k + 1];
     }
   }
-  if (names.isEmpty) {
+  // Los rótulos también ocupan sitio: ancho aproximado por carácter, girado con el texto.
+  for (final t in texts) {
+    final w = t.text.length * t.height * 0.75;
+    final r = t.rotation * math.pi / 180;
+    final c = math.cos(r), s = math.sin(r);
+    for (final (u, v) in [(0.0, 0.0), (w, 0.0), (0.0, t.height), (w, t.height)]) {
+      final px = t.x + u * c - v * s, py = t.y + u * s + v * c;
+      mn[0] = math.min(mn[0], px);
+      mn[1] = math.min(mn[1], py);
+      mx[0] = math.max(mx[0], px);
+      mx[1] = math.max(mx[1], py);
+    }
+  }
+  if (mn[0].isInfinite) {
     mn[0] = mn[1] = 0;
     mx[0] = mx[1] = 1;
-    for (final t in texts) {
-      mn[0] = math.min(mn[0], t.x);
-      mn[1] = math.min(mn[1], t.y);
-      mx[0] = math.max(mx[0], t.x + t.height);
-      mx[1] = math.max(mx[1], t.y + t.height);
-    }
   }
   return DxfData(name, verts, groups, mn, mx, texts, insUnits)..info = info;
 }

@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_ja = {
   'No se reconoce el formato de este archivo.': 'このファイル形式は認識できません。',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL が大きすぎます（{mb} MB）。メモリ不足を避けるため上限は {max} MB です。',
   'Versión': 'バージョン',
+  'punto': '点',
 };

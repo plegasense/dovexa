@@ -284,7 +284,7 @@ class AnimationBar extends StatelessWidget {
                       Expanded(
                         child: Slider(
                           semanticFormatterCallback: (v) =>
-                              '${tr('Posición')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                              '${v.toStringAsFixed(1).ldec} s',
                           value: d <= 0 ? 0 : p.time.clamp(0, d).toDouble(),
                           max: d <= 0 ? 1 : d,
                           onChanged: d <= 0 ? null : p.seek,
