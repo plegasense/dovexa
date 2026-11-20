@@ -51,7 +51,13 @@ class ToolButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
+    return Semantics(
+      button: true,
+      selected: active,
+      label: tooltip,
+      excludeSemantics: true,
+      onTap: onTap,
+      child: Tooltip(
       message: tooltip,
       child: InkResponse(
         onTap: onTap,
@@ -72,6 +78,7 @@ class ToolButton extends StatelessWidget {
             color: active ? DT.orangeSoft : DT.text.withValues(alpha: 0.86),
           ),
         ),
+      ),
       ),
     );
   }

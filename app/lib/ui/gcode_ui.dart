@@ -15,9 +15,9 @@ import '../model/unit_system.dart';
 
 Color _c(int rgb) => Color(0xFF000000 | rgb);
 
-TextStyle _label() => const TextStyle(
+TextStyle _label() => TextStyle(
   fontSize: 11.5,
-  letterSpacing: 1.6,
+  letterSpacing: kCapsSpacing,
   color: DT.muted,
   fontWeight: FontWeight.w600,
 );

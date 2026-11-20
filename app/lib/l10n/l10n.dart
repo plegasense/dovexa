@@ -91,6 +91,9 @@ String tr(String es, [Map<String, Object?>? args]) {
   return s;
 }
 
+/// Espaciado de las cabeceras en mayúsculas: el tailandés y el hindi lo rompen (marcas combinadas).
+double get kCapsSpacing => (L.lang == 'th' || L.lang == 'hi') ? 0 : 1.6;
+
 extension LocalNumber on String {
   /// Pasa un número escrito con punto decimal a la convención del idioma.
   String get ldec => L.decimal == '.' ? this : replaceAll('.', L.decimal);

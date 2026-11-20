@@ -240,6 +240,11 @@ class _Accessors {
 }
 
 /// Lee glTF 2.0 (.gltf con buffers externos o incrustados, y .glb).
+/// Falta un archivo externo del modelo (p. ej. el .bin de un .gltf): la interfaz ofrece añadirlo.
+class MissingDataFile extends FormatException {
+  MissingDataFile(super.message);
+}
+
 SceneData parseGltf(String path, {List<String> extraDirs = const []}) {
   try {
     return _parseGltf(path, extraDirs);
@@ -247,7 +252,7 @@ SceneData parseGltf(String path, {List<String> extraDirs = const []}) {
     rethrow;
   } on Exception {
     rethrow;
-  } on Error catch (e) {
+  } on Error {
     throw FormatException(tr('El glTF está dañado ({e})', {'e': tr('datos incoherentes')}));
   }
 }
@@ -346,7 +351,7 @@ SceneData _parseGltf(String path, List<String> extraDirs) {
       final f = sib.find(Uri.decodeFull(uri));
       if (f == null) {
         info.missing.add(Uri.decodeFull(uri));
-        throw FormatException(tr('Falta el archivo de datos: {file}', {'file': Uri.decodeFull(uri)}));
+        throw MissingDataFile(tr('Falta el archivo de datos: {file}', {'file': Uri.decodeFull(uri)}));
       }
       buffers.add(File(f).readAsBytesSync());
     }

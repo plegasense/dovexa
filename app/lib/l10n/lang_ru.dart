@@ -782,7 +782,7 @@ const Map<String, String> kLang_ru = {
   'Mínimo': 'Минимум',
   'Máximo': 'Максимум',
   'Densidad': 'Плотность',
-  '≈ {a} puntos/m² · separación ≈ {b} см': '≈ {a} точек/м² · расстояние ≈ {b} см',
+  '≈ {a} puntos/m² · separación ≈ {b} cm': '≈ {a} точек/м² · расстояние ≈ {b} см',
   'SISTEMA DE COORDENADAS': 'СИСТЕМА КООРДИНАТ',
   'Sistema': 'Система',
   'sin indicar': 'не указано',
