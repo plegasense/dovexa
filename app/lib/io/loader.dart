@@ -372,7 +372,13 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
     final data = await isoRun(() {
       Directory(tmpDir).createSync(recursive: true);
       final tmp = File('$tmpDir/$stem.step');
-      tmp.writeAsBytesSync(gzip.decode(File(path).readAsBytesSync()));
+      List<int> raw;
+      try {
+        raw = gzip.decode(File(path).readAsBytesSync());
+      } on FormatException {
+        throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
+      }
+      tmp.writeAsBytesSync(raw);
       try {
         return parseCad(tmp.path);
       } finally {

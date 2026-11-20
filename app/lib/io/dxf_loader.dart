@@ -384,11 +384,14 @@ DxfData parseDxfBytes(Uint8List bytes, String fileName) {
       mny = double.infinity,
       mxx = -double.infinity,
       mxy = -double.infinity;
+  var huge = false;
   void scanBounds(List<_Entity> es) {
     for (final e in es) {
-      for (final q in e.data) {
-        if (q.code == 10 || q.code == 11) {
-          // x
+      for (final q in [...e.data, for (final c in e.children) ...c.data]) {
+        final c = q.code;
+        if ((c >= 10 && c <= 38) || (c >= 40 && c <= 43)) {
+          final v = q.d;
+          if (v.isNaN || v.abs() >= 1e12) huge = true;
         }
       }
       final x = e.first(10), y = e.first(20);
@@ -402,7 +405,7 @@ DxfData parseDxfBytes(Uint8List bytes, String fileName) {
   }
 
   scanBounds(modelEntities);
-  if (!mnx.isInfinite && !((mxx - mnx).abs() < 1e12 && (mxy - mny).abs() < 1e12 && mnx.abs() < 1e12 && mny.abs() < 1e12)) {
+  if (huge || !mnx.isInfinite && !((mxx - mnx).abs() < 1e12 && (mxy - mny).abs() < 1e12 && mnx.abs() < 1e12 && mny.abs() < 1e12)) {
     throw FormatException(tr('Coordenadas fuera de rango (más de un billón de unidades)'));
   }
   final diag = mnx.isInfinite

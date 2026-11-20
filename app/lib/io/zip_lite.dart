@@ -136,15 +136,19 @@ class ZipLite {
     }
     if (e.method != 8) throw FormatException(tr('Compresión ZIP no soportada ({m})', {'m': e.method}));
     final sink = _ChunkSink(onChunk);
-    final conv = ZLibDecoder(raw: true).startChunkedConversion(sink);
-    while (left > 0) {
-      _raf.setPositionSync(pos);
-      final n = left < 256 * 1024 ? left : 256 * 1024;
-      conv.add(_raf.readSync(n));
-      pos += n;
-      left -= n;
+    try {
+      final conv = ZLibDecoder(raw: true).startChunkedConversion(sink);
+      while (left > 0) {
+        _raf.setPositionSync(pos);
+        final n = left < 256 * 1024 ? left : 256 * 1024;
+        conv.add(_raf.readSync(n));
+        pos += n;
+        left -= n;
+      }
+      conv.close();
+    } on FormatException {
+      throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
     }
-    conv.close();
   }
 
   Uint8List read(String name) {

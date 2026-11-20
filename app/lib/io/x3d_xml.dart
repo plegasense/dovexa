@@ -9,7 +9,7 @@ void parseX3dXml(String text, VrmlDoc doc) {
   try {
     xml = XmlDocument.parse(text);
   } on XmlException catch (e) {
-    throw FormatException(tr('El X3D está mal formado: {m}', {'m': e.message}));
+    throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
   }
   final root = xml.rootElement;
   XmlElement? scene;
