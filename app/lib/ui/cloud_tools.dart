@@ -39,7 +39,9 @@ class CloudController extends ChangeNotifier {
     final total = v.length ~/ 6;
     if (total == 0) return false;
     final step = math.max(1, (total / 1500000).ceil());
-    final m = (cam.projection(viewport.width / viewport.height) * cam.viewMatrix()).storage;
+    final m =
+        (cam.projection(viewport.width / viewport.height) * cam.viewMatrix())
+            .storage;
     final w = viewport.width, h = viewport.height;
     const r2 = 18.0 * 18.0;
     var best = -1;
@@ -60,7 +62,11 @@ class CloudController extends ChangeNotifier {
     }
     if (best < 0) return false;
     if (picks.length >= 2) picks.clear();
-    picks.add([v[best * 6].toDouble(), v[best * 6 + 1].toDouble(), v[best * 6 + 2].toDouble()]);
+    picks.add([
+      v[best * 6].toDouble(),
+      v[best * 6 + 1].toDouble(),
+      v[best * 6 + 2].toDouble(),
+    ]);
     notifyListeners();
     return true;
   }
@@ -85,14 +91,19 @@ class CloudController extends ChangeNotifier {
       (tr('Distancia'), '${_num(d3 * k)}$u'),
       (tr('Horizontal'), '${_num(horiz * k)}$u'),
       (tr('Desnivel'), '${dz >= 0 ? '+' : ''}${_num(dz * k)}$u'),
-      if (horiz > 1e-9) (tr('Pendiente'), '${fmtNum(dz / horiz * 100, d: 1)} % · ${fmtNum(math.atan2(dz.abs(), horiz) * 180 / math.pi, d: 1)}°'),
+      if (horiz > 1e-9)
+        (
+          tr('Pendiente'),
+          '${fmtNum(dz / horiz * 100, d: 1)} % · ${fmtNum(math.atan2(dz.abs(), horiz) * 180 / math.pi, d: 1)}°',
+        ),
     ];
   }
 }
 
 /// Marcas de la medición proyectadas sobre la vista.
 class CloudOverlayPainter extends CustomPainter {
-  CloudOverlayPainter(this.cam, this.ctl, Listenable repaint) : super(repaint: repaint);
+  CloudOverlayPainter(this.cam, this.ctl, Listenable repaint)
+    : super(repaint: repaint);
   final OrbitCamera cam;
   final CloudController ctl;
 
@@ -103,7 +114,10 @@ class CloudOverlayPainter extends CustomPainter {
     if (w <= 1e-9) return null;
     final x = (s[0] * p[0] + s[4] * p[1] + s[8] * p[2] + s[12]) / w;
     final y = (s[1] * p[0] + s[5] * p[1] + s[9] * p[2] + s[13]) / w;
-    return Offset((x * 0.5 + 0.5) * size.width, (1 - (y * 0.5 + 0.5)) * size.height);
+    return Offset(
+      (x * 0.5 + 0.5) * size.width,
+      (1 - (y * 0.5 + 0.5)) * size.height,
+    );
   }
 
   @override
@@ -120,7 +134,12 @@ class CloudOverlayPainter extends CustomPainter {
         final tp = TextPainter(
           text: TextSpan(
             text: r.first.$2,
-            style: const TextStyle(color: DT.text, fontSize: 13, fontWeight: FontWeight.w700, backgroundColor: Color(0xCC0A1214)),
+            style: const TextStyle(
+              color: DT.text,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              backgroundColor: Color(0xCC0A1214),
+            ),
           ),
           textDirection: TextDirection.ltr,
         )..layout();
@@ -131,7 +150,14 @@ class CloudOverlayPainter extends CustomPainter {
     for (final o in pts) {
       if (o == null) continue;
       canvas.drawCircle(o, 6, Paint()..color = DT.orange);
-      canvas.drawCircle(o, 6, Paint()..color = DT.ink..style = PaintingStyle.stroke..strokeWidth = 1.5);
+      canvas.drawCircle(
+        o,
+        6,
+        Paint()
+          ..color = DT.ink
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5,
+      );
     }
   }
 
@@ -148,7 +174,11 @@ String _modeName(CloudColorMode m) => switch (m) {
   CloudColorMode.flat => tr('Liso'),
 };
 
-String _countText(num n) => n >= 1e6 ? '${fmtNum(n / 1e6, d: 1)} M' : (n >= 1e4 ? tr('{n} mil', {'n': fmtNum(n / 1e3, d: 0)}) : fmtNum(n.toDouble(), d: 0));
+String _countText(num n) => n >= 1e6
+    ? '${fmtNum(n / 1e6, d: 1)} M'
+    : (n >= 1e4
+          ? tr('{n} mil', {'n': fmtNum(n / 1e3, d: 0)})
+          : fmtNum(n.toDouble(), d: 0));
 
 Widget _gradient(List<Color> colors, String lo, String hi) => Padding(
   padding: const EdgeInsets.only(top: 8),
@@ -156,7 +186,10 @@ Widget _gradient(List<Color> colors, String lo, String hi) => Padding(
     children: [
       Container(
         height: 10,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), gradient: LinearGradient(colors: colors)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          gradient: LinearGradient(colors: colors),
+        ),
       ),
       const SizedBox(height: 4),
       Row(
@@ -170,7 +203,11 @@ Widget _gradient(List<Color> colors, String lo, String hi) => Padding(
   ),
 );
 
-Widget _dot(Color c) => Container(width: 12, height: 12, decoration: BoxDecoration(color: c, shape: BoxShape.circle));
+Widget _dot(Color c) => Container(
+  width: 12,
+  height: 12,
+  decoration: BoxDecoration(color: c, shape: BoxShape.circle),
+);
 
 /// Hoja «Vista»: color, tamaño de punto, clases visibles y recorte por altura.
 Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
@@ -189,14 +226,22 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
         final uk = Units.cloudFactor(c.info);
         final zMin = c.bounds.min[2], zMax = c.bounds.max[2];
         final zOff = c.origin[2];
-        final aMin = c.bounds.min[c.clipAxis], aMax = c.bounds.max[c.clipAxis], aOff = c.origin[c.clipAxis];
-        final lo = (c.zClipLo ?? aMin).clamp(aMin, aMax), hi = (c.zClipHi ?? aMax).clamp(aMin, aMax);
+        final aMin = c.bounds.min[c.clipAxis],
+            aMax = c.bounds.max[c.clipAxis],
+            aOff = c.origin[c.clipAxis];
+        final lo = (c.zClipLo ?? aMin).clamp(aMin, aMax),
+            hi = (c.zClipHi ?? aMax).clamp(aMin, aMax);
         final rows = <Widget>[
           sheetTitle(
             tr('Vista de la nube'),
             sub: c.info.sampled
-                ? tr('Se muestran {n} puntos de {t}', {'n': _countText(c.totalLoaded), 't': _countText(c.info.totalPoints)})
-                : tr('Se muestran {n} puntos', {'n': _countText(c.totalLoaded)}),
+                ? tr('Se muestran {n} puntos de {t}', {
+                    'n': _countText(c.totalLoaded),
+                    't': _countText(c.info.totalPoints),
+                  })
+                : tr('Se muestran {n} puntos', {
+                    'n': _countText(c.totalLoaded),
+                  }),
           ),
           sheetLabel(tr('COLOR')),
           Wrap(
@@ -226,11 +271,17 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
               _gradient(
                 [const Color(0xFF1F1E1D), const Color(0xFFFFFAF0)],
                 '${c.info.intensityLo.round()}',
-                tr('{h}  (rango del archivo {a}–{b})', {'h': c.info.intensityHi.round(), 'a': c.info.intensityMin, 'b': c.info.intensityMax}),
+                tr('{h}  (rango del archivo {a}–{b})', {
+                  'h': c.info.intensityHi.round(),
+                  'a': c.info.intensityMin,
+                  'b': c.info.intensityMax,
+                }),
               ),
             );
           case CloudColorMode.classification:
-            final scale = c.info.shownPoints > 0 ? c.info.totalPoints / c.info.shownPoints : 1.0;
+            final scale = c.info.shownPoints > 0
+                ? c.info.totalPoints / c.info.shownPoints
+                : 1.0;
             final keys = c.info.classCounts.keys.toList()..sort();
             for (final k in keys) {
               final hidden = c.hiddenClasses.contains(k);
@@ -241,12 +292,33 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Row(
                       children: [
-                        Icon(hidden ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 18, color: hidden ? DT.muted : DT.text),
+                        Icon(
+                          hidden
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          size: 18,
+                          color: hidden ? DT.muted : DT.text,
+                        ),
                         const SizedBox(width: 10),
                         _dot(Color(0xFF000000 | asprsColor(k))),
                         const SizedBox(width: 10),
-                        Expanded(child: Text('${asprsName(k)} ($k)', style: TextStyle(color: hidden ? DT.muted : DT.text))),
-                        Text(tr('≈ {n}', {'n': _countText(c.info.classCounts[k]! * scale)}), style: const TextStyle(color: DT.muted, fontSize: 12.5)),
+                        Expanded(
+                          child: Text(
+                            '${asprsName(k)} ($k)',
+                            style: TextStyle(
+                              color: hidden ? DT.muted : DT.text,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          tr('≈ {n}', {
+                            'n': _countText(c.info.classCounts[k]! * scale),
+                          }),
+                          style: const TextStyle(
+                            color: DT.muted,
+                            fontSize: 12.5,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -263,7 +335,13 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
               rows.add(
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(children: [_dot(e.$2), const SizedBox(width: 10), Text(e.$1)]),
+                  child: Row(
+                    children: [
+                      _dot(e.$2),
+                      const SizedBox(width: 10),
+                      Text(e.$1),
+                    ],
+                  ),
                 ),
               );
             }
@@ -277,13 +355,21 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
               children: [
                 Expanded(
                   child: Slider(
+                    semanticFormatterCallback: (v) =>
+                        '${tr('TAMAÑO DE PUNTO')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
                     value: c.effectiveSize.clamp(1.0, 10.0),
                     min: 1,
                     max: 10,
                     onChanged: (v) => apply(() => c.pointSize = v),
                   ),
                 ),
-                SizedBox(width: 44, child: Text('${fmtNum(c.effectiveSize, d: 1)} px', style: const TextStyle(color: DT.muted, fontSize: 12.5))),
+                SizedBox(
+                  width: 44,
+                  child: Text(
+                    '${fmtNum(c.effectiveSize, d: 1)} px',
+                    style: const TextStyle(color: DT.muted, fontSize: 12.5),
+                  ),
+                ),
               ],
             ),
           )
@@ -293,7 +379,9 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
               children: [
                 Expanded(
                   child: Text(
-                    tr('Oscurece los puntos que tienen otros más cerca: da relieve sin necesitar normales.'),
+                    tr(
+                      'Oscurece los puntos que tienen otros más cerca: da relieve sin necesitar normales.',
+                    ),
                     style: TextStyle(color: DT.muted, fontSize: 12.5),
                   ),
                 ),
@@ -303,7 +391,14 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
           )
           ..add(
             c.edl
-                ? Slider(value: c.edlStrength, min: 0.2, max: 3, onChanged: (v) => apply(() => c.edlStrength = v))
+                ? Slider(
+                    semanticFormatterCallback: (v) =>
+                        '${tr('Intensidad')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                    value: c.edlStrength,
+                    min: 0.2,
+                    max: 3,
+                    onChanged: (v) => apply(() => c.edlStrength = v),
+                  )
                 : const SizedBox.shrink(),
           )
           ..add(sheetLabel(tr('CORTE Y PERFIL')))
@@ -312,24 +407,46 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
               spacing: 6,
               children: [
                 for (final (i, n) in const ['X', 'Y', 'Z (altura)'].indexed)
-                  ChoiceChip(label: Text(tr('Eje {n}', {'n': n == 'Z (altura)' ? tr('Z (altura)') : n})), selected: c.clipAxis == i, onSelected: (_) => apply(() => c.setClip(null, null, axis: i))),
+                  ChoiceChip(
+                    label: Text(
+                      tr('Eje {n}', {
+                        'n': n == 'Z (altura)' ? tr('Z (altura)') : n,
+                      }),
+                    ),
+                    selected: c.clipAxis == i,
+                    onSelected: (_) =>
+                        apply(() => c.setClip(null, null, axis: i)),
+                  ),
               ],
             ),
           )
           ..add(
             RangeSlider(
+              semanticFormatterCallback: (v) =>
+                  '${tr('Posición')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
               values: RangeValues(lo, hi),
               min: aMin,
               max: aMax > aMin ? aMax : aMin + 1,
-              onChanged: (r) => apply(() => c.setClip(r.start <= aMin + 1e-9 ? null : r.start, r.end >= aMax - 1e-9 ? null : r.end)),
+              onChanged: (r) => apply(
+                () => c.setClip(
+                  r.start <= aMin + 1e-9 ? null : r.start,
+                  r.end >= aMax - 1e-9 ? null : r.end,
+                ),
+              ),
             ),
           )
           ..add(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${fmtNum((lo + aOff) * uk, d: 2)}$unit', style: const TextStyle(color: DT.muted, fontSize: 12.5)),
-                Text('${fmtNum((hi + aOff) * uk, d: 2)}$unit', style: const TextStyle(color: DT.muted, fontSize: 12.5)),
+                Text(
+                  '${fmtNum((lo + aOff) * uk, d: 2)}$unit',
+                  style: const TextStyle(color: DT.muted, fontSize: 12.5),
+                ),
+                Text(
+                  '${fmtNum((hi + aOff) * uk, d: 2)}$unit',
+                  style: const TextStyle(color: DT.muted, fontSize: 12.5),
+                ),
               ],
             ),
           );
@@ -337,7 +454,10 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
           rows.add(
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(onPressed: () => apply(c.showAll), child: Text(tr('Mostrar todo'))),
+              child: TextButton(
+                onPressed: () => apply(c.showAll),
+                child: Text(tr('Mostrar todo')),
+              ),
             ),
           );
         }
@@ -347,47 +467,109 @@ Future<void> showCloudViewSheet(BuildContext context, CloudController ctl) {
   );
 }
 
-Color _rgb((double, double, double) c) => Color.from(alpha: 1, red: c.$1, green: c.$2, blue: c.$3);
+Color _rgb((double, double, double) c) =>
+    Color.from(alpha: 1, red: c.$1, green: c.$2, blue: c.$3);
 
 /// Hoja «Sobre el archivo»: formato, sistema de coordenadas, unidades, densidad y avisos.
 Future<void> showCloudInfoSheet(BuildContext context, PointCloud c) {
   final i = c.info;
   final u = Units.cloudLabel(i);
   final uk = Units.cloudFactor(i);
-  String coord(List<double>? v) => v == null ? '—' : '${fmtNum(v[0], d: 2)}, ${fmtNum(v[1], d: 2)}, ${fmtNum(v[2], d: 2)}';
+  String coord(List<double>? v) => v == null
+      ? '—'
+      : '${fmtNum(v[0], d: 2)}, ${fmtNum(v[1], d: 2)}, ${fmtNum(v[2], d: 2)}';
   final rows = <Widget>[
     sheetTitle(i.format, sub: i.pointFormat),
-    sheetRow(tr('Puntos'), i.sampled ? tr('{a} de {b}', {'a': fmtNum(i.shownPoints.toDouble(), d: 0), 'b': fmtNum(i.totalPoints.toDouble(), d: 0)}) : fmtNum(i.totalPoints.toDouble(), d: 0)),
+    sheetRow(
+      tr('Puntos'),
+      i.sampled
+          ? tr('{a} de {b}', {
+              'a': fmtNum(i.shownPoints.toDouble(), d: 0),
+              'b': fmtNum(i.totalPoints.toDouble(), d: 0),
+            })
+          : fmtNum(i.totalPoints.toDouble(), d: 0),
+    ),
   ];
   if (i.minAbs != null && i.maxAbs != null) {
     final e = [for (var k = 0; k < 3; k++) i.maxAbs![k] - i.minAbs![k]];
     rows
-      ..add(sheetRow(tr('Extensión'), '${fmtNum(e[0] * uk, d: 2)} × ${fmtNum(e[1] * uk, d: 2)} × ${fmtNum(e[2] * uk, d: 2)}$u'))
+      ..add(
+        sheetRow(
+          tr('Extensión'),
+          '${fmtNum(e[0] * uk, d: 2)} × ${fmtNum(e[1] * uk, d: 2)} × ${fmtNum(e[2] * uk, d: 2)}$u',
+        ),
+      )
       ..add(sheetRow(tr('Mínimo'), coord(i.minAbs)))
       ..add(sheetRow(tr('Máximo'), coord(i.maxAbs)));
   }
   if (i.density != null && i.density! > 0) {
     final d = i.density!;
-    rows.add(sheetRow(
-      tr('Densidad'),
-      Units.isImperial
-          ? tr('≈ {a} puntos/ft² · separación ≈ {b} in', {'a': fmtNum(Units.densityValue(d), d: Units.densityValue(d) < 10 ? 2 : 0), 'b': fmtNum(Units.spacingValue(d), d: 1)})
-          : tr('≈ {a} puntos/m² · separación ≈ {b} cm', {'a': fmtNum(d, d: d < 10 ? 2 : 0), 'b': fmtNum(100 / math.sqrt(d), d: 1)}),
-    ));
+    rows.add(
+      sheetRow(
+        tr('Densidad'),
+        Units.isImperial
+            ? tr('≈ {a} puntos/ft² · separación ≈ {b} in', {
+                'a': fmtNum(
+                  Units.densityValue(d),
+                  d: Units.densityValue(d) < 10 ? 2 : 0,
+                ),
+                'b': fmtNum(Units.spacingValue(d), d: 1),
+              })
+            : tr('≈ {a} puntos/m² · separación ≈ {b} cm', {
+                'a': fmtNum(d, d: d < 10 ? 2 : 0),
+                'b': fmtNum(100 / math.sqrt(d), d: 1),
+              }),
+      ),
+    );
   }
   rows
     ..add(sheetLabel(tr('SISTEMA DE COORDENADAS')))
-    ..add(sheetRow(tr('Sistema'), i.crs ?? tr('sin indicar'), color: i.crs == null ? DT.orangeSoft : null))
-    ..add(sheetRow(tr('Unidad'), i.unit.isEmpty ? tr('sin indicar') : (i.geographic ? tr('grados') : i.unit)));
+    ..add(
+      sheetRow(
+        tr('Sistema'),
+        i.crs ?? tr('sin indicar'),
+        color: i.crs == null ? DT.orangeSoft : null,
+      ),
+    )
+    ..add(
+      sheetRow(
+        tr('Unidad'),
+        i.unit.isEmpty
+            ? tr('sin indicar')
+            : (i.geographic ? tr('grados') : i.unit),
+      ),
+    );
   if (i.epsg != null) rows.add(sheetRow('EPSG', '${i.epsg}'));
-  if (i.scale != null) rows.add(sheetRow(tr('Precisión (escala)'), '${fmtNum(i.scale![0] * uk, d: 4)}$u'));
+  if (i.scale != null)
+    rows.add(
+      sheetRow(tr('Precisión (escala)'), '${fmtNum(i.scale![0] * uk, d: 4)}$u'),
+    );
   rows.add(sheetLabel(tr('CONTENIDO')));
   rows
     ..add(sheetRow(tr('Color'), i.hasRgb ? tr('sí') : tr('no')))
-    ..add(sheetRow(tr('Intensidad'), i.hasIntensity ? '${i.intensityMin}–${i.intensityMax}' : tr('no')))
-    ..add(sheetRow(tr('Clasificación'), i.hasClass ? tr('{n} clases', {'n': i.classCounts.length}) : tr('no')))
+    ..add(
+      sheetRow(
+        tr('Intensidad'),
+        i.hasIntensity ? '${i.intensityMin}–${i.intensityMax}' : tr('no'),
+      ),
+    )
+    ..add(
+      sheetRow(
+        tr('Clasificación'),
+        i.hasClass ? tr('{n} clases', {'n': i.classCounts.length}) : tr('no'),
+      ),
+    )
     ..add(sheetRow(tr('Retornos'), i.hasReturns ? tr('sí') : tr('no')))
-    ..add(sheetRow(tr('Tiempo GPS'), i.hasGps ? (i.gpsMin != null ? '${fmtNum(i.gpsMin!, d: 0)} – ${fmtNum(i.gpsMax ?? i.gpsMin!, d: 0)}' : tr('sí')) : tr('no')));
+    ..add(
+      sheetRow(
+        tr('Tiempo GPS'),
+        i.hasGps
+            ? (i.gpsMin != null
+                  ? '${fmtNum(i.gpsMin!, d: 0)} – ${fmtNum(i.gpsMax ?? i.gpsMin!, d: 0)}'
+                  : tr('sí'))
+            : tr('no'),
+      ),
+    );
   if (i.software != null || i.system != null || i.date != null) {
     rows.add(sheetLabel(tr('ORIGEN')));
     if (i.software != null) rows.add(sheetRow(tr('Software'), i.software!));
@@ -403,7 +585,14 @@ Future<void> showCloudInfoSheet(BuildContext context, PointCloud c) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(padding: EdgeInsets.only(top: 2, right: 8), child: Icon(Icons.warning_amber_rounded, size: 16, color: DT.orangeSoft)),
+              const Padding(
+                padding: EdgeInsets.only(top: 2, right: 8),
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  size: 16,
+                  color: DT.orangeSoft,
+                ),
+              ),
               Expanded(child: Text(w, style: const TextStyle(height: 1.3))),
             ],
           ),

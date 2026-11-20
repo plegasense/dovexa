@@ -113,13 +113,16 @@ class StlController extends ChangeNotifier {
     notifyListeners();
     final src = TransferableTypedData.fromList([mesh.vertices]);
     try {
-      selfInt = await isoRun(() => findSelfIntersections(src.materialize().asFloat32List()));
+      selfInt = await isoRun(
+        () => findSelfIntersections(src.materialize().asFloat32List()),
+      );
     } catch (_) {
       selfInt = null;
     }
     selfIntBusy = false;
     notifyListeners();
   }
+
   Float32List? _triAreas;
 
   /// Superficie (mm²) con pared más fina que el umbral, entre uno y 1,5 umbrales, y medida en total.
@@ -317,7 +320,9 @@ class StlController extends ChangeNotifier {
         final di = k * 2 + sg;
         list.add(
           OrientationInfo(
-            tr('Apoyada sobre la cara {a}', {'a': '${sg == 0 ? '+' : '−'}${names[k]}'}),
+            tr('Apoyada sobre la cara {a}', {
+              'a': '${sg == 0 ? '+' : '−'}${names[k]}',
+            }),
             k,
             sg == 0 ? 1 : -1,
             res.$1[di] * sc * sc,
@@ -446,9 +451,15 @@ class StlController extends ChangeNotifier {
       final areas = Float32List(n);
       for (var i = 0; i < n; i++) {
         final o = i * 18;
-        final ux = v[o + 6] - v[o], uy = v[o + 7] - v[o + 1], uz = v[o + 8] - v[o + 2];
-        final wx = v[o + 12] - v[o], wy = v[o + 13] - v[o + 1], wz = v[o + 14] - v[o + 2];
-        final cx = uy * wz - uz * wy, cy = uz * wx - ux * wz, cz = ux * wy - uy * wx;
+        final ux = v[o + 6] - v[o],
+            uy = v[o + 7] - v[o + 1],
+            uz = v[o + 8] - v[o + 2];
+        final wx = v[o + 12] - v[o],
+            wy = v[o + 13] - v[o + 1],
+            wz = v[o + 14] - v[o + 2];
+        final cx = uy * wz - uz * wy,
+            cy = uz * wx - ux * wz,
+            cz = ux * wy - uy * wx;
         areas[i] = math.sqrt(cx * cx + cy * cy + cz * cz) / 2;
       }
       return (t, areas);
@@ -456,7 +467,10 @@ class StlController extends ChangeNotifier {
     thickness = r.$1;
     _triAreas = r.$2;
     // ignore: avoid_print
-    if (const String.fromEnvironment('DOVEXA_CAD').isNotEmpty) print('ESPESOR ${sw.elapsedMilliseconds} ms · ${r.$1.perTriangle.length} caras · mín ${r.$1.minThickness * scale} mm');
+    if (const String.fromEnvironment('DOVEXA_CAD').isNotEmpty)
+      print(
+        'ESPESOR ${sw.elapsedMilliseconds} ms · ${r.$1.perTriangle.length} caras · mín ${r.$1.minThickness * scale} mm',
+      );
     thicknessBusy = false;
     await _paintThickness();
   }
@@ -470,7 +484,10 @@ class StlController extends ChangeNotifier {
     final r = await isoRun(() {
       final v = src.materialize().asFloat32List();
       final n = v.length ~/ 18;
-      final thin = <double>[], warn = <double>[], ok = <double>[], none = <double>[];
+      final thin = <double>[],
+          warn = <double>[],
+          ok = <double>[],
+          none = <double>[];
       var aThin = 0.0, aWarn = 0.0, aAll = 0.0;
       for (var i = 0; i < n; i++) {
         final th = per[i];
@@ -494,10 +511,23 @@ class StlController extends ChangeNotifier {
           target.add(v[o + k]);
         }
       }
-      return (Float32List.fromList(thin), Float32List.fromList(warn), Float32List.fromList(ok), Float32List.fromList(none), aThin, aWarn, aAll);
+      return (
+        Float32List.fromList(thin),
+        Float32List.fromList(warn),
+        Float32List.fromList(ok),
+        Float32List.fromList(none),
+        aThin,
+        aWarn,
+        aAll,
+      );
     });
     final b = mesh.bounds;
-    Part part(int id, String nm, Float32List d, int color) => Part(id: id, name: nm, mesh: Mesh(vertices: d, bounds: b), color: color);
+    Part part(int id, String nm, Float32List d, int color) => Part(
+      id: id,
+      name: nm,
+      mesh: Mesh(vertices: d, bounds: b),
+      color: color,
+    );
     final parts = <Part>[
       if (r.$4.isNotEmpty) part(0, 'sin medir', r.$4, 0xFF6B7F83),
       if (r.$3.isNotEmpty) part(1, 'ok', r.$3, 0xFFB7CACD),
@@ -506,7 +536,10 @@ class StlController extends ChangeNotifier {
     ];
     thicknessScene = Scene(
       name: 'espesor',
-      root: SceneNode(name: 'espesor', children: [for (final p in parts) SceneNode(name: p.name, part: p)]),
+      root: SceneNode(
+        name: 'espesor',
+        children: [for (final p in parts) SceneNode(name: p.name, part: p)],
+      ),
       parts: parts,
     );
     final k = scale * scale;
@@ -737,7 +770,12 @@ class StlController extends ChangeNotifier {
     final d = (points[1] - points[0]) * scale;
     final len = d.length;
     String f(double v) => Units.len(v);
-    return tr('Distancia {d}  ·  ΔX {x}  ·  ΔY {y}  ·  ΔZ {z}', {'d': f(len), 'x': f(d.x.abs()), 'y': f(d.y.abs()), 'z': f(d.z.abs())});
+    return tr('Distancia {d}  ·  ΔX {x}  ·  ΔY {y}  ·  ΔZ {z}', {
+      'd': f(len),
+      'x': f(d.x.abs()),
+      'y': f(d.y.abs()),
+      'z': f(d.z.abs()),
+    });
   }
 
   void refresh() => notifyListeners();
@@ -950,10 +988,14 @@ Future<void> showMeshReviewSheet(
                     Expanded(
                       child: Text(
                         ok
-                            ? tr('Malla cerrada y bien orientada: lista para laminar.')
+                            ? tr(
+                                'Malla cerrada y bien orientada: lista para laminar.',
+                              )
                             : r.watertight && r.volume > 0
                             ? tr('La malla es estanca; hay detalles menores.')
-                            : tr('La malla tiene defectos: un laminador puede fallar o tener que repararla.'),
+                            : tr(
+                                'La malla tiene defectos: un laminador puede fallar o tener que repararla.',
+                              ),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: ok ? DT.mint : DT.orangeSoft,
@@ -969,11 +1011,19 @@ Future<void> showMeshReviewSheet(
                 title: r.boundaryEdges == 0
                     ? tr('Sin agujeros')
                     : (r.holes.length == 1
-                          ? tr('{n} agujero ({e} aristas abiertas)', {'n': 1, 'e': fmtNum(r.boundaryEdges.toDouble(), d: 0)})
-                          : tr('{n} agujeros ({e} aristas abiertas)', {'n': r.holes.length, 'e': fmtNum(r.boundaryEdges.toDouble(), d: 0)})),
+                          ? tr('{n} agujero ({e} aristas abiertas)', {
+                              'n': 1,
+                              'e': fmtNum(r.boundaryEdges.toDouble(), d: 0),
+                            })
+                          : tr('{n} agujeros ({e} aristas abiertas)', {
+                              'n': r.holes.length,
+                              'e': fmtNum(r.boundaryEdges.toDouble(), d: 0),
+                            })),
                 detail: r.boundaryEdges == 0
                     ? tr('Cada arista une dos triángulos.')
-                    : tr('Aristas con un solo triángulo: la superficie no se cierra.'),
+                    : tr(
+                        'Aristas con un solo triángulo: la superficie no se cierra.',
+                      ),
                 action: r.holes.isEmpty
                     ? null
                     : TextButton(
@@ -1008,10 +1058,14 @@ Future<void> showMeshReviewSheet(
                 bad: r.nonManifoldEdges > 0,
                 title: r.nonManifoldEdges == 0
                     ? tr('Sin aristas compartidas por más de dos triángulos')
-                    : tr('{n} aristas no-manifold', {'n': fmtNum(r.nonManifoldEdges.toDouble(), d: 0)}),
+                    : tr('{n} aristas no-manifold', {
+                        'n': fmtNum(r.nonManifoldEdges.toDouble(), d: 0),
+                      }),
                 detail: r.nonManifoldEdges == 0
                     ? tr('La malla es una variedad.')
-                    : tr('Tres o más triángulos comparten una arista (geometría pegada o solapada).'),
+                    : tr(
+                        'Tres o más triángulos comparten una arista (geometría pegada o solapada).',
+                      ),
                 action: r.nonManifoldEdges == 0
                     ? null
                     : Switch(
@@ -1029,12 +1083,16 @@ Future<void> showMeshReviewSheet(
                 title: r.volume < 0
                     ? tr('Normales hacia dentro')
                     : r.inconsistentEdges > 0
-                    ? tr('{n} aristas con orientación mezclada', {'n': fmtNum(r.inconsistentEdges.toDouble(), d: 0)})
+                    ? tr('{n} aristas con orientación mezclada', {
+                        'n': fmtNum(r.inconsistentEdges.toDouble(), d: 0),
+                      })
                     : tr('Normales orientadas hacia fuera'),
                 detail: r.volume < 0
                     ? tr('El volumen sale negativo: la malla está del revés.')
                     : r.inconsistentEdges > 0
-                    ? tr('Triángulos vecinos con el sentido invertido: el laminador no sabe qué es dentro.')
+                    ? tr(
+                        'Triángulos vecinos con el sentido invertido: el laminador no sabe qué es dentro.',
+                      )
                     : tr('El volumen es positivo y el sentido es coherente.'),
                 action: r.inconsistentEdges == 0
                     ? null
@@ -1052,20 +1110,29 @@ Future<void> showMeshReviewSheet(
                 bad: r.degenerate > 0 || r.duplicates > 0,
                 title: r.degenerate == 0 && r.duplicates == 0
                     ? tr('Sin triángulos degenerados ni repetidos')
-                    : tr('{a} degenerados · {b} repetidos', {'a': r.degenerate, 'b': r.duplicates}),
-                detail:
-                    tr('Triángulos sin área o copiados; suelen venir de exportaciones con errores.'),
+                    : tr('{a} degenerados · {b} repetidos', {
+                        'a': r.degenerate,
+                        'b': r.duplicates,
+                      }),
+                detail: tr(
+                  'Triángulos sin área o copiados; suelen venir de exportaciones con errores.',
+                ),
               ),
               item(
                 bad: shells.length > 1 && crumbs > 0,
                 title: shells.length == 1
                     ? tr('Un solo casco')
                     : (crumbs > 0
-                          ? tr('{n} cascos sueltos ({c} diminutos)', {'n': shells.length, 'c': crumbs})
+                          ? tr('{n} cascos sueltos ({c} diminutos)', {
+                              'n': shells.length,
+                              'c': crumbs,
+                            })
                           : tr('{n} cascos sueltos', {'n': shells.length})),
                 detail: shells.length == 1
                     ? tr('Una sola pieza.')
-                    : tr('Piezas separadas en el mismo archivo; los diminutos suelen ser restos.'),
+                    : tr(
+                        'Piezas separadas en el mismo archivo; los diminutos suelen ser restos.',
+                      ),
               ),
               if (shells.length > 1)
                 for (final (i, s) in shells.take(5).indexed)
@@ -1073,18 +1140,32 @@ Future<void> showMeshReviewSheet(
                     tr('  Casco {n}', {'n': i + 1}),
                     Units.tru('{t} tri · {v} cm³', {
                           't': fmtNum(s.triangles.toDouble(), d: 0),
-                          'v': Units.volumeCm3N(s.volume.abs() * math.pow(c.scale, 3) / 1000, d: 2),
+                          'v': Units.volumeCm3N(
+                            s.volume.abs() * math.pow(c.scale, 3) / 1000,
+                            d: 2,
+                          ),
                         }) +
                         (s.closed ? '' : tr(' · abierto')),
                   ),
               sheetLabel(tr('ARCHIVO')),
               if (c.meta != null) ...[
-                sheetRow(tr('Formato'), c.meta!.binary ? tr('STL binario') : 'STL ASCII'),
-                sheetRow(tr('Tamaño'), '${fmtNum(c.meta!.bytes / 1e6, d: 2)} MB'),
-                if (c.meta!.solids > 1) sheetRow(tr('Sólidos'), '${c.meta!.solids}'),
-                if (c.meta!.header.isNotEmpty) sheetRow(tr('Cabecera'), c.meta!.header),
+                sheetRow(
+                  tr('Formato'),
+                  c.meta!.binary ? tr('STL binario') : 'STL ASCII',
+                ),
+                sheetRow(
+                  tr('Tamaño'),
+                  '${fmtNum(c.meta!.bytes / 1e6, d: 2)} MB',
+                ),
+                if (c.meta!.solids > 1)
+                  sheetRow(tr('Sólidos'), '${c.meta!.solids}'),
+                if (c.meta!.header.isNotEmpty)
+                  sheetRow(tr('Cabecera'), c.meta!.header),
                 if (c.meta!.colored)
-                  sheetRow(tr('Color'), tr('El archivo trae color por triángulo')),
+                  sheetRow(
+                    tr('Color'),
+                    tr('El archivo trae color por triángulo'),
+                  ),
               ],
               sheetRow(tr('Revisión'), '${r.milliseconds} ms'),
             ],
@@ -1162,6 +1243,8 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                   Text(tr('Relleno'), style: const TextStyle(color: DT.muted)),
                   Expanded(
                     child: Slider(
+                      semanticFormatterCallback: (v) =>
+                          '${tr('Relleno')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
                       value: c.infill,
                       min: 0,
                       max: 1,
@@ -1186,13 +1269,27 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
               sheetRow(
                 tr('Con ese relleno (estimación)'),
                 Units.isImperial
-                    ? tr('{m} · {l} ft de filamento 1,75 mm', {'m': Units.mass(c.estimatedGrams), 'l': Units.fmt(c.filamentMeters * 1000 / kMmPerInch / 12, d: 1)})
-                    : tr('{m} · {l} m de filamento 1,75 mm', {'m': Units.mass(c.estimatedGrams), 'l': fmtNum(c.filamentMeters, d: 1)}),
+                    ? tr('{m} · {l} ft de filamento 1,75 mm', {
+                        'm': Units.mass(c.estimatedGrams),
+                        'l': Units.fmt(
+                          c.filamentMeters * 1000 / kMmPerInch / 12,
+                          d: 1,
+                        ),
+                      })
+                    : tr('{m} · {l} m de filamento 1,75 mm', {
+                        'm': Units.mass(c.estimatedGrams),
+                        'l': fmtNum(c.filamentMeters, d: 1),
+                      }),
               ),
               Text(
                 Units.isImperial
-                    ? tr('Estimación con paredes de {w}; el laminador dará la cifra exacta.', {'w': Units.mm(1.2)})
-                    : tr('Estimación con paredes de 1,2 mm; el laminador dará la cifra exacta.'),
+                    ? tr(
+                        'Estimación con paredes de {w}; el laminador dará la cifra exacta.',
+                        {'w': Units.mm(1.2)},
+                      )
+                    : tr(
+                        'Estimación con paredes de 1,2 mm; el laminador dará la cifra exacta.',
+                      ),
                 style: const TextStyle(color: DT.muted, fontSize: 11.5),
               ),
               sheetLabel(tr('¿CABE EN MI IMPRESORA?')),
@@ -1231,9 +1328,24 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                     child: Text(
                       best.fits
                           ? (best.label == tr('Tal como está')
-                                ? Units.tru('Cabe tal como está ({x} × {y} × {z} mm)', {'x': Units.number(c.bedPreset.x, d: 0), 'y': Units.number(c.bedPreset.y, d: 0), 'z': Units.number(c.bedPreset.z, d: 0)})
-                                : Units.tru('Cabe {l} ({x} × {y} × {z} mm)', {'l': best.label.toLowerCase(), 'x': Units.number(c.bedPreset.x, d: 0), 'y': Units.number(c.bedPreset.y, d: 0), 'z': Units.number(c.bedPreset.z, d: 0)}))
-                          : Units.tru('No cabe: sobran {o} mm incluso {l}.', {'o': Units.number(best.overflow), 'l': best.label.toLowerCase()}),
+                                ? Units.tru(
+                                    'Cabe tal como está ({x} × {y} × {z} mm)',
+                                    {
+                                      'x': Units.number(c.bedPreset.x, d: 0),
+                                      'y': Units.number(c.bedPreset.y, d: 0),
+                                      'z': Units.number(c.bedPreset.z, d: 0),
+                                    },
+                                  )
+                                : Units.tru('Cabe {l} ({x} × {y} × {z} mm)', {
+                                    'l': best.label.toLowerCase(),
+                                    'x': Units.number(c.bedPreset.x, d: 0),
+                                    'y': Units.number(c.bedPreset.y, d: 0),
+                                    'z': Units.number(c.bedPreset.z, d: 0),
+                                  }))
+                          : Units.tru('No cabe: sobran {o} mm incluso {l}.', {
+                              'o': Units.number(best.overflow),
+                              'l': best.label.toLowerCase(),
+                            }),
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: best.fits ? DT.mint : DT.orangeSoft,
@@ -1261,6 +1373,8 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                   ),
                   Expanded(
                     child: Slider(
+                      semanticFormatterCallback: (v) =>
+                          '${tr('Ángulo máximo')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
                       value: c.overhangDeg,
                       min: 20,
                       max: 70,
@@ -1284,8 +1398,16 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                   Expanded(
                     child: Text(
                       c.overhangView && !c.overhangBusy
-                          ? Units.tru('Naranja: necesita soporte ({a} cm²) · verde: apoyo en la cama ({b} cm²)', {'a': Units.areaCm2N(c.overhangArea), 'b': Units.areaCm2N(c.baseArea)})
-                          : tr('Colorea las caras que miran hacia abajo más allá de ese ángulo.'),
+                          ? Units.tru(
+                              'Naranja: necesita soporte ({a} cm²) · verde: apoyo en la cama ({b} cm²)',
+                              {
+                                'a': Units.areaCm2N(c.overhangArea),
+                                'b': Units.areaCm2N(c.baseArea),
+                              },
+                            )
+                          : tr(
+                              'Colorea las caras que miran hacia abajo más allá de ese ángulo.',
+                            ),
                       style: const TextStyle(color: DT.muted, fontSize: 12.5),
                     ),
                   ),
@@ -1298,9 +1420,14 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
               sheetLabel(tr('ESPESOR DE PARED')),
               Row(
                 children: [
-                  Text(tr('Mínimo deseado'), style: const TextStyle(color: DT.muted)),
+                  Text(
+                    tr('Mínimo deseado'),
+                    style: const TextStyle(color: DT.muted),
+                  ),
                   Expanded(
                     child: Slider(
+                      semanticFormatterCallback: (v) =>
+                          '${tr('Mínimo deseado')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
                       value: c.thicknessMm,
                       min: 0.2,
                       max: 3,
@@ -1325,20 +1452,43 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                     child: Text(
                       c.thicknessBusy
                           ? tr('Midiendo desde cada cara hacia dentro…')
-                          : (c.thicknessView && c.thickness != null && c.measuredArea > 0
-                                ? Units.tru('Pared más fina: {t} mm · rojo: por debajo ({a} % de la superficie) · amarillo: justo ({b} %)', {
-                                        't': Units.number(c.thickness!.minThickness * c.scale, d: 2),
-                                        'a': fmtNum(c.thinArea / c.measuredArea * 100, d: 1),
-                                        'b': fmtNum(c.warnArea / c.measuredArea * 100, d: 1),
-                                      }) +
-                                      (c.thickness!.sampled ? tr(' · medido en una muestra de {n} caras', {'n': c.thickness!.measured}) : '')
-                                : tr('Lanza un rayo hacia dentro desde cada cara y mide hasta la pared de enfrente.')),
+                          : (c.thicknessView &&
+                                    c.thickness != null &&
+                                    c.measuredArea > 0
+                                ? Units.tru(
+                                        'Pared más fina: {t} mm · rojo: por debajo ({a} % de la superficie) · amarillo: justo ({b} %)',
+                                        {
+                                          't': Units.number(
+                                            c.thickness!.minThickness * c.scale,
+                                            d: 2,
+                                          ),
+                                          'a': fmtNum(
+                                            c.thinArea / c.measuredArea * 100,
+                                            d: 1,
+                                          ),
+                                          'b': fmtNum(
+                                            c.warnArea / c.measuredArea * 100,
+                                            d: 1,
+                                          ),
+                                        },
+                                      ) +
+                                      (c.thickness!.sampled
+                                          ? tr(
+                                              ' · medido en una muestra de {n} caras',
+                                              {'n': c.thickness!.measured},
+                                            )
+                                          : '')
+                                : tr(
+                                    'Lanza un rayo hacia dentro desde cada cara y mide hasta la pared de enfrente.',
+                                  )),
                       style: const TextStyle(color: DT.muted, fontSize: 12.5),
                     ),
                   ),
                   Switch(
                     value: c.thicknessView,
-                    onChanged: c.thicknessBusy ? null : (_) => c.toggleThickness(),
+                    onChanged: c.thicknessBusy
+                        ? null
+                        : (_) => c.toggleThickness(),
                   ),
                 ],
               ),
@@ -1350,18 +1500,50 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                       c.selfIntBusy
                           ? tr('Buscando caras que se atraviesan…')
                           : c.selfInt == null
-                              ? tr('Busca pares de caras que se cruzan sin compartir vértices (piezas solapadas, mallas mal unidas).')
-                              : c.selfInt!.pairs == 0
-                                  ? tr('Ninguna: no hay caras que se atraviesen.')
-                                  : (c.selfInt!.truncated
-                                        ? Units.tru('Más de {n} pares de caras se atraviesan. Primera zona: x {x}, y {y}, z {z} mm.', {'n': c.selfInt!.pairs, 'x': Units.number(c.selfInt!.at[0] * c.scale), 'y': Units.number(c.selfInt!.at[1] * c.scale), 'z': Units.number(c.selfInt!.at[2] * c.scale)})
-                                        : Units.tru('{n} pares de caras se atraviesan. Primera zona: x {x}, y {y}, z {z} mm.', {'n': c.selfInt!.pairs, 'x': Units.number(c.selfInt!.at[0] * c.scale), 'y': Units.number(c.selfInt!.at[1] * c.scale), 'z': Units.number(c.selfInt!.at[2] * c.scale)})),
+                          ? tr(
+                              'Busca pares de caras que se cruzan sin compartir vértices (piezas solapadas, mallas mal unidas).',
+                            )
+                          : c.selfInt!.pairs == 0
+                          ? tr('Ninguna: no hay caras que se atraviesen.')
+                          : (c.selfInt!.truncated
+                                ? Units.tru(
+                                    'Más de {n} pares de caras se atraviesan. Primera zona: x {x}, y {y}, z {z} mm.',
+                                    {
+                                      'n': c.selfInt!.pairs,
+                                      'x': Units.number(
+                                        c.selfInt!.at[0] * c.scale,
+                                      ),
+                                      'y': Units.number(
+                                        c.selfInt!.at[1] * c.scale,
+                                      ),
+                                      'z': Units.number(
+                                        c.selfInt!.at[2] * c.scale,
+                                      ),
+                                    },
+                                  )
+                                : Units.tru(
+                                    '{n} pares de caras se atraviesan. Primera zona: x {x}, y {y}, z {z} mm.',
+                                    {
+                                      'n': c.selfInt!.pairs,
+                                      'x': Units.number(
+                                        c.selfInt!.at[0] * c.scale,
+                                      ),
+                                      'y': Units.number(
+                                        c.selfInt!.at[1] * c.scale,
+                                      ),
+                                      'z': Units.number(
+                                        c.selfInt!.at[2] * c.scale,
+                                      ),
+                                    },
+                                  )),
                       style: const TextStyle(color: DT.muted, fontSize: 12.5),
                     ),
                   ),
                   TextButton(
                     onPressed: c.selfIntBusy ? null : c.findSelfInt,
-                    child: Text(c.selfInt == null ? tr('Buscar') : tr('Repetir')),
+                    child: Text(
+                      c.selfInt == null ? tr('Buscar') : tr('Repetir'),
+                    ),
                   ),
                 ],
               ),
@@ -1405,6 +1587,8 @@ Future<void> showMeshSectionSheet(BuildContext context, StlController c) {
           ),
           if (c.sectionAxis >= 0) ...[
             Slider(
+              semanticFormatterCallback: (v) =>
+                  '${tr('Sección')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
               value: c.sectionT,
               onChanged: (v) => c.setSection(c.sectionAxis, t: v),
             ),
@@ -1509,7 +1693,14 @@ List<Widget> _orientationRows(StlController c) {
   // La orientación actual: apoyada sobre la cara −Z.
   final cur = c.orientations.firstWhere((o) => o.axis == 2 && o.sign == -1);
   final sorted = [...c.orientations]
-    ..sort((a, b) => a.overhangMm2.compareTo(b.overhangMm2));
+    ..sort((a, b) {
+      final c = a.overhangMm2.compareTo(b.overhangMm2);
+      if (c != 0) return c;
+      // Empate: la orientación actual primero (así ninguna otra figura como «mejor» sin serlo), luego la más baja.
+      if (identical(a, cur)) return -1;
+      if (identical(b, cur)) return 1;
+      return a.heightMm.compareTo(b.heightMm);
+    });
   final out = <Widget>[];
   for (final (i, o) in sorted.take(3).indexed) {
     final isCur = identical(o, cur);
@@ -1519,8 +1710,12 @@ List<Widget> _orientationRows(StlController c) {
     out.add(
       sheetRow(
         '${i == 0 ? '★ ' : ''}${isCur ? tr('{l} (actual)', {'l': o.label}) : o.label}',
-        Units.tru('{a} cm² de voladizo', {'a': Units.areaCm2N(o.overhangMm2 / 100)}) +
-            (!isCur && cur.overhangMm2 > 0 ? ' (${delta >= 0 ? '+' : '−'}${delta.abs().round()} %)' : '') +
+        Units.tru('{a} cm² de voladizo', {
+              'a': Units.areaCm2N(o.overhangMm2 / 100),
+            }) +
+            (!isCur && cur.overhangMm2 > 0 && delta.abs().round() > 0
+                ? ' (${delta >= 0 ? '+' : '−'}${delta.abs().round()} %)'
+                : '') +
             Units.tru(' · alto {h} mm', {'h': Units.number(o.heightMm, d: 0)}),
         color: i == 0 ? DT.mint : null,
       ),

@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_ja = {
   'Archivo incompleto: faltan {n} triángulos': 'ファイルが不完全です：三角形が {n} 個足りません',
   'El archivo está dañado o no es del formato que indica su extensión.': 'ファイルが破損しているか、拡張子が示す形式ではありません。',
   'No se reconoce el formato de este archivo.': 'このファイル形式は認識できません。',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL が大きすぎます（{mb} MB）。メモリ不足を避けるため上限は {max} MB です。',
+  'Versión': 'バージョン',
 };

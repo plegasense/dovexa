@@ -11,9 +11,19 @@ import '../l10n/l10n.dart';
 /// Datos del archivo STL (formato, cabecera, color) asociados a su malla.
 final stlMetaOf = Expando<StlMeta>();
 
+/// Por encima de esto el móvil se queda sin memoria al trocear las caras.
+const _maxStlBytes = 300 * 1048576;
+
 /// Lee un STL (binario o ASCII) en un isolate para no bloquear la interfaz.
 Future<Mesh> loadStl(String path) async {
   final lang = L.lang;
+  final size = await File(path).length();
+  if (size > _maxStlBytes) {
+    throw Exception(tr('El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.', {
+      'mb': (size / 1048576).round(),
+      'max': _maxStlBytes ~/ 1048576,
+    }));
+  }
   final data = await Isolate.run(() {
     L.lang = lang; // el isolate no hereda el idioma
     return _parse(File(path).readAsBytesSync());

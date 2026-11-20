@@ -53,7 +53,9 @@ class RigPlayer extends ChangeNotifier {
     }
   }
 
-  RigAnimation? get animation => current >= 0 && current < rig.animations.length ? rig.animations[current] : null;
+  RigAnimation? get animation => current >= 0 && current < rig.animations.length
+      ? rig.animations[current]
+      : null;
   double get duration => animation?.duration ?? 0;
 
   void select(int i) {
@@ -169,7 +171,10 @@ class RigPlayer extends ChangeNotifier {
           }
         }
       }
-      if (p.skin >= 0 && p.skin < rig.skins.length && p.joints != null && p.weights != null) {
+      if (p.skin >= 0 &&
+          p.skin < rig.skins.length &&
+          p.joints != null &&
+          p.weights != null) {
         final sk = rig.skins[p.skin];
         var mats = jm[p.skin];
         if (mats == null) {
@@ -192,12 +197,28 @@ class RigPlayer extends ChangeNotifier {
             if (w == 0) continue;
             final o = jn[i * 4 + k] * 16;
             if (o + 15 >= mats.length) continue;
-            ox += w * (mats[o] * x + mats[o + 4] * y + mats[o + 8] * z + mats[o + 12]);
-            oy += w * (mats[o + 1] * x + mats[o + 5] * y + mats[o + 9] * z + mats[o + 13]);
-            oz += w * (mats[o + 2] * x + mats[o + 6] * y + mats[o + 10] * z + mats[o + 14]);
+            ox +=
+                w *
+                (mats[o] * x +
+                    mats[o + 4] * y +
+                    mats[o + 8] * z +
+                    mats[o + 12]);
+            oy +=
+                w *
+                (mats[o + 1] * x +
+                    mats[o + 5] * y +
+                    mats[o + 9] * z +
+                    mats[o + 13]);
+            oz +=
+                w *
+                (mats[o + 2] * x +
+                    mats[o + 6] * y +
+                    mats[o + 10] * z +
+                    mats[o + 14]);
             onx += w * (mats[o] * nx + mats[o + 4] * ny + mats[o + 8] * nz);
             ony += w * (mats[o + 1] * nx + mats[o + 5] * ny + mats[o + 9] * nz);
-            onz += w * (mats[o + 2] * nx + mats[o + 6] * ny + mats[o + 10] * nz);
+            onz +=
+                w * (mats[o + 2] * nx + mats[o + 6] * ny + mats[o + 10] * nz);
           }
           final l = math.sqrt(onx * onx + ony * ony + onz * onz);
           v[i * 6] = ox;
@@ -253,10 +274,17 @@ class AnimationBar extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: p.playing ? p.pause : p.play,
-                        icon: Icon(p.playing ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 30),
+                        icon: Icon(
+                          p.playing
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                          size: 30,
+                        ),
                       ),
                       Expanded(
                         child: Slider(
+                          semanticFormatterCallback: (v) =>
+                              '${tr('Posición')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
                           value: d <= 0 ? 0 : p.time.clamp(0, d).toDouble(),
                           max: d <= 0 ? 1 : d,
                           onChanged: d <= 0 ? null : p.seek,
@@ -264,7 +292,11 @@ class AnimationBar extends StatelessWidget {
                       ),
                       Text(
                         '${p.time.toStringAsFixed(2)} / ${d.toStringAsFixed(2)} s',
-                        style: const TextStyle(fontSize: 12, color: DT.muted, fontFeatures: [FontFeature.tabularFigures()]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: DT.muted,
+                          fontFeatures: [FontFeature.tabularFigures()],
+                        ),
                       ),
                     ],
                   ),
@@ -280,7 +312,13 @@ class AnimationBar extends StatelessWidget {
                             dropdownColor: DT.surface2,
                             items: [
                               for (var i = 0; i < anims.length; i++)
-                                DropdownMenuItem(value: i, child: Text(anims[i].name, overflow: TextOverflow.ellipsis)),
+                                DropdownMenuItem(
+                                  value: i,
+                                  child: Text(
+                                    anims[i].name,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                             ],
                             onChanged: (v) {
                               if (v != null) p.select(v);
@@ -291,13 +329,19 @@ class AnimationBar extends StatelessWidget {
                       IconButton(
                         tooltip: p.loop ? tr('En bucle') : tr('Una vez'),
                         onPressed: p.toggleLoop,
-                        icon: Icon(Icons.repeat_rounded, size: 20, color: p.loop ? DT.orange : DT.muted),
+                        icon: Icon(
+                          Icons.repeat_rounded,
+                          size: 20,
+                          color: p.loop ? DT.orange : DT.muted,
+                        ),
                       ),
                       for (final s in const [0.5, 1.0, 2.0])
                         Padding(
                           padding: const EdgeInsets.only(left: 4),
                           child: ChoiceChip(
-                            label: Text('${s == s.roundToDouble() ? s.toInt() : s}×'),
+                            label: Text(
+                              '${s == s.roundToDouble() ? s.toInt() : s}×',
+                            ),
                             selected: p.speed == s,
                             visualDensity: VisualDensity.compact,
                             onSelected: (_) => p.setSpeed(s),

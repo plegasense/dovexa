@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_sv = {
   'Archivo incompleto: faltan {n} triángulos': 'Ofullständig fil: {n} trianglar saknas',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Filen är skadad eller har inte det format som filändelsen anger.',
   'No se reconoce el formato de este archivo.': 'Filformatet känns inte igen.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL-filen är för stor ({mb} MB): gränsen är {max} MB för att minnet inte ska ta slut.',
+  'Versión': 'Version',
 };

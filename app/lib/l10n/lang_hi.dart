@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_hi = {
   'Archivo incompleto: faltan {n} triángulos': 'अधूरी फ़ाइल: {n} त्रिभुज गायब हैं',
   'El archivo está dañado o no es del formato que indica su extensión.': 'फ़ाइल क्षतिग्रस्त है या उसके एक्सटेंशन के अनुसार फ़ॉर्मैट की नहीं है।',
   'No se reconoce el formato de este archivo.': 'इस फ़ाइल का फ़ॉर्मैट पहचाना नहीं गया।',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL बहुत बड़ा है ({mb} MB): मेमोरी खत्म न हो इसलिए सीमा {max} MB है।',
+  'Versión': 'संस्करण',
 };

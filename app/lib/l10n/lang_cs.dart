@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_cs = {
   'Archivo incompleto: faltan {n} triángulos': 'Neúplný soubor: chybí {n} trojúhelníků',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Soubor je poškozený nebo není ve formátu, který udává jeho přípona.',
   'No se reconoce el formato de este archivo.': 'Formát tohoto souboru nebyl rozpoznán.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL je příliš velký ({mb} MB): limit je {max} MB, aby nedošla paměť.',
+  'Versión': 'Verze',
 };

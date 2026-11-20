@@ -13,7 +13,9 @@ import 'units_sheet.dart';
 Future<void> showSettingsSheet(BuildContext context) {
   return dovexaSheet(
     context,
-    Column(
+    ValueListenableBuilder<String>(
+      valueListenable: L.choice,
+      builder: (ctx, _, _) => Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,6 +47,7 @@ Future<void> showSettingsSheet(BuildContext context) {
         ),
       ],
     ),
+    ),
   );
 }
 
@@ -58,6 +61,9 @@ Future<void> showAboutSheet(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           sheetTitle('Dovexa', sub: tr('Visor CAD gratuito, sin anuncios y sin conexión.')),
+          Text(tr('Versión'), style: const TextStyle(fontSize: 13, color: DT.muted)),
+          const Text(kAppVersion, style: TextStyle(fontSize: 15)),
+          const SizedBox(height: 12),
           Text(tr('Licencia'), style: const TextStyle(fontSize: 13, color: DT.muted)),
           const Text('GNU GPL v3.0', style: TextStyle(fontSize: 15)),
           const SizedBox(height: 12),

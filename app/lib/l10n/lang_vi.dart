@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_vi = {
   'Archivo incompleto: faltan {n} triángulos': 'Tệp không đầy đủ: thiếu {n} tam giác',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Tệp bị hỏng hoặc không đúng định dạng mà phần mở rộng cho biết.',
   'No se reconoce el formato de este archivo.': 'Không nhận dạng được định dạng tệp này.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL quá lớn ({mb} MB): giới hạn là {max} MB để không hết bộ nhớ.',
+  'Versión': 'Phiên bản',
 };

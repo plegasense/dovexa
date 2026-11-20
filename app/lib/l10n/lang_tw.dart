@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_tw = {
   'Archivo incompleto: faltan {n} triángulos': '檔案不完整：缺少 {n} 個三角形',
   'El archivo está dañado o no es del formato que indica su extensión.': '檔案已損毀，或不是副檔名所示的格式。',
   'No se reconoce el formato de este archivo.': '無法識別此檔案格式。',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL 檔案過大（{mb} MB）：為避免記憶體不足，上限為 {max} MB。',
+  'Versión': '版本',
 };

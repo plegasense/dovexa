@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_pl = {
   'Archivo incompleto: faltan {n} triángulos': 'Niekompletny plik: brakuje {n} trójkątów',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Plik jest uszkodzony lub nie ma formatu wskazanego przez rozszerzenie.',
   'No se reconoce el formato de este archivo.': 'Format tego pliku nie jest rozpoznawany.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'Plik STL jest za duży ({mb} MB): limit to {max} MB, aby nie zabrakło pamięci.',
+  'Versión': 'Wersja',
 };

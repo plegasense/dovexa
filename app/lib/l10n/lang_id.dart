@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_id = {
   'Archivo incompleto: faltan {n} triángulos': 'File tidak lengkap: {n} segitiga hilang',
   'El archivo está dañado o no es del formato que indica su extensión.': 'File rusak atau bukan dalam format yang ditunjukkan ekstensinya.',
   'No se reconoce el formato de este archivo.': 'Format file ini tidak dikenali.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL terlalu besar ({mb} MB): batasnya {max} MB agar memori tidak habis.',
+  'Versión': 'Versi',
 };

@@ -8,7 +8,7 @@ const Map<String, String> kLang_uk = {
   'Unidades': 'Одиниці',
   'Unidades: {u}': 'Одиниці: {u}',
   'Métrico (mm)': 'Метрична (мм)',
-  'Imperial (in)': 'Імперська (in)',
+  'Imperial (in)': 'Імперська (дюйм)',
   'Cómo se muestran las medidas; los archivos no cambian.': 'Як відображаються виміри; файли не змінюються.',
   'Según el país del dispositivo': 'За регіоном пристрою',
   'Milímetros, gramos y metros': 'Міліметри, грами та метри',
@@ -1028,4 +1028,6 @@ const Map<String, String> kLang_uk = {
   'Archivo incompleto: faltan {n} triángulos': 'Неповний файл: бракує {n} трикутників',
   'El archivo está dañado o no es del formato que indica su extensión.': 'Файл пошкоджено або він не відповідає формату, указаному в розширенні.',
   'No se reconoce el formato de este archivo.': 'Формат цього файлу не розпізнано.',
+  'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL завеликий ({mb} МБ): ліміт — {max} МБ, щоб не вичерпати пам’ять.',
+  'Versión': 'Версія',
 };
