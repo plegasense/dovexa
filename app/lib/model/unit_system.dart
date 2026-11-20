@@ -272,7 +272,7 @@ class Units {
   static String cloudLabel(CloudInfo i) {
     if (i.geographic) return '°';
     if (i.unit.isEmpty) return '';
-    return cloudFactor(i) == 1 ? ' ${i.unit}' : ' ${sym('ft')}';
+    return cloudFactor(i) == 1 ? ' ${sym(i.unit)}' : ' ${sym('ft')}';
   }
 
   /// Densidad (puntos por m²) en la unidad mostrada: por ft² en imperial.

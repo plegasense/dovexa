@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_ko = {
   '{h}h {m}m': '{h}시간 {m}분',
   '{m}m {s}s': '{m}분 {s}초',
   '{s}s': '{s}초',
+  'triángulo': '삼각형',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '삼각형 {n}개 제외됨(좌표가 범위를 벗어남)',
+  'k': 'k',
+  'M': 'M',
+  's': '초',
 };

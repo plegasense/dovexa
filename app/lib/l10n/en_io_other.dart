@@ -113,4 +113,9 @@ const Map<String, String> kEn_io_other = {
   '{h}h {m}m': '{h}h {m}m',
   '{m}m {s}s': '{m}m {s}s',
   '{s}s': '{s}s',
+  'triángulo': 'triangle',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '{n} triangles discarded (coordinates out of range)',
+  'k': 'k',
+  'M': 'M',
+  's': 's',
 };

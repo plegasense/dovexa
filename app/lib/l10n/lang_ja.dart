@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_ja = {
   '{h}h {m}m': '{h}時間 {m}分',
   '{m}m {s}s': '{m}分 {s}秒',
   '{s}s': '{s}秒',
+  'triángulo': '三角形',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '{n} 個の三角形を破棄しました(座標が範囲外)',
+  'k': 'k',
+  'M': 'M',
+  's': '秒',
 };

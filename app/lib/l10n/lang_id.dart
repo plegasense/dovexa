@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_id = {
   '{h}h {m}m': '{h}j {m}m',
   '{m}m {s}s': '{m}m {s}d',
   '{s}s': '{s}d',
+  'triángulo': 'segitiga',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': '{n} segitiga dibuang (koordinat di luar rentang)',
+  'k': 'k',
+  'M': 'M',
+  's': 's',
 };

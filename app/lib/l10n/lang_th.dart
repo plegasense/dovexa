@@ -1035,4 +1035,9 @@ const Map<String, String> kLang_th = {
   '{h}h {m}m': '{h}ชม. {m}นาที',
   '{m}m {s}s': '{m}นาที {s}วิ',
   '{s}s': '{s}วิ',
+  'triángulo': 'สามเหลี่ยม',
+  'Archivo STL: {n} triángulos descartados (coordenadas fuera de rango)': 'ละทิ้งสามเหลี่ยม {n} รูป (พิกัดอยู่นอกช่วง)',
+  'k': 'k',
+  'M': 'M',
+  's': 's',
 };

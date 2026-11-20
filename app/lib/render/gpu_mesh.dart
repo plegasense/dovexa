@@ -223,6 +223,11 @@ class DovexaRenderer {
       for (final i in scene.instances(explode: opt.explode))
         if (i.part.mesh.vertexCount > 0) i,
     ];
+    // IGES/STEP solo de aristas: no hay caras que dibujar, pero sí líneas.
+    final edgeOnly = [
+      for (final i in scene.instances(explode: opt.explode))
+        if (i.part.mesh.vertexCount == 0 && (i.part.brep?.edgeSegments.isNotEmpty ?? false)) i,
+    ];
     final instances = all.length < 40
         ? all
         : _cull(all, viewProj, cam.viewMatrix(), w, h);
@@ -512,11 +517,11 @@ class DovexaRenderer {
     }
 
     final skipEdges = opt.interacting && instances.length > 200;
-    if (opt.edges && mode == ViewMode.shaded && !skipEdges) {
+    if ((opt.edges || edgeOnly.isNotEmpty) && mode == ViewMode.shaded && !skipEdges) {
       pass.setDepthWriteEnable(true);
       pass.setDepthCompareOperation(gpu.CompareFunction.lessEqual);
       pass.setPolygonMode(gpu.PolygonMode.fill);
-      for (final inst in instances) {
+      for (final inst in opt.edges ? [...instances, ...edgeOnly] : edgeOnly) {
         final brep = inst.part.brep;
         if (brep == null || brep.edgeSegments.isEmpty) continue;
         if (ghost.contains(inst)) continue;
