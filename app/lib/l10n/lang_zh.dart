@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_zh = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL 文件过大（{mb} MB）：为避免内存不足，上限为 {max} MB。',
   'Versión': '版本',
   'punto': '点',
+  '{d}d {h}h {m}m': '{d}天 {h}小时 {m}分',
+  '{h}h {m}m': '{h}小时 {m}分',
+  '{m}m {s}s': '{m}分 {s}秒',
+  '{s}s': '{s}秒',
 };

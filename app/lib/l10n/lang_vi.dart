@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_vi = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL quá lớn ({mb} MB): giới hạn là {max} MB để không hết bộ nhớ.',
   'Versión': 'Phiên bản',
   'punto': 'điểm',
+  '{d}d {h}h {m}m': '{d}ngày {h}giờ {m}phút',
+  '{h}h {m}m': '{h}giờ {m}phút',
+  '{m}m {s}s': '{m}phút {s}giây',
+  '{s}s': '{s}giây',
 };

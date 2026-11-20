@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_pt = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'O STL é grande demais ({mb} MB): o limite é {max} MB para não ficar sem memória.',
   'Versión': 'Versão',
   'punto': 'ponto',
+  '{d}d {h}h {m}m': '{d}d {h}h {m}min',
+  '{h}h {m}m': '{h}h {m}min',
+  '{m}m {s}s': '{m}min {s}s',
+  '{s}s': '{s}s',
 };

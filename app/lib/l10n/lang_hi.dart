@@ -1031,4 +1031,8 @@ const Map<String, String> kLang_hi = {
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL बहुत बड़ा है ({mb} MB): मेमोरी खत्म न हो इसलिए सीमा {max} MB है।',
   'Versión': 'संस्करण',
   'punto': 'बिंदु',
+  '{d}d {h}h {m}m': '{d}दिन {h}घं {m}मि',
+  '{h}h {m}m': '{h}घं {m}मि',
+  '{m}m {s}s': '{m}मि {s}से',
+  '{s}s': '{s}से',
 };

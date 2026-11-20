@@ -483,7 +483,7 @@ class _ViewerPageState extends State<ViewerPage> {
               ..add(
                 InfoChip(
                   Icons.straighten,
-                  '${_fmtSize(s[0])} × ${_fmtSize(s[1])} × ${_fmtSize(s[2])} u',
+                  '${_fmtSize(s[0])} × ${_fmtSize(s[1])} × ${_fmtSize(s[2])} ${RegExp(r'\.(glb|gltf)$', caseSensitive: false).hasMatch(_openedPath ?? '') ? Units.sym('m') : 'u'}',
                 ),
               );
           }
@@ -2022,7 +2022,7 @@ class _ViewerPageState extends State<ViewerPage> {
                         maxWidth: MediaQuery.of(context).size.width - 240,
                       ),
                       child: Text(
-                        doc.name,
+                        _openedPath != null ? _openedPath!.split('/').last : doc.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

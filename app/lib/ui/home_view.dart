@@ -216,13 +216,13 @@ class _HomeViewState extends State<HomeView>
                           (logoT.value * 2).clamp(0.0, 1.0),
                         ),
                         child: DovexaLogo(
-                          size: compact ? 150 : 210,
+                          size: c.maxHeight < 420 ? 96 : (compact ? 150 : 210),
                           explode: logoT.value,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: compact ? 26 : 40),
+                  SizedBox(height: c.maxHeight < 420 ? 14 : (compact ? 26 : 40)),
                   FadeTransition(
                     opacity: wordT,
                     child: SlideTransition(

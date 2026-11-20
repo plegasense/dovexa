@@ -144,6 +144,9 @@ _Parsed _parse(Uint8List bytes) {
         .replaceFirst(RegExp(r'^\s*solid\s*', caseSensitive: false), '')
         .trim();
   }
+  if (verts.isEmpty && skipped > 0) {
+    throw Exception(tr('El archivo STL no contiene triángulos (¿está vacío o dañado?).'));
+  }
   final mn = [double.infinity, double.infinity, double.infinity];
   final mx = [-double.infinity, -double.infinity, -double.infinity];
   for (var i = 0; i < verts.length; i += 6) {
