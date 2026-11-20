@@ -255,7 +255,7 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     cam.addListener(() => _overlayTick.value++);
     Units.notifier.addListener(_onUnitsChanged);
     L.choice.addListener(_onUnitsChanged);
-    L.systemTick.addListener(_onUnitsChanged);
+    L.systemTick.addListener(_onSystemLocale);
     // Archivos recibidos desde "Abrir con" o "Compartir" (Android).
     if (Platform.isAndroid) {
       _intents.setMethodCallHandler((c) async {
@@ -282,13 +282,15 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
   int? _openedPlate;
 
   /// Al cambiar de sistema de unidades se vuelve a abrir el archivo para rehacer los resúmenes (chips).
-  void _onUnitsChanged() {
+  void _onSystemLocale() => _onUnitsChanged(system: true);
+
+  void _onUnitsChanged({bool system = false}) {
     if (!mounted) return;
     final p = _openedPath;
     if (_doc != null && p != null && !_loading) {
-      _open(p, gcodePlate: _openedPlate, keepSheets: true);
+      _open(p, gcodePlate: _openedPlate, keepSheets: !system, keepView: true);
     } else if (_error != null && _errorPath != null && !_loading) {
-      _open(_errorPath!, gcodePlate: _errorPlate, keepSheets: true);
+      _open(_errorPath!, gcodePlate: _errorPlate, keepSheets: !system);
     } else {
       setState(() {});
     }
@@ -390,7 +392,11 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> _open(String path, {int? gcodePlate, bool keepSheets = false}) async {
+  Future<void> _open(String path, {int? gcodePlate, bool keepSheets = false, bool keepView = false}) async {
+    // Al retraducir se conservan la vista de cámara y la medida en curso.
+    final snap = keepView
+        ? (cam.target.clone(), cam.distance, cam.yaw, cam.pitch, cam.ortho, List<vm.Vector2>.of(_measure), _measuring)
+        : null;
     // Una hoja o panel abierto sería del archivo anterior: se cierran al llegar otro
     // (salvo al retraducir por un cambio de unidades/idioma: esa hoja se cierra sola).
     if (mounted && !keepSheets) {
@@ -736,6 +742,18 @@ class _ViewerPageState extends State<ViewerPage> with WidgetsBindingObserver {
             ..addListener(_onTmfChanged);
           cam.fit(doc.scene.bounds());
         }
+      }
+      if (snap != null && _doc.runtimeType == doc.runtimeType) {
+        cam
+          ..target = snap.$1
+          ..distance = snap.$2
+          ..yaw = snap.$3
+          ..pitch = snap.$4
+          ..ortho = snap.$5;
+        _measure
+          ..clear()
+          ..addAll(snap.$6);
+        _measuring = snap.$7;
       }
       setState(() {
         _doc = doc;
