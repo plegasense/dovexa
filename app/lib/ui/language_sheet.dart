@@ -24,31 +24,35 @@ Future<void> showLanguageSheet(BuildContext context) {
               child: Column(
                 children: [
                   for (final c in ['auto', ...L.names.keys])
-                    InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        Units.setLang(c);
-                        Navigator.of(ctx).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              c == current
-                                  ? Icons.radio_button_checked_rounded
-                                  : Icons.radio_button_off_rounded,
-                              color: c == current ? DT.orange : DT.muted,
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              c == 'auto' ? tr('Automático') : L.names[c]!,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                    Semantics(
+                      inMutuallyExclusiveGroup: true,
+                      checked: c == current,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          Units.setLang(c);
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                c == current
+                                    ? Icons.radio_button_checked_rounded
+                                    : Icons.radio_button_off_rounded,
+                                color: c == current ? DT.orange : DT.muted,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 12),
+                              Text(
+                                c == 'auto' ? tr('Automático') : L.names[c]!,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
