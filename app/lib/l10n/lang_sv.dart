@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_sv = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Koordinater utanför intervallet (över en biljon enheter)',
+  'datos incoherentes': 'inkonsekventa data',
+  'El archivo BREP está incompleto o dañado': 'BREP-filen är ofullständig eller skadad',
+  '{n} capa': '{n} lager',
+  'Cubo de vistas': 'Vykub',
+  '< 1 s': '< 1 s',
 };

@@ -402,6 +402,9 @@ DxfData parseDxfBytes(Uint8List bytes, String fileName) {
   }
 
   scanBounds(modelEntities);
+  if (!mnx.isInfinite && !((mxx - mnx).abs() < 1e12 && (mxy - mny).abs() < 1e12 && mnx.abs() < 1e12 && mny.abs() < 1e12)) {
+    throw FormatException(tr('Coordenadas fuera de rango (más de un billón de unidades)'));
+  }
   final diag = mnx.isInfinite
       ? 1000.0
       : math.sqrt(math.pow(mxx - mnx, 2) + math.pow(mxy - mny, 2));

@@ -118,4 +118,10 @@ const Map<String, String> kEn_io_other = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Coordinates out of range (over a trillion units)',
+  'datos incoherentes': 'inconsistent data',
+  'El archivo BREP está incompleto o dañado': 'The BREP file is incomplete or damaged',
+  '{n} capa': '{n} layer',
+  'Cubo de vistas': 'View cube',
+  '< 1 s': '< 1 s',
 };

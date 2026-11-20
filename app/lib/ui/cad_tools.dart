@@ -1384,7 +1384,10 @@ class ViewCube extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: cam,
-      builder: (context, _) => GestureDetector(
+      builder: (context, _) => Semantics(
+        button: true,
+        label: tr('Cubo de vistas'),
+        child: GestureDetector(
         onTapUp: (d) {
           final faces = _project()..sort((a, b) => b.$3.compareTo(a.$3));
           for (final f in faces) {
@@ -1399,6 +1402,7 @@ class ViewCube extends StatelessWidget {
           height: size,
           child: CustomPaint(painter: _CubePainter(_project(), _faces)),
         ),
+      ),
       ),
     );
   }

@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_uk = {
   'k': 'тис.',
   'M': 'млн',
   's': 'с',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Координати поза допустимим діапазоном (понад трильйон одиниць)',
+  'datos incoherentes': 'суперечливі дані',
+  'El archivo BREP está incompleto o dañado': 'Файл BREP неповний або пошкоджений',
+  '{n} capa': '{n} шар',
+  'Cubo de vistas': 'Куб видів',
+  '< 1 s': '< 1 с',
 };

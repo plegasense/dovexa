@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_ru = {
   'k': 'тыс.',
   'M': 'млн',
   's': 'с',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Координаты вне допустимого диапазона (более триллиона единиц)',
+  'datos incoherentes': 'противоречивые данные',
+  'El archivo BREP está incompleto o dañado': 'Файл BREP неполный или повреждён',
+  '{n} capa': '{n} слой',
+  'Cubo de vistas': 'Куб видов',
+  '< 1 s': '< 1 с',
 };

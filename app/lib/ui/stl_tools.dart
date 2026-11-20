@@ -791,30 +791,43 @@ class StlController extends ChangeNotifier {
 // ---------------------------------------------------------------- hojas
 
 Future<void> dovexaSheet(BuildContext context, Widget child, {bool seeThrough = false}) {
-  return showModalBottomSheet<void>(
-    context: context,
-    barrierColor: seeThrough ? Colors.transparent : null,
-    backgroundColor: Colors.transparent,
-    isScrollControlled: true,
-    builder: (ctx) => SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 640,
-              maxHeight: MediaQuery.of(ctx).size.height * (seeThrough ? 0.4 : 0.86),
-            ),
-            child: Glass(
-              radius: 26,
-              color: const Color(0xF2101B1F),
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
-              child: child,
-            ),
+  Widget body(BuildContext ctx) => SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Align(
+        alignment: seeThrough ? Alignment.bottomCenter : Alignment.center,
+        heightFactor: seeThrough ? 1 : null,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 640,
+            maxHeight: MediaQuery.of(ctx).size.height * (seeThrough ? 0.34 : 0.86),
+          ),
+          child: Glass(
+            radius: 26,
+            color: const Color(0xF2101B1F),
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+            child: child,
           ),
         ),
       ),
     ),
+  );
+  // Hoja sin barrera: el modelo sigue visible y se puede mover mientras se ajusta.
+  final scaffold = seeThrough ? Scaffold.maybeOf(context) : null;
+  if (scaffold != null) {
+    return scaffold
+        .showBottomSheet(
+          (ctx) => body(ctx),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        )
+        .closed;
+  }
+  return showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: body,
   );
 }
 
@@ -1438,7 +1451,7 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                     ),
                   ),
                   SizedBox(
-                    width: 60,
+                    width: 76,
                     child: Text(
                       Units.mm(c.thicknessMm),
                       textAlign: TextAlign.right,

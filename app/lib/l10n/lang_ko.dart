@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_ko = {
   'k': 'k',
   'M': 'M',
   's': '초',
+  'Coordenadas fuera de rango (más de un billón de unidades)': '좌표가 범위를 벗어났습니다(1조 단위 초과)',
+  'datos incoherentes': '일관되지 않은 데이터',
+  'El archivo BREP está incompleto o dañado': 'BREP 파일이 불완전하거나 손상되었습니다',
+  '{n} capa': '{n}레이어',
+  'Cubo de vistas': '뷰 큐브',
+  '< 1 s': '< 1초',
 };

@@ -45,6 +45,7 @@ PointData _parseXyz(String path) {
         y = double.tryParse(p[1]),
         z = double.tryParse(p[2]);
     if (x == null || y == null || z == null) continue;
+    if (!(x.abs() < 1e12 && y.abs() < 1e12 && z.abs() < 1e12)) continue;
     if (layout < 0) {
       final c = p.length;
       if (isPts) {

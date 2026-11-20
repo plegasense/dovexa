@@ -97,8 +97,10 @@ SceneData parseCad(String path, {String? cacheDir}) {
     final meshes = <MeshData>[];
     final brep = <PartBrepData>[];
     final parts = dovexaPartCount(scene);
+    var anyGeometry = false;
     for (var i = 0; i < parts; i++) {
       final n = dovexaPartVertexCount(scene, i);
+      if (n > 0 || dovexaPartEdgeSegmentCount(scene, i) > 0) anyGeometry = true;
       final src = dovexaPartVertices(scene, i).asTypedList(n * 6);
       final verts = Float32List.fromList(
         src,
@@ -159,6 +161,7 @@ SceneData parseCad(String path, {String? cacheDir}) {
         ),
       );
     }
+    if (!anyGeometry) throw Exception(tr('El archivo no contiene geometría'));
     final nodes = <NodeData>[];
     final count = dovexaNodeCount(scene);
     for (var i = 0; i < count; i++) {

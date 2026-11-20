@@ -525,7 +525,11 @@ class DovexaRenderer {
         final brep = inst.part.brep;
         if (brep == null || brep.edgeSegments.isEmpty) continue;
         if (ghost.contains(inst)) continue;
-        drawEdges(inst, brep, _edgeColor(inst.part.color));
+        drawEdges(
+          inst,
+          brep,
+          inst.part.mesh.vertexCount == 0 ? const Color(0xFFCFD8DA) : _edgeColor(inst.part.color),
+        );
       }
     }
 

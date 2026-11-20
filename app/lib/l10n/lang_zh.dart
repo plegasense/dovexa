@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_zh = {
   'k': 'k',
   'M': 'M',
   's': '秒',
+  'Coordenadas fuera de rango (más de un billón de unidades)': '坐标超出范围(超过一万亿单位)',
+  'datos incoherentes': '数据不一致',
+  'El archivo BREP está incompleto o dañado': 'BREP 文件不完整或已损坏',
+  '{n} capa': '{n} 层',
+  'Cubo de vistas': '视图立方体',
+  '< 1 s': '< 1 秒',
 };

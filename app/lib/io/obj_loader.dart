@@ -296,6 +296,7 @@ Object _parseObj(String path, List<String> extraDirs) {
       p = s + 2;
       final x = number(), y = number(), z = number();
       if (x == null || y == null || z == null) continue;
+      if (!(x.abs() < 1e12 && y.abs() < 1e12 && z.abs() < 1e12)) throw FormatException(tr('Coordenadas fuera de rango (más de un billón de unidades)'));
       pos.add3(x, y, z);
       final r = number(), g = number(), b = number();
       if (r != null && g != null && b != null) {

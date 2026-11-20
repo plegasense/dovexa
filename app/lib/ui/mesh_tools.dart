@@ -336,9 +336,12 @@ List<Widget> meshChips(MeshFileController c, Bounds b) {
 
 String _n(double v) =>
     fmtNum(v, d: v.abs() >= 100 ? 0 : (v.abs() >= 1 ? 1 : 3));
-String _count(int n, String w) => n >= 1000000
-    ? '${fmtNum(n / 1e6, d: 2)} M $w'
-    : (n >= 1000 ? '${fmtNum(n / 1000, d: 1)} k $w' : '$n $w');
+String _count(int n, String w) {
+  if (n == 1 && w == tr('triángulos')) w = tr('triángulo');
+  if (n >= 1000000) return '${fmtNum(n / 1e6, d: 2)} ${tr('M')} $w';
+  if (n >= 1000) return '${fmtNum(n / 1000, d: 1)} ${tr('k')} $w';
+  return '$n $w';
+}
 
 /// Hoja con todo lo que trae el archivo: origen, geometría, materiales, texturas, extensiones, avisos.
 Future<void> showMeshInfoSheet(

@@ -169,6 +169,7 @@ double? parseDuration(String s) {
 }
 
 String formatDuration(double sec) {
+  if (sec > 0 && sec < 1) return tr('< 1 s');
   final s = sec.round();
   final d = s ~/ 86400, h = (s % 86400) ~/ 3600, m = (s % 3600) ~/ 60;
   if (d > 0) return tr('{d}d {h}h {m}m', {'d': d, 'h': h, 'm': m});

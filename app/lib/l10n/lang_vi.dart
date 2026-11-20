@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_vi = {
   'k': 'k',
   'M': 'M',
   's': 's',
+  'Coordenadas fuera de rango (más de un billón de unidades)': 'Tọa độ ngoài phạm vi (hơn một nghìn tỷ đơn vị)',
+  'datos incoherentes': 'dữ liệu không nhất quán',
+  'El archivo BREP está incompleto o dañado': 'Tệp BREP không đầy đủ hoặc bị hỏng',
+  '{n} capa': '{n} lớp',
+  'Cubo de vistas': 'Khối lập phương góc nhìn',
+  '< 1 s': '< 1 giây',
 };

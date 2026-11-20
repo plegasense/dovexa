@@ -1040,4 +1040,10 @@ const Map<String, String> kLang_ja = {
   'k': 'k',
   'M': 'M',
   's': '秒',
+  'Coordenadas fuera de rango (más de un billón de unidades)': '座標が範囲外です(1兆単位超)',
+  'datos incoherentes': 'データの不整合',
+  'El archivo BREP está incompleto o dañado': 'BREPファイルが不完全か破損しています',
+  '{n} capa': '{n} レイヤー',
+  'Cubo de vistas': 'ビューキューブ',
+  '< 1 s': '< 1 秒',
 };
