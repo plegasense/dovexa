@@ -8,9 +8,9 @@ ADB="$ANDROID_HOME/platform-tools/adb"; S="$1"; LANGS="$2"; APP=app.datum.datum
 T=../testdata/_externos; OUT=../store/shots
 # escena | archivo | CAD | defines | espera | toque x,y (opcional)
 SCENES=(
- "step|$T/otros_cad/as1-oc-214.stp|e:0.6||22|"
+ "step|../testdata/step/reductor.step|e:0.6||22|"
  "fdm|$T/fdm_otros/prusaslicer_3dbenchy.gcode||--dart-define=DOVEXA_SLIDER=0.55|20|"
- "cnc|$T/cnc/mmount.ngc|||16|"
+ "cnc|../testdata/gcode/fresado_ejemplo.nc|||16|"
  "stl|$T/stl/3dbenchy_3DBenchy.stl|||12|974,1433"
  "gltf|$T/malla/gltf/CesiumMilkTruck.glb|||16|"
  "cloud|$T/nubes/las/autzen_trim.las|mode:1||40|"

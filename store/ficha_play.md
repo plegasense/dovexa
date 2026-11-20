@@ -15,7 +15,7 @@ Los textos publicados (título, descripción breve y larga) de los 21 idiomas es
 - Gráfico de cabecera 1024×500: `play/<idioma>/feature-graphic-1024x500.png` (se genera con `feature.py`).
 - Teléfono 1080×1920 (8, en orden): `play/<idioma>/phone/01…08`. Capturas reales de la app con archivos públicos de muestra (`shots/<idioma>/`, hechas con `tools/shots_langs.sh`), más titular. Se regeneran con `python3 build_assets.py <idioma>` (el español se compuso a mano con `compose.py`).
 - Tableta: `play/es/tablet/` (a partir de `shots/tab_*.png`).
-- Créditos de los modelos de las capturas: Cesium Milk Truck (Cesium, CC BY 4.0), 3DBenchy (CreativeTools, CC0 1.0, 3DBenchy.com), PrusaSlicer/g-code de muestra, mmount.ngc (LinuxCNC), Autzen (Hobu/USGS), as1-oc-214 (Open CASCADE).
+- Créditos de los modelos de las capturas: Cesium Milk Truck (Cesium, CC BY 4.0), 3DBenchy (CreativeTools, CC0 1.0, 3DBenchy.com), PrusaSlicer/g-code de muestra, Autzen (Hobu/PDAL, CC BY 4.0); reductor.step y fresado_ejemplo.nc son propios.
 
 ## Respuestas de Play Console
 - Acceso a la app: sin restricciones, no hace falta cuenta. Anuncios: no. Compras: no.
