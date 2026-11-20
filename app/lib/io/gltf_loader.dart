@@ -252,6 +252,14 @@ SceneData parseGltf(String path, {List<String> extraDirs = const []}) {
   }
 }
 
+Map<String, dynamic> _gltfJson(Uint8List b) {
+  try {
+    return jsonDecode(utf8.decode(b)) as Map<String, dynamic>;
+  } catch (_) {
+    throw FormatException(tr('El archivo no es un glTF válido ({e})', {'e': tr('datos incoherentes')}));
+  }
+}
+
 SceneData _parseGltf(String path, List<String> extraDirs) {
   final file = File(path);
   final bytes = file.readAsBytesSync();
@@ -278,7 +286,7 @@ SceneData _parseGltf(String path, List<String> extraDirs) {
           throw FormatException(tr('El GLB está cortado'));
         }
         if (type == 0x4E4F534A) {
-          j = jsonDecode(utf8.decode(Uint8List.sublistView(bytes, start, start + len))) as Map<String, dynamic>;
+          j = _gltfJson(Uint8List.sublistView(bytes, start, start + len));
         } else if (type == 0x004E4942 && glbBin == null) {
           glbBin = Uint8List.sublistView(bytes, start, start + len);
         }
@@ -288,7 +296,7 @@ SceneData _parseGltf(String path, List<String> extraDirs) {
       json = j;
     } else {
       info.format = 'glTF (texto)';
-      json = jsonDecode(utf8.decode(bytes)) as Map<String, dynamic>;
+      json = _gltfJson(bytes);
     }
   } on FormatException {
     rethrow;

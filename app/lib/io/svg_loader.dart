@@ -733,7 +733,7 @@ DxfData _parseSvg(String path) {
   try {
     doc = XmlDocument.parse(text);
   } on XmlException catch (e) {
-    throw FormatException(tr('El SVG está mal formado: {m}', {'m': e.message}));
+    throw FormatException(tr('El archivo está dañado o no es del formato que indica su extensión.'));
   }
   final root = doc.rootElement;
   if (root.name.local != 'svg') {

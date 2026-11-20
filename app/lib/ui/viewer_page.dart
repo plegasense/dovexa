@@ -83,6 +83,7 @@ class _ViewerPageState extends State<ViewerPage> {
   List<Widget> _chips = const [];
   final Set<int> _hidden = {};
   bool _loading = false;
+  int _loadSeq = 0; // la carga más reciente manda; una anterior que acaba tarde se descarta
   String _loadingName = '';
   String? _loadingNote;
   bool _introPlayed = false;
@@ -382,6 +383,7 @@ class _ViewerPageState extends State<ViewerPage> {
       _scaffold.currentState?.closeEndDrawer();
       Navigator.of(context).popUntil((r) => r.isFirst);
     }
+    final seq = ++_loadSeq;
     String? note;
     try {
       final mb = File(path).lengthSync() / 1e6;
@@ -416,6 +418,7 @@ class _ViewerPageState extends State<ViewerPage> {
     try {
       final loadWatch = Stopwatch()..start();
       final doc = await loadDocument(path, gcodePlate: gcodePlate);
+      if (seq != _loadSeq) return;
       _openedPath = path;
       _openedPlate = gcodePlate;
       if (_kAutoCad.isNotEmpty) {
@@ -1324,6 +1327,7 @@ class _ViewerPageState extends State<ViewerPage> {
       }
       if (_kShot.isNotEmpty && !_kHomeShot) _maybeShot();
     } catch (e) {
+      if (seq != _loadSeq) return;
       final raw = '$e';
       final missing = e is PathNotFoundException ||
           raw.contains('No such file or directory') ||
@@ -1335,7 +1339,7 @@ class _ViewerPageState extends State<ViewerPage> {
       _closeDoc();
       setState(() => _error = '${path.split('/').last}\n$msg');
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted && seq == _loadSeq) setState(() => _loading = false);
     }
   }
 
