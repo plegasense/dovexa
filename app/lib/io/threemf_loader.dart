@@ -951,7 +951,7 @@ class _Config {
       final plate = project.plates.where((p) => p.index == idx).firstOrNull;
       if (plate == null) continue;
       final pred = double.tryParse(kv('prediction') ?? '');
-      if (pred == null) continue;
+      if (pred == null || !pred.isFinite) continue;
       plate
         ..sliced = true
         ..seconds = pred

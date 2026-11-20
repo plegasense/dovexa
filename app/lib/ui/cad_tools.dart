@@ -1449,7 +1449,7 @@ class _CubePainter extends CustomPainter {
             text: tr(names[i].$1),
             style: TextStyle(
               color: DT.text.withValues(alpha: 0.9),
-              fontSize: L.lang == 'hi' ? 9 : 7.5,
+              fontSize: L.lang == 'hi' ? 9 : (tr(names[i].$1).length > 5 ? 6.2 : 7.5),
               fontWeight: FontWeight.w700,
               letterSpacing: L.lang == 'hi' ? 0 : 0.4,
             ),

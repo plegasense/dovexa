@@ -285,6 +285,16 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
   // ---- Archivos comprimidos con un modelo y sus texturas (Sketchfab, fotogrametría…)
   if (ext == 'zip') {
     final main = await isoRun(() => extractModelZip(path, Directory.systemTemp.path));
+    // Los archivos que el usuario añadió se guardaron bajo la ruta del ZIP: se enlazan a la del modelo extraído.
+    try {
+      final from = Directory(extraFilesDir(path));
+      if (from.existsSync()) {
+        final to = Directory(extraFilesDir(main))..createSync(recursive: true);
+        for (final f in from.listSync().whereType<File>()) {
+          f.copySync('${to.path}/${f.path.split('/').last}');
+        }
+      }
+    } catch (_) {}
     return loadDocument(main, gcodePlate: gcodePlate);
   }
 
