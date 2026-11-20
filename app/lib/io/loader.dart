@@ -232,7 +232,7 @@ Scene _sceneFrom(SceneData d) {
   final head = latin1.decode(b).replaceAll('\r', '');
   final low = head.toLowerCase();
   if (head.startsWith('glTF')) return ('glb', {'glb', 'gltf'});
-  if (head.startsWith('LASF')) return ('las', {'las'});
+  if (head.startsWith('LASF')) return ('las', {'las', 'laz'});
   if (head.startsWith('GCDE')) return ('bgcode', {'bgcode'});
   if (head.contains('ASTM-E57')) return ('e57', {'e57'});
   if (low.trimLeft().startsWith('ply\n')) return ('ply', {'ply'});
@@ -241,6 +241,14 @@ Scene _sceneFrom(SceneData d) {
   if (low.contains('<svg')) return ('svg', {'svg'});
   if (RegExp(r'^\s*0\s*\n\s*SECTION\s*\n').hasMatch(head)) return ('dxf', {'dxf'});
   if (low.trimLeft().startsWith('solid') && low.contains('facet')) return ('stl', {'stl'});
+  // STL binario: 80 bytes de cabecera, un contador y 50 bytes por triángulo.
+  try {
+    final len = File(path).lengthSync();
+    if (len > 84 && (len - 84) % 50 == 0) {
+      final n = ByteData.sublistView(b, 80, 84).getUint32(0, Endian.little);
+      if (n > 0 && n == (len - 84) ~/ 50) return ('stl', {'stl'});
+    }
+  } catch (_) {}
   return null;
 }
 
@@ -312,7 +320,18 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
   if (ext == 'xyz' || ext == 'pts')
     return _cloud(await isoRun(() => parseXyz(path)));
   if (ext == 'pcd') return _cloud(await isoRun(() => parsePcd(path)));
-  if (ext == 'las') {
+  if (ext == 'las' || ext == 'laz') {
+    final comp = () {
+      final f = File(path).openSync();
+      try {
+        return readLasHeader(f).compressed;
+      } catch (_) {
+        return ext == 'laz';
+      } finally {
+        f.closeSync();
+      }
+    }();
+    if (comp) return _cloud(await isoRun(() => parseLaz(path)));
     final sw = Stopwatch()..start();
     final d = await isoRun(() => parseLas(path));
     final t1 = sw.elapsedMilliseconds;
@@ -322,7 +341,6 @@ Future<Document> loadDocument(String path, {int? gcodePlate}) async {
     return doc;
   }
   if (ext == 'e57') return _cloud(await isoRun(() => parseE57(path)));
-  if (ext == 'laz') return _cloud(await isoRun(() => parseLaz(path)));
   if (ext == 'ply') {
     final r = await isoRun(() => parsePly(path));
     return r is PointData ? _cloud(r) : await _model(_sceneFrom(r as SceneData));

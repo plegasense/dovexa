@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_th = {
   'No se reconoce el formato de este archivo.': 'ไม่รู้จักรูปแบบของไฟล์นี้',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'ไฟล์ STL ใหญ่เกินไป ({mb} MB): จำกัดที่ {max} MB เพื่อไม่ให้หน่วยความจำหมด',
   'Versión': 'เวอร์ชัน',
+  'punto': 'จุด',
 };

@@ -1290,7 +1290,7 @@ GcodeData parseGcode(
   if (feature.n == 0)
     throw Exception(
       b.isEmpty
-          ? tr('El archivo está vacío')
+          ? tr('El archivo está vacío.')
           : tr('No se han encontrado movimientos de trabajo: ¿es realmente un G-code?'),
     );
   layerSeg.add(feature.n);

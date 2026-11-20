@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_pt = {
   'No se reconoce el formato de este archivo.': 'O formato deste arquivo não é reconhecido.',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'O STL é grande demais ({mb} MB): o limite é {max} MB para não ficar sem memória.',
   'Versión': 'Versão',
+  'punto': 'ponto',
 };

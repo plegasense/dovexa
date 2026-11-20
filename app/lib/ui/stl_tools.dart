@@ -1244,7 +1244,7 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                   Expanded(
                     child: Slider(
                       semanticFormatterCallback: (v) =>
-                          '${tr('Relleno')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                          '${tr('Relleno')} ${(v * 100).round()} %',
                       value: c.infill,
                       min: 0,
                       max: 1,
@@ -1427,7 +1427,7 @@ Future<void> showPrintSheet(BuildContext context, StlController c) {
                   Expanded(
                     child: Slider(
                       semanticFormatterCallback: (v) =>
-                          '${tr('Mínimo deseado')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                          '${tr('Mínimo deseado')} ${Units.fine(v, d: 1)}',
                       value: c.thicknessMm,
                       min: 0.2,
                       max: 3,
@@ -1588,7 +1588,7 @@ Future<void> showMeshSectionSheet(BuildContext context, StlController c) {
           if (c.sectionAxis >= 0) ...[
             Slider(
               semanticFormatterCallback: (v) =>
-                  '${tr('Sección')} ${v.toStringAsFixed(v.abs() >= 10 ? 0 : 1)}',
+                  '${tr('Sección')} ${(v * 100).round()} %',
               value: c.sectionT,
               onChanged: (v) => c.setSection(c.sectionAxis, t: v),
             ),

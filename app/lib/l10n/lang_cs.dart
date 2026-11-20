@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_cs = {
   'No se reconoce el formato de este archivo.': 'Formát tohoto souboru nebyl rozpoznán.',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL je příliš velký ({mb} MB): limit je {max} MB, aby nedošla paměť.',
   'Versión': 'Verze',
+  'punto': 'bod',
 };

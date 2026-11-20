@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_vi = {
   'No se reconoce el formato de este archivo.': 'Không nhận dạng được định dạng tệp này.',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL quá lớn ({mb} MB): giới hạn là {max} MB để không hết bộ nhớ.',
   'Versión': 'Phiên bản',
+  'punto': 'điểm',
 };

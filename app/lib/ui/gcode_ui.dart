@@ -94,7 +94,7 @@ class GcodeCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Z ${Units.plainNum(z, d: 2)}',
+                  'Z ${Units.plain(z, d: 2)}',
                   style: const TextStyle(
                     color: DT.mint,
                     fontSize: 13.5,
@@ -139,6 +139,7 @@ class GcodeCard extends StatelessWidget {
                               ),
                         ),
                         child: RangeSlider(
+                          semanticFormatterCallback: (v) => '${tr('Capa {n}', {'n': v.round() + 1})}',
                           values: RangeValues(lo.toDouble(), hi.toDouble()),
                           min: 0,
                           max: (n - 1).toDouble(),
@@ -357,8 +358,8 @@ class GcodeLegend extends StatelessWidget {
         final bz = t.bounds;
         return _gradient(
           [_c(0xFB923C), _c(0x5EEAD4)],
-          'Z ${Units.plainNum(bz.min[2])}',
-          'Z ${Units.plainNum(bz.max[2])}',
+          'Z ${Units.plain(bz.min[2])}',
+          'Z ${Units.plain(bz.max[2])}',
         );
       case ToolpathColorMode.flat:
         return const SizedBox.shrink();
@@ -525,7 +526,7 @@ class GcodeInfoPanel extends StatelessWidget {
                 onTap: () => onLayer(l.clamp(0, t.layerCount - 1)),
                 child: _row(
                   tr('Capa {n}', {'n': l + 1}),
-                  'Z ${Units.plainNum(t.layerZ[l.clamp(0, t.layerZ.length - 1)], d: 2)}'
+                  'Z ${Units.plain(t.layerZ[l.clamp(0, t.layerZ.length - 1)], d: 2)}'
                       '${s.seconds != null ? ' · ${tr('tras {t}', {'t': formatDuration(s.elapsedAt(t, math.max(0, l - 1)))})}' : ''}',
                 ),
               ),
@@ -693,7 +694,11 @@ class CncCard extends StatelessWidget {
                 onPressed: onPlay,
               ),
               Expanded(
-                child: Slider(value: progress, onChanged: onProgress),
+                child: Slider(
+                  semanticFormatterCallback: (v) => '${(v * 100).round()} %',
+                  value: progress,
+                  onChanged: onProgress,
+                ),
               ),
             ],
           ),

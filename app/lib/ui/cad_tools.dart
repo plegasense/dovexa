@@ -730,6 +730,7 @@ Future<void> showSectionSheet(BuildContext context, CadController c) {
               ),
             ),
             Slider(
+              semanticFormatterCallback: (v) => '${tr('Sección')} ${(v * 100).round()} %',
               value: c.sectionT,
               onChanged: (v) => c.setSection(c.sectionAxis, t: v),
             ),
@@ -779,6 +780,7 @@ Future<void> showExplodeSheet(BuildContext context, CadController c) {
             style: const TextStyle(color: DT.mint, fontWeight: FontWeight.w700),
           ),
           Slider(
+            semanticFormatterCallback: (v) => '${tr('Separación ×{n}', {'n': v.toStringAsFixed(2).ldec})}',
             value: c.options.explode.clamp(0.0, 2.0),
             max: 2.0,
             onChanged: c.setExplode,

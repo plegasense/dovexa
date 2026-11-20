@@ -1340,14 +1340,18 @@ class _ViewerPageState extends State<ViewerPage> {
   }
 
   static String _fmtCount(int n, [String unit = '']) {
+    if (n == 1 && unit == tr('puntos')) unit = tr('punto');
     final u = unit.isEmpty ? '' : ' $unit';
     if (n >= 1000000) return '${(n / 1000000).toStringAsFixed(2).ldec} M$u';
     if (n >= 1000) return '${(n / 1000).toStringAsFixed(1).ldec} k$u';
     return '$n$u';
   }
 
-  static String _fmtSize(double v) =>
-      v >= 100 ? v.toStringAsFixed(0) : v.toStringAsFixed(1).ldec;
+  /// Medida para los chips: 3 cifras significativas y miles separados, igual en todos los formatos.
+  static String _fmtSize(double v) {
+    final a = v.abs();
+    return Units.fmt(v, d: a >= 100 ? 0 : (a >= 10 ? 1 : (a >= 1 ? 2 : 3)));
+  }
 
   void _autoSelect(Scene scene) {
     final q = _kAutoSelect.toLowerCase();
@@ -1655,6 +1659,33 @@ class _ViewerPageState extends State<ViewerPage> {
     }
   }
 
+  /// Atrás sale primero de la herramienta activa (medir) y solo después cierra el documento.
+  bool _leaveTool() {
+    if (_measuring) {
+      setState(() {
+        _measuring = false;
+        _measure.clear();
+        _shape = null;
+      });
+      _overlayTick.value++;
+      return true;
+    }
+    if (_stl?.measuring == true) {
+      _stl!.toggleMeasure();
+    } else if (_mesh?.measuring == true) {
+      _mesh!.toggleMeasure();
+    } else if (_tmf?.measuring == true) {
+      _tmf!.toggleMeasure();
+    } else if (_cad?.measuring == true) {
+      _cad!.toggleMeasure();
+    } else if (_cloud?.measuring == true) {
+      _cloud!.toggleMeasure();
+    } else {
+      return false;
+    }
+    return true;
+  }
+
   void _standardView(double yaw, double pitch) {
     cam.setView(yaw, pitch);
     _focusSelection();
@@ -1672,7 +1703,7 @@ class _ViewerPageState extends State<ViewerPage> {
         if (didPop) return;
         if (_drawerOpen) {
           _scaffold.currentState?.closeEndDrawer();
-        } else {
+        } else if (!_leaveTool()) {
           _closeDoc();
         }
       },
@@ -2091,6 +2122,14 @@ class _ViewerPageState extends State<ViewerPage> {
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
+                    ),
+                  ),
+                if (_measuring && _measure.length < 2)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, top: 8),
+                    child: Text(
+                      _measure.isEmpty ? tr('Toca un punto de la pieza') : tr('Toca el segundo punto'),
+                      style: const TextStyle(color: DT.mint, fontSize: 13),
                     ),
                   ),
                 if (_tmf?.measuring == true && _tmf!.points.length < 2)

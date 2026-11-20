@@ -108,4 +108,5 @@ const Map<String, String> kEn_io_other = {
   'No se reconoce el formato de este archivo.': 'This file format is not recognized.',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'The STL is too large ({mb} MB): the limit is {max} MB to avoid running out of memory.',
   'Versión': 'Version',
+  'punto': 'point',
 };

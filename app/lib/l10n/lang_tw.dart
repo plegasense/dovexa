@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_tw = {
   'No se reconoce el formato de este archivo.': '無法識別此檔案格式。',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL 檔案過大（{mb} MB）：為避免記憶體不足，上限為 {max} MB。',
   'Versión': '版本',
+  'punto': '點',
 };

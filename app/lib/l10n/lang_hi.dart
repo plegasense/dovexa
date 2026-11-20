@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_hi = {
   'No se reconoce el formato de este archivo.': 'इस फ़ाइल का फ़ॉर्मैट पहचाना नहीं गया।',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL बहुत बड़ा है ({mb} MB): मेमोरी खत्म न हो इसलिए सीमा {max} MB है।',
   'Versión': 'संस्करण',
+  'punto': 'बिंदु',
 };

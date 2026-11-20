@@ -1030,4 +1030,5 @@ const Map<String, String> kLang_zh = {
   'No se reconoce el formato de este archivo.': '无法识别此文件格式。',
   'El STL es demasiado grande ({mb} MB): el límite es {max} MB para no quedarse sin memoria.': 'STL 文件过大（{mb} MB）：为避免内存不足，上限为 {max} MB。',
   'Versión': '版本',
+  'punto': '点',
 };
