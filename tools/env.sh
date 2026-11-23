@@ -10,7 +10,7 @@ export PATH="$FLUTTER_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulat
 
 # Compilaciones fuera de carpetas sincronizadas en la nube: éstas añaden atributos a los archivos y
 # codesign de iOS falla con "resource fork, Finder information, or similar detritus".
-export DOVEXA_BUILD_CACHE="$HOMEuna cachÃ© fuera de la carpeta"
+export DOVEXA_BUILD_CACHE="$HOME/.cache/dovexa-build"
 mkdir -p "$DOVEXA_BUILD_CACHE/app-build"
 if [ -d "$DOVEXA_ROOT/app" ] && [ ! -L "$DOVEXA_ROOT/app/build" ]; then
   rm -rf "$DOVEXA_ROOT/app/build"
