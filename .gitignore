@@ -57,3 +57,6 @@ key.properties
 /testdata/step/reductor.step
 /tools/make_showcase_data.py
 /store/ct/cttext
+
+# Notas internas (nunca a git)
+/privado/
