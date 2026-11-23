@@ -1,0 +1,13 @@
+#!/bin/sh
+. "$(dirname "$0")/lib.sh"
+Z=0000000000000000000000000000000000000000
+while read lref lsha rref rsha; do
+  [ "$lsha" = "$Z" ] && continue
+  [ "$rsha" = "$Z" ] && R="$lsha" || R="$rsha..$lsha"
+  for c in $(git rev-list "$R" 2>/dev/null); do
+    revisa_identidad "$(git log -1 --format=%an $c)" "$(git log -1 --format=%ae $c)"
+    revisa_identidad "$(git log -1 --format=%cn $c)" "$(git log -1 --format=%ce $c)"
+    git show -U0 --format= "$c" | revisa_texto || exit 1
+  done
+done
+exit 0

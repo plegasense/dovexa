@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/lib.sh"
+revisa_identidad "$(git var GIT_AUTHOR_IDENT | sed -E 's/ <.*//')" "$(git var GIT_AUTHOR_IDENT | sed -E 's/.*<(.*)>.*/\1/')"
+git diff --cached -U0 | revisa_texto || exit 1
+git diff --cached --name-only | grep -Eiq '(^|/)(claves/|key\.properties|.*\.jks$|.*\.keystore$)' && fallo "clave de firma en el commit"
+exit 0
