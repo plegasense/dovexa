@@ -15,4 +15,4 @@ Dovexa se publica bajo la **GNU General Public License v3.0** (ver `LICENSE`).
 
 Los archivos de prueba descargados (`testdata/_externos/`) no forman parte del programa: pertenecen a sus autores y mantienen sus licencias (LGPL de J. Burkardt, MIT de three.js, BSD de PDAL, etc.) y no se redistribuyen.
 
-Modelos de muestra citados en las capturas de la ficha de Play (no incluidos en el programa): Cesium Milk Truck (Cesium, CC BY 4.0, https://creativecommons.org/licenses/by/4.0/), nube de puntos Autzen (Hobu/PDAL, CC BY 4.0, https://github.com/PDAL/data) y 3DBenchy (CreativeTools, CC0).
+Modelos de muestra citados en las capturas de la ficha de Play (no incluidos en el programa): nube de puntos Autzen (Hobu/PDAL, CC BY 4.0, https://creativecommons.org/licenses/by/4.0/, https://github.com/PDAL/data) y 3DBenchy (CreativeTools, CC0).

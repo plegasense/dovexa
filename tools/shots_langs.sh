@@ -12,7 +12,6 @@ SCENES=(
  "fdm|$T/fdm_otros/prusaslicer_3dbenchy.gcode||--dart-define=DOVEXA_SLIDER=0.55|20|"
  "cnc|../testdata/gcode/fresado_ejemplo.nc|||16|"
  "stl|$T/stl/3dbenchy_3DBenchy.stl|||12|974,1433"
- "gltf|$T/malla/gltf/CesiumMilkTruck.glb|||16|"
  "cloud|$T/nubes/las/autzen_trim.las|mode:1||40|"
  "dxf|../testdata/placa_ejemplo.dxf|||12|974,1200"
 )

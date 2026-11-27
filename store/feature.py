@@ -48,7 +48,7 @@ def build(code):
 
     sd = f"shots/{code}"
     card(f"{sd}/cnc.png", (0, 780, 1000, 1600), (360, 260), (535, 28), -3)
-    card(f"{sd}/gltf.png", (0, 820, 860, 1560), (300, 240), (705, 105), 3)
+    card(f"{sd}/fdm.png", (164, 1000, 884, 1576), (300, 240), (705, 105), 3)
     card(f"{sd}/step.png", (0, 940, 860, 1500), (330, 215), (575, 268), 2)
     os.makedirs(f"play/{code}", exist_ok=True)
     im.convert("RGB").save(f"play/{code}/feature-graphic-1024x500.png", optimize=True)

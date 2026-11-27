@@ -44,6 +44,6 @@ PRIVADO Y HONESTO
 QUÉ NO ES
 Dovexa es un visor: no edita ni modela. No abre DWG ni los formatos propios de cada programa; exporta desde él a STEP, DXF o STL. Los ensamblajes muy grandes pueden tardar unos segundos en abrirse la primera vez.
 
-Las capturas usan archivos públicos de muestra (por ejemplo, Cesium Milk Truck, CC BY 4.0, de Cesium).
+Las capturas usan archivos públicos de muestra.
 
-Créditos: Cesium Milk Truck (Cesium, CC BY 4.0) · nube Autzen (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0).
+Créditos: nube Autzen (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0).

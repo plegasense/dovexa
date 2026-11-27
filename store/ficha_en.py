@@ -41,8 +41,8 @@ PRIVATE AND HONEST
 WHAT IT IS NOT
 Dovexa is a viewer: it does not edit or model. It does not open DWG or the native formats of each program; export from there to STEP, DXF or STL. Very large assemblies can take a few seconds to open the first time.
 
-Screenshots use public sample files (for example Cesium Milk Truck, CC BY 4.0, by Cesium).
-Credits: Cesium Milk Truck (Cesium, CC BY 4.0, github.com/KhronosGroup/glTF-Sample-Models) · Autzen (Hobu/PDAL, CC BY 4.0, github.com/PDAL/data) · 3DBenchy (CreativeTools, CC0) · CC BY 4.0: creativecommons.org/licenses/by/4.0/."""
+Screenshots use public sample files.
+Credits: Autzen (Hobu/PDAL, CC BY 4.0, github.com/PDAL/data) · 3DBenchy (CreativeTools, CC0) · CC BY 4.0: creativecommons.org/licenses/by/4.0/."""
 if __name__ == "__main__":
     print(len(TITLE), len(SHORT), len(LONG))
     assert len(TITLE) <= 30 and len(SHORT) <= 80 and len(LONG) <= 4000

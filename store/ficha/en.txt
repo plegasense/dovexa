@@ -42,6 +42,6 @@ PRIVATE AND HONEST
 WHAT IT IS NOT
 Dovexa is a viewer: it does not edit or model. It does not open DWG or the native formats of each program; export from there to STEP, DXF or STL. Very large assemblies can take a few seconds to open the first time.
 
-Screenshots use public sample files (for example Cesium Milk Truck, CC BY 4.0, by Cesium).
+Screenshots use public sample files.
 
-Credits: Cesium Milk Truck (Cesium, CC BY 4.0) · Autzen point cloud (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0).
+Credits: Autzen point cloud (Hobu/PDAL, CC BY 4.0) · 3DBenchy (CreativeTools, CC0).
